@@ -1,0 +1,214 @@
+stages:
+  - dependencies
+  - test
+  - build
+  - deploy
+
+variables:
+  ANGULAR_CLI_VERSION: 16.0.2
+  NODE_VERSION: 18
+
+.backend_rules:
+  rules:
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+      changes:
+        - backend/**/*
+        - .gitlab-ci.yml
+
+.frontend_rules:
+  rules:
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+      changes:
+        - frontend/**/*
+        - .gitlab-ci.yml
+
+.node:
+  image: node:${NODE_VERSION}-alpine
+  before_script:
+    - npm config set registry https://sepp-nexus.inf.h-brs.de/repository/npm/
+
+install-dependencies:backend:
+  extends: .node
+  stage: dependencies
+  script:
+    - cd backend
+    - npm install
+  rules:
+    - !reference [.backend_rules, rules]
+  cache:
+    key:
+      files:
+        - backend/package-lock.json
+    paths:
+      - backend/node_modules
+
+unit-test:backend:
+  extends: .node
+  stage: test
+  rules:
+    - !reference [ .backend_rules, rules ]
+  needs:
+    - install-dependencies:backend
+  script:
+    - cd backend
+    - npm run coverage
+  artifacts:
+    when: always
+    expire_in: 1 week
+    reports:
+      junit:
+        - ./backend/results/test-junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: ./backend/coverage/cobertura-coverage.xml
+  cache:
+    key:
+      files:
+        - backend/package-lock.json
+    paths:
+      - backend/node_modules
+    policy: pull
+
+deploy:backend:
+  stage: deploy
+  image: keymetrics/pm2:latest-alpine
+  variables:
+    HTTP_PROXY: "http://www-cache:8080"
+    HTTPS_PROXY: "http://www-cache:8080"
+    http_proxy: "http://www-cache:8080"
+    https_proxy: "http://www-cache:8080"
+  rules:
+    - !reference [ .backend_rules, rules ]
+  needs:
+    - unit-test:backend
+  script:
+    - echo "====== Deploy backend to production server ======"
+    - apk update && apk upgrade
+    - apk add openssh bash git
+    # Add target server`s secret key
+    - mkdir ~/.ssh
+    - echo $TARGET_SERVER_SECRET_KEY_BASE64 | base64 -d > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh && chmod 600 ~/.ssh/*
+    - echo "Test ssh connection"
+    - ssh -o StrictHostKeyChecking=no -T "$TARGET_SERVER_USER@$BACKEND_SERVER_HOST" pm2 status
+    # Deploy
+    - echo "Setup tagged server directories"
+    - pm2 deploy backend/ecosystem.config.js production setup 2>&1 || true
+    - echo "make deploy"
+    - pm2 deploy backend/ecosystem.config.js production
+
+install-dependencies:frontend:
+  extends: .node
+  stage: dependencies
+  script:
+    - cd frontend
+    - npm install
+  rules:
+    - !reference [ .frontend_rules, rules ]
+  cache:
+    key:
+      files:
+        - frontend/package-lock.json
+    paths:
+      - frontend/node_modules
+
+lint:frontend:
+  extends: .node
+  stage: test
+  rules:
+    - !reference [ .frontend_rules, rules ]
+  needs:
+    - install-dependencies:frontend
+  script:
+    - cd frontend
+    - npm link @angular/cli@$ANGULAR_CLI_VERSION
+    - ng lint
+  cache:
+    key:
+      files:
+        - frontend/package-lock.json
+    paths:
+      - frontend/node_modules
+    policy: pull
+
+.test:frontend:
+  image: container.docker.inf.h-brs.de/diarchitect/docker-node-chrome-firefox:master
+  stage: test
+  needs:
+    - install-dependencies:frontend
+  rules:
+    - !reference [ .frontend_rules, rules ]
+  script:
+    - cd frontend
+    - npm link @angular/cli@$ANGULAR_CLI_VERSION
+    - npm test -- --browsers=ChromeHeadlessNoSandbox,FirefoxHeadless --watch=false
+  artifacts:
+    when: always
+    expire_in: 1 week
+    reports:
+      junit:
+        - "./frontend/reports/chrome.xml"
+        - "./frontend/reports/firefox.xml"
+      coverage_report:
+        coverage_format: cobertura
+        path: ./frontend/coverage/app/cobertura-coverage.xml
+  cache:
+    key:
+      files:
+        - frontend/package-lock.json
+    paths:
+      - frontend/node_modules
+    policy: pull
+
+build:frontend:
+  extends: .node
+  stage: build
+  rules:
+    - !reference [ .frontend_rules, rules ]
+  needs:
+    - lint:frontend
+    #- test:frontend
+  script:
+    - cd frontend
+    - npm link @angular/cli@$ANGULAR_CLI_VERSION
+    - npm run build -- --base-href=/$TARGET_SERVER_USER/
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/frontend/dist
+  cache:
+    key:
+      files:
+        - frontend/package-lock.json
+    paths:
+      - frontend/node_modules
+    policy: pull
+
+deploy:frontend:
+  image: alpine
+  stage: deploy
+  variables:
+    HTTP_PROXY: "http://www-cache:8080"
+    HTTPS_PROXY: "http://www-cache:8080"
+    http_proxy: "http://www-cache:8080"
+    https_proxy: "http://www-cache:8080"
+  rules:
+    - !reference [ .frontend_rules, rules ]
+  needs:
+    - build:frontend
+  artifacts:
+    when: always
+    paths:
+      - /root/.npm/
+  script:
+    - echo "====== Deploy frontend to production server ======"
+    - apk update && apk add openssh-client
+    - cd frontend
+    - ls dist
+    - mkdir ~/.ssh
+    - printf "%s" $TARGET_SERVER_SECRET_KEY_BASE64 | base64 -d > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh && chmod 600 ~/.ssh/*
+    - echo "Test ssh connection"
+    - ssh -o StrictHostKeyChecking=no -T "$TARGET_SERVER_USER@$FRONTEND_SERVER_HOST" hostname
+    - ssh  "$TARGET_SERVER_USER@$FRONTEND_SERVER_HOST" rm -rf app
+    - scp -r dist/app "$TARGET_SERVER_USER@$FRONTEND_SERVER_HOST:."
+

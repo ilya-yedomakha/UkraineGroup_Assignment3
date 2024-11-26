@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">
+  <mat-icon class="app-icon">token</mat-icon>
+  <span class="appName">Integration Architectures</span>
+  <button class="menu-button" mat-flat-button color="primary" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="button.routerLink" *ngFor="let button of buttons">{{button.title}}</button>
+  <!-- *ngFor specifies a foreach loop for rendering an element repeatedly; in double curly braces {{}} javascript-expressions/variables can be printed out to the page -->
+  <span class="spacer"></span>
+  <span *ngIf="user" class="user-displayname" >{{user.firstname + ' ' + user.lastname}}</span> <!-- *ngIf contains a condition, which has to be met before this element is rendered -->
+  <button mat-icon-button aria-label="Logout button" (click)="handleLogout()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>

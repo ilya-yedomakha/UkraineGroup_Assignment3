@@ -1,0 +1,39 @@
+<p>
+  This is another example page. <br>
+  You will find its files at: <code>frontend/src/app/pages/example-page/</code>
+</p>
+<p>
+  <code>example-page.component.html</code> specifies its HTML-template. There you can specify the structure of the page.
+</p>
+
+<p>
+  The logic of this page is located in <code>example-page.component.ts</code> .
+</p>
+
+<h2>Here is a litte example about fetching data from the backend and displaying it as a table:</h2>
+
+<table mat-table class="mat-elevation-z8 cdk-table" [dataSource]="people">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let person">{{person.id}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let person">{{person.name}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="color">
+    <th mat-header-cell *matHeaderCellDef>Favourite Color</th>
+    <td mat-cell *matCellDef="let person" [style.color]="person.favourite_color.code" >{{person.favourite_color.name}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="age">
+    <th mat-header-cell *matHeaderCellDef>Age</th>
+    <td mat-cell *matCellDef="let person" >{{person.age}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
