@@ -9,8 +9,32 @@ const salesManSchema = new mongoose.Schema({
         required: true,
     },
 
-    last_name:{
+    middleName:{
+        type: String,
+        trim: true,
+        required: false,
+    },
+
+    lastName:{
         type:String,
+        trim: true,
+        required: true,
+    },
+
+    fullName:{
+        type:String,
+        trim: true,
+        required: true,
+    },
+
+    employeeId:{
+        type: Number,
+        trim: true,
+        required: true,
+    },
+
+    code:{
+        type: Number,
         trim: true,
         required: true,
     },

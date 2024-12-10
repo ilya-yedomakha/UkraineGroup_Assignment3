@@ -1,14 +1,21 @@
 const salesmanModel = require("../models/SalesMan")
 const socialPerformanceRecordModel = require("../models/SocialPerformanceRecord")
+const salesmanService = require("../services/salesman-service")
+
+const axios = require('axios');
+const qs = require('qs');
 
 class salesman_controller {
 
     static createSalesman = async (req, res) => {
         try {
-            const salesman = new salesmanModel({
-                first_name: req.body.first_name, last_name: req.body.last_name,
-            })
-            await salesman.save()
+            const salesman = salesmanService.saveSalesman({
+                        firstName: req.body.first_name, lastName: req.body.last_name,
+                    })
+            // const salesman = new salesmanModel({
+            //     firstName: req.body.first_name, lastName: req.body.last_name,
+            // })
+            // await salesman.save()
             res.status(200).send({apiStatus: true, message: "Salesman created", data: salesman})
         } catch (e) {
             res.status(500).send({message: e.message, data: e})
@@ -31,7 +38,7 @@ class salesman_controller {
 
     static getAllSalesmen = async (req, res) => {
         try {
-            const salesman = await salesmanModel.find()
+            const salesman = await salesmanService.getSalesman();
             res.status(200).send({apiStatus: true, message: "All salesmen fetched", data: salesman})
         } catch (e) {
             res.status(500).send({message: e.message, data: e})
@@ -76,7 +83,11 @@ class salesman_controller {
 
             await salesMan.save()
 
-            res.status(200).send({apiStatus: true, message: "Social performance record successfully created", data: salesMan});
+            res.status(200).send({
+                apiStatus: true,
+                message: "Social performance record successfully created",
+                data: salesMan
+            });
 
         } catch (e) {
             res.status(500).send({message: e.message, data: e});
@@ -95,8 +106,8 @@ class salesman_controller {
             if (salesman == null) {
                 return res.status(404).send({message: "Salesman not found"});
             }
-            salesman.first_name = req.body.first_name;
-            salesman.last_name = req.body.last_name;
+            salesman.firstName = req.body.first_name;
+            salesman.lastName = req.body.last_name;
 
             await salesman.save();
 
@@ -107,6 +118,65 @@ class salesman_controller {
 
         }
     }
+
+
+
+    static testOrangeHRM = async (req, res) => {
+        try {
+            // Step 1: Get the access_token
+            const tokenBody = {
+                client_id: 'api_oauth_id',
+                client_secret: 'oauth_secret',
+                grant_type: 'password',
+                username: 'demouser',
+                password: '*Safb02da42Demo$',
+            };
+
+            const tokenResponse = await axios.post(
+                'http://localhost:8888/symfony/web/index.php/oauth/issueToken?scope=admin',
+                qs.stringify(tokenBody),
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }
+            );
+
+            const accessToken = tokenResponse.data.access_token;
+
+            if (!accessToken) {
+                return res.status(500).send({ message: 'Access token not found in response' });
+            }
+
+            // Step 2: Use the access_token to fetch employee data
+            const employeeResponse = await axios.get(
+                'http://localhost:8888/symfony/web/index.php/api/v1/employee/search',
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+
+            // Step 3: Filter employees with jobTitle "Senior Salesman"
+            const employees = employeeResponse.data.data || []; // Safely access 'data' field
+            const filteredEmployees = employees.filter(
+                (employee) => employee.jobTitle === 'Senior Salesman'
+            );
+
+            try {
+                await salesmanService.saveSalesmanFromOrangeHRMToDB(filteredEmployees)
+                // const savedSalesman = salesman_controller.getAllSalesmen()
+
+            } catch (e) {
+                res.status(500).send({ message: e.message, data: e });
+            }
+            // Send back the filtered employee data
+            res.status(200).send(filteredEmployees);
+        } catch (e) {
+            res.status(500).send({ message: e.message, data: e });
+        }
+    };
 
 
 }
