@@ -16,5 +16,5 @@ const {checkAuthorization} = require('../middlewares/auth-middleware');
 // router.get("/:id", checkAuthorization(), SocialPerformanceRecordController.getSocialPerformanceRecordById)
 // router.put("/:id", checkAuthorization(), validateSocialPerformanceRecord, SocialPerformanceRecordController.updateSocialPerformanceRecord)
 // router.delete("/:id", checkAuthorization(), SocialPerformanceRecordController.deleteSocialPerformanceRecord)
-router.get("/testCRX", SalePerformanceRecordController.testOpenCRX)
+router.get("/", SalePerformanceRecordController.testOpenCRX)
 module.exports = router

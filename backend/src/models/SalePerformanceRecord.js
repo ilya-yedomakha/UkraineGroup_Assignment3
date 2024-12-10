@@ -8,6 +8,9 @@ const salePerformanceSchema = new Schema({
     // Name of sales order
     salesOrderName: { type: String, required: true },
 
+    // Priority of sales order
+    priority: {type: Number, required: true},
+
     // CRX href for Salesman
     salesmanHref: { type: String, required: true },
 
@@ -27,37 +30,34 @@ const salePerformanceSchema = new Schema({
     positionHref: { type: String, required: true },
 
     // Pos-# for Position
-    positionNumber: { type: Number, required: true },
+    positionLineItemNumber: { type: Number, required: true },
 
     // Pos-Name for Position
     positionName: { type: String, required: true },
 
     // Pos-Reference# for Position
-    positionReference: { type: String, required: true },
+    positionNumber: { type: String, required: true },
 
     // Price per unit for Position
-    pricePerUnit: { type: Number, required: true },
+    positionPricePerUnit: { type: Number, required: true },
 
     // Quantity for Position
-    quantity: { type: Number, required: true },
+    positionQuantity: { type: Number, required: true },
 
     // Pricing status for Position
-    pricingStatus: { type: String, required: true },
-
-    // Pricing rule for Position
-    pricingRule: { type: String, required: false },
+    positionPricingStatus: { type: String, required: true },
 
     // Base amount for Position
-    baseAmount: { type: Number, required: true },
+    positionBaseAmount: { type: Number, required: true },
 
     // Discount amount for Position
-    discountAmount: { type: Number, required: true },
+    positionDiscountAmount: { type: Number, required: true },
 
     // Tax for Position
-    taxAmount: { type: Number, required: true },
+    positionTaxAmount: { type: Number, required: true },
 
     // Amount (incl. tax) for Position
-    totalAmountInclTax: { type: Number, required: true },
+    positionTotalAmountInclTax: { type: Number, required: true },
 
     // CRX href for Product
     productHref: { type: String, required: true },
