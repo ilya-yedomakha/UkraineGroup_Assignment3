@@ -32,7 +32,7 @@ class salesman_controller {
 
     static getAllSalesmen = async (req, res) => {
         try {
-            const salesman = await salesmanService.getSalesman();
+            const salesman = await salesmanService.getAllSalesman();
             res.status(200).send({apiStatus: true, message: "All salesmen fetched", data: salesman})
         } catch (e) {
             res.status(500).send({message: e.message, data: e})
@@ -159,12 +159,12 @@ class salesman_controller {
             );
 
             try {
-                await salesmanService.saveSalesmanFromOrangeHRMToDB(filteredEmployees)
-                // const savedSalesman = salesman_controller.getAllSalesmen()
-
+                const savedEmployees = await salesmanService.saveSalesmanFromOrangeHRMToDB(filteredEmployees);
+                return res.status(200).send({ message: 'Data saved successfully', savedEmployees });
             } catch (e) {
-                res.status(500).send({ message: e.message, data: e });
+                return res.status(500).send({ message: 'Error saving data', error: e.message });
             }
+
         } catch (e) {
             res.status(500).send({ message: e.message, data: e });
         }

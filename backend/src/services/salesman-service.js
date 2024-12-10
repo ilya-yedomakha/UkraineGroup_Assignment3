@@ -7,13 +7,22 @@ const res = require("express/lib/response");
  * @returns {Promise<void>}
  */
 exports.saveSalesmanFromOrangeHRMToDB = async function (salesmanFromOrangeHRM) {
+    const savedRecords = [];
+    const errors = [];
+
     for (const item of salesmanFromOrangeHRM) {
         try {
-            await save(item)
+            const saved = await save(item);
+            savedRecords.push(saved);
         } catch (e) {
-            throw new Error(e.message)
+            console.error(`Error saving record: ${item.employeeId}`, e.message); // Лог помилки
+            errors.push({ employeeId: item.employeeId, error: e.message }); // Збираємо інформацію про помилки
         }
     }
+    if (errors.length > 0) {
+        console.error('Some records failed to save:', errors);
+    }
+    return savedRecords;
 }
 
 exports.saveSalesman = async function (data) {
@@ -24,8 +33,8 @@ exports.saveSalesman = async function (data) {
     }
 }
 
-exports.getSalesman = async function(){
-    return await salesmanModel.find();
+exports.getAllSalesman = function(){
+    return salesmanModel.find()
 }
 
 async function save(data) {
