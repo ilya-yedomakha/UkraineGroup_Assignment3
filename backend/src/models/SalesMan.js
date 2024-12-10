@@ -3,7 +3,7 @@ const {Schema} = require("mongoose");
 const Joi = require("joi");
 
 const salesManSchema = new mongoose.Schema({
-    first_name:{
+    firstName:{
         type: String,
         trim: true,
         required: true,
