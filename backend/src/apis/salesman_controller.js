@@ -9,13 +9,7 @@ class salesman_controller {
 
     static createSalesman = async (req, res) => {
         try {
-            const salesman = salesmanService.saveSalesman({
-                        firstName: req.body.first_name, lastName: req.body.last_name,
-                    })
-            // const salesman = new salesmanModel({
-            //     firstName: req.body.first_name, lastName: req.body.last_name,
-            // })
-            // await salesman.save()
+            const salesman = await salesmanService.saveSalesman(req.body)
             res.status(200).send({apiStatus: true, message: "Salesman created", data: salesman})
         } catch (e) {
             res.status(500).send({message: e.message, data: e})
@@ -171,8 +165,6 @@ class salesman_controller {
             } catch (e) {
                 res.status(500).send({ message: e.message, data: e });
             }
-            // Send back the filtered employee data
-            res.status(200).send(filteredEmployees);
         } catch (e) {
             res.status(500).send({ message: e.message, data: e });
         }

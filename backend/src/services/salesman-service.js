@@ -11,23 +11,26 @@ exports.saveSalesmanFromOrangeHRMToDB = async function (salesmanFromOrangeHRM) {
         try {
             await save(item)
         } catch (e) {
-            throw new Error(e)
+            throw new Error(e.message)
         }
     }
 }
 
 exports.saveSalesman = async function (data) {
-    return save(data)
+    try {
+        return await save(data)
+    }catch (e) {
+        throw new Error(e.message)
+    }
 }
 
-exports.getSalesman = function(){
-    return salesmanModel.find();
+exports.getSalesman = async function(){
+    return await salesmanModel.find();
 }
 
 async function save(data) {
-    let salesman
     try {
-        salesman = new salesmanModel({
+        const salesman = new salesmanModel({
             firstName: data.firstName,
             lastName: data.lastName,
             middleName: data.middleName,
@@ -36,8 +39,8 @@ async function save(data) {
             code: data.code,
         })
         await salesman.save()
+        return salesman
     } catch (e) {
         throw new Error(e)
     }
-    return salesman
 }

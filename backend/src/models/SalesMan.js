@@ -24,7 +24,7 @@ const salesManSchema = new mongoose.Schema({
     fullName:{
         type:String,
         trim: true,
-        required: true,
+        required: false,
     },
 
     employeeId:{
