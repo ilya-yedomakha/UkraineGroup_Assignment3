@@ -24,12 +24,15 @@ const socialPerformanceSchema = new Schema({
         min: 0,
         required: true
     },
-    salesman_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'SalesMan',
+    // salesman_id: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'SalesMan',
+    //     required: true
+    // },
+    salesman_code: {
+        type: Number,
         required: true
     }
-
 })
 const SocialPerformance = mongoose.model("social_performance_records", socialPerformanceSchema)
 module.exports = SocialPerformance
