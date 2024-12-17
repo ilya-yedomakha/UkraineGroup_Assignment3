@@ -39,10 +39,6 @@ class social_performance_record_controller {
                 return res.status(404).send({apiStatus: false, message: "Social Performance record not found"});
             }
 
-            await salesmanModel.updateOne(
-                {_id: socialPerformanceRecord.salesman_id},
-                {$pull: {performance_record_ids: socialPerformanceRecord._id}}
-            );
 
             return res.status(200).send({
                 apiStatus: true,

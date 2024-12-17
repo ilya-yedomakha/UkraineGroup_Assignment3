@@ -89,6 +89,7 @@ class sale_performance_record_controller {
                     salesPerformanceRecords.push({
                         "salePerformanceHref": salesOrder["@href"],
                         "salesOrderName": salesOrder.name,
+                        "activeYear": Number(new Date(salesOrder.activeOn).getUTCFullYear()),
                         "priority": salesOrder.priority,
                         "salesmanHref": salesman["@href"],
                         "salesmanGovId": salesman.governmentId,

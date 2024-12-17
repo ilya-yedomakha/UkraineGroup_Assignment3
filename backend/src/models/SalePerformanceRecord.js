@@ -8,6 +8,9 @@ const salePerformanceSchema = new Schema({
     // Name of sales order
     salesOrderName: { type: String, required: true },
 
+    // Year from when its active
+    activeYear: {type: Number, required: true},
+
     // Priority of sales order
     priority: {type: Number, required: true},
 

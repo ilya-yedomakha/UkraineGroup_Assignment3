@@ -37,12 +37,12 @@ const salesManSchema = new mongoose.Schema({
         type: Number,
         trim: true,
         required: true,
-    },
+    }
 
-    performance_record_ids:[{
-        type: Schema.Types.ObjectId,
-        ref: 'socialPerformanceSchema',
-    }],
+    // performance_record_ids:[{
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'socialPerformanceSchema',
+    // }],
 })
 
 const SalesMan = mongoose.model("SalesMan", salesManSchema)

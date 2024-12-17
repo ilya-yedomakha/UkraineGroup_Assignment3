@@ -22,13 +22,16 @@ const validateSocialPerformanceRecord = (req, res, next) => {
 };
 
 router.get("/", checkAuthorization(), SalesManController.getAllSalesmen)
-// router.get("/testCRX", SalesManController.testOpenCRX)
 router.get("/testHRM", SalesManController.testOrangeHRM)
 router.get("/:id", checkAuthorization(), SalesManController.getSalesmanById)
-router.post("/", checkAuthorization(), validateSalesManInput, SalesManController.createSalesman)
-router.put("/:id", checkAuthorization(), validateSalesManInput, SalesManController.updateSalesman)
-router.post("/:id/social_performance", checkAuthorization(), validateSocialPerformanceRecord, SalesManController.createSocialPerformanceToSalesman)
+router.get("/code/:code", checkAuthorization(), SalesManController.getSalesmanByCode)
+router.post("/", checkAuthorization(),  SalesManController.createSalesman)
+router.put("/:id", checkAuthorization(),  SalesManController.updateSalesman)
+router.put("/code/:code", checkAuthorization(),  SalesManController.updateSalesmanByCode)
+router.post("/:code/social_performance", checkAuthorization(),  SalesManController.createSocialPerformanceToSalesmanBySalesmanCode)
 router.delete("/:id", checkAuthorization(), SalesManController.deleteSalesman)
+router.delete("/code/:code", checkAuthorization(), SalesManController.deleteSalesmanByCode)
+router.post("/calculateBonuses", SalesManController.calculateAllBonuses)
 
 
 
