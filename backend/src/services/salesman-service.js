@@ -57,6 +57,7 @@ function priorityCoefficient(priority) {
             return 0
     }
 }
+
 function clientRatingCoefficient(clientRating) {
     switch (clientRating) {
         case 1:
@@ -88,30 +89,30 @@ function socialBonusCoefficient(relation) {
 /**
  * Saves data from OrangeHRM in MongoDB
  * @param salesmanFromOrangeHRM
- * @returns {Promise<void>}
  */
 exports.saveSalesmanFromOrangeHRMToDB = async function (salesmanFromOrangeHRM) {
-    // todo this shit not working
     const savedRecords = [];
     const errors = [];
     const salesmanFromDB = await salesmanModel.find()
 
     try {
         for (const element of salesmanFromDB) {
-                const salesman = salesmanFromOrangeHRM.find((item) => {
-                    return item.code = element.code
+            const salesman = salesmanFromOrangeHRM.find((item) => {
+                return Number(item.code) === element.code
+            })
+            if (!salesman) {
+                await salesmanModel.findByIdAndDelete(element._id)
+            } else {
+                const saved = await update(element, salesman)
+                savedRecords.push(saved)
+                salesmanFromOrangeHRM = salesmanFromOrangeHRM.filter((item) => {
+                    return Number(item.code) !== saved.code
                 })
-                if (!salesman) {
-                    salesmanModel.deleteOne({_id: element._id})
-                } else {
-                    const saved = await update(element, salesman)
-                    savedRecords.push(saved)
-                    salesmanFromOrangeHRM = salesmanFromOrangeHRM.filter(item => item.code === saved.code)
-                }
+            }
         }
         for (const item of salesmanFromOrangeHRM) {
-                const saved = await save(item);
-                savedRecords.push(saved);
+            const saved = await save(item);
+            savedRecords.push(saved);
         }
     } catch (e) {
         errors.push({error: e.message});
@@ -126,12 +127,12 @@ exports.saveSalesmanFromOrangeHRMToDB = async function (salesmanFromOrangeHRM) {
 exports.saveSalesman = async function (data) {
     const salesman = await salesmanModel.findOne({code: data.code})
     try {
-        if (!salesman){
+        if (!salesman) {
             return await save(data)
         } else {
             return await update(salesman, data)
         }
-    }catch (e) {
+    } catch (e) {
         throw new Error(e.message)
     }
 }
@@ -139,12 +140,12 @@ exports.saveSalesman = async function (data) {
 exports.updateSalesman = async function (oldData, newData) {
     try {
         return await update(oldData, newData)
-    }catch (e) {
+    } catch (e) {
         throw new Error(e.message)
     }
 }
 
-exports.getAllSalesman = function(){
+exports.getAllSalesman = function () {
     return salesmanModel.find()
 }
 
@@ -165,7 +166,7 @@ async function save(data) {
     }
 }
 
-async function update(salesman, newData){
+async function update(salesman, newData) {
     try {
         if (newData.hasOwnProperty("firstName"))
             salesman.firstName = newData.firstName;
@@ -186,9 +187,9 @@ async function update(salesman, newData){
 
 function findSalesmanByCode(code) {
     const salesman = salesmanModel.find({code: code})
-    if(!salesman){
+    if (!salesman) {
         return null
     } else {
-         return salesman
-     }
+        return salesman
+    }
 }
