@@ -1,19 +1,39 @@
 const salesmanModel = require("../models/SalesMan")
 const reportModel = require("../models/Report")
 
-exports.calculateSalesmanBonusForSalesman = async function (salesman, salesData, socialData) {
+exports.calculateSalesmanBonusForSalesman = async function (salesman, salesData, socialData, year) {
     const salesmanReports = await reportModel.find({salesman_code: salesman.code});
-
-    let report = new reportModel()
-    report.salesman_code = salesman.code
-    report.salesman_firstname = salesman.firstName
-    report.salesman_lastname = salesman.lastName
-    //todo перед тим як передавати дані сюди, відфільтрувати щоб був цей рік
+    reportForYear = salesmanReports.find(report => report.year === year);
+    let report
+    let for_upd = false
+    if (reportForYear) {
+        report = reportForYear
+        report.social_bonuses =[]
+        report.orders_bonuses =[]
+        report.salesman_code = salesman.code
+        report.salesman_firstName = salesman.firstName
+        report.salesman_lastName = salesman.lastName
+        report.year = year
+        report.total_bonus = 0
+        report.employeeId = salesman.employeeId
+    } else {
+        report = new reportModel()
+        report.salesman_code = salesman.code
+        report.salesman_firstName = salesman.firstName
+        report.salesman_lastName = salesman.lastName
+        report.year = year
+        report.employeeId = salesman.employeeId
+    }
     let totalBonus = 0;
-    socialData.forEach(({_id, target_value, actual_value}) => {
+    socialData.forEach(({target_value, actual_value, goal_description}) => {
         let relation = actual_value - target_value;
         const currBonus = socialBonusCoefficient(relation)
-        report.social_bonuses.push({bonus: currBonus})
+        report.social_bonuses.push({
+            target_value: target_value,
+            actual_value: actual_value,
+            goal_description: goal_description,
+            bonus: currBonus
+        })
         totalBonus += currBonus
     });
     // priority 1-5 = coeffs 0,0,25,50,100
@@ -21,7 +41,6 @@ exports.calculateSalesmanBonusForSalesman = async function (salesman, salesData,
     // {positionQuantity * positionPricePerUnit} *0.1 or 0.05
     // productName
     salesData.forEach(({
-                           _id,
                            priority,
                            clientFullName,
                            clientRating,
@@ -40,7 +59,7 @@ exports.calculateSalesmanBonusForSalesman = async function (salesman, salesData,
         totalBonus += tempBonus
     })
     report.total_bonus = totalBonus
-    // salesmanReports.forEach(())
+
     await report.save()
     return totalBonus
 }

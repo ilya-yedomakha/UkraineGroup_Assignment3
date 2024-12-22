@@ -1,7 +1,9 @@
 const salesmanModel = require("../models/SalesMan")
 const socialPerformanceRecordModel = require("../models/SocialPerformanceRecord")
 const salePerformanceRecordModel = require("../models/SalePerformanceRecord")
+const ReportModel = require("../models/Report")
 const salesmanService = require("../services/salesman-service")
+const FormData = require('form-data');
 
 const axios = require('axios');
 const qs = require('qs');
@@ -33,7 +35,7 @@ class salesman_controller {
 
     static getSalesmanByCode = async (req, res) => {
         try {
-            const salesman = await salesmanModel.find({code: req.params.code});
+            const salesman = await salesmanModel.find({code: Number(req.params.code)});
             if (salesman != null) {
                 res.status(200).send({apiStatus: true, message: "Salesman found", data: salesman})
             } else {
@@ -76,7 +78,7 @@ class salesman_controller {
 
     static deleteSalesmanByCode = async (req, res) => {
         try {
-            const salesman = await salesmanModel.find({code: req.params.code})
+            const salesman = await salesmanModel.find({code: Number(req.params.code)})
 
             if (!salesman) {
                 return res.status(404).send({apiStatus: false, message: "Salesman not found"});
@@ -84,7 +86,7 @@ class salesman_controller {
 
             await socialPerformanceRecordModel.deleteMany({salesman_code: salesman.code});
 
-            await salesmanModel.deleteOne({code: req.params.code});
+            await salesmanModel.deleteOne({code: Number(req.params.code)});
 
             res.status(200).send({
                 apiStatus: true, message: "Salesman successfully deleted", data: salesman
@@ -123,14 +125,14 @@ class salesman_controller {
 
     static createSocialPerformanceToSalesmanBySalesmanCode = async (req, res) => {
         try {
-            const salesMan = await salesmanModel.find({code: req.params.code}).exec()
+            const salesMan = await salesmanModel.findOne({code: Number(req.params.code)}).exec()
 
             if (salesMan == null) {
-                return res.status(404).send({message: "Salesman with code" + req.params.code + " not found"})
+                return res.status(404).send({message: "Salesman with code" + Number(req.params.code) + " not found"})
             }
 
             const socialPerformanceRecordData = new socialPerformanceRecordModel({
-                 salesman_code: salesMan.code, ...req.body
+                salesman_code: salesMan.code, ...req.body
             })
             await socialPerformanceRecordData.save()
 
@@ -170,12 +172,12 @@ class salesman_controller {
 
     static updateSalesmanByCode = async (req, res) => {
 
-        if (req.params.code == null || req.body == null) {
+        if (Number(req.params.code) == null || req.body == null) {
             return res.status(400).send({message: "Invalid request parameters"});
         }
 
         try {
-            const salesman = await salesmanModel.find({code: req.params.code}).exec()
+            const salesman = await salesmanModel.find({code: Number(req.params.code)}).exec()
             if (salesman == null) {
                 return res.status(404).send({message: "Salesman not found"});
             }
@@ -189,7 +191,7 @@ class salesman_controller {
     }
 
 
-    static testOrangeHRM = async (req, res) => {
+    static importSeniorSalesmenFromOrangeHRM = async (req, res) => {
         try {
             const tokenBody = {
                 client_id: 'api_oauth_id',
@@ -264,41 +266,122 @@ class salesman_controller {
             const accessToken = tokenResponse.data.access_token;
 
             if (!accessToken) {
-                return res.status(500).send({ message: 'Access token not found in response' });
+                return res.status(500).send({message: 'Access token not found in response'});
             }
 
             const salesmen = await salesmanService.getAllSalesman();
 
             if (!salesmen || salesmen.length === 0) {
-                return res.status(404).send({ message: 'No salesmen found' });
+                return res.status(404).send({message: 'No salesmen found'});
             }
 
             const bonuses = [];
 
             for (const salesman of salesmen) {
                 try {
+                    const currentYear = new Date().getFullYear();
+
                     const socialPerformances = await socialPerformanceRecordModel.find({
-                        salesman_code: salesman.code
+                        salesman_code: salesman.code,
+                        year: currentYear
                     });
                     const salesPerformances = await salePerformanceRecordModel.find({
                         salesmanGovId: salesman.code
                     });
 
-                    const totalBonus = salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances);
+                    const totalBonus = salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances, new Date().getUTCFullYear());
                     console.log(totalBonus)
                 } catch (e) {
-                    return res.status(500).send({ message: e.message, data: e });
+                    return res.status(500).send({message: e.message, data: e});
                 }
             }
 
 
-             return res.status(200).send({ message: 'Bonuses calculated successfully'});
+            return res.status(200).send({message: 'Bonuses calculated successfully'});
 
         } catch (e) {
-            return res.status(500).send({ message: e.message, data: e });
+            return res.status(500).send({message: e.message, data: e});
         }
     }
 
+    static sendAllBonusesToHRM = async (req, res) => {
+        try {
+            const tokenBody = {
+                client_id: 'api_oauth_id',
+                client_secret: 'oauth_secret',
+                grant_type: 'password',
+                username: 'demouser',
+                password: '*Safb02da42Demo$',
+            };
+
+            const tokenResponse = await axios.post(
+                'http://localhost:8888/symfony/web/index.php/oauth/issueToken?scope=admin',
+                qs.stringify(tokenBody),
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }
+            );
+
+            const accessToken = tokenResponse.data.access_token;
+
+            if (!accessToken) {
+                return res.status(500).send({message: 'Access token not found in response'});
+            }
+
+            const reports = await ReportModel.find();
+
+            if (reports.length === 0) {
+                return res.status(404).send({message: 'No reports found to process'});
+            }
+
+            const responses = [];
+
+            for (const report of reports) {
+                try {
+                    const formData = new FormData();
+                    formData.append('year', report.year);
+                    formData.append('value', report.total_bonus);
+
+                    const postResponse = await axios.post(
+                        `http://localhost:8888/symfony/web/index.php/api/v1/employee/${report.employeeId}/bonussalary`,
+                        formData,
+                        {
+                            headers: {
+                                ...formData.getHeaders(),
+                                Authorization: `Bearer ${accessToken}`,
+                            },
+                        }
+                    );
+
+                    responses.push({
+                        employeeId: report.employeeId,
+                        status: postResponse.status,
+                        data: postResponse.data,
+                        year: report.year,
+                        value: report.total_bonus
+
+                    });
+                } catch (postError) {
+                    responses.push({
+                        employeeId: report.employeeId,
+                        status: postError.response?.status || 500,
+                        error: postError.message,
+                        year: report.year,
+                        value: report.total_bonus
+                    });
+                }
+            }
+
+            return res.status(200).send({
+                message: 'Processing completed',
+                details: responses,
+            });
+        } catch (e) {
+            return res.status(500).send({message: e.message, data: e});
+        }
+    };
 
 
 }

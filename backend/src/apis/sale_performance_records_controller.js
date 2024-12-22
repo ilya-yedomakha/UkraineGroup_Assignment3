@@ -9,11 +9,9 @@ const salesmanService = require("../services/salesman-service")
 const axios = require('axios');
 const qs = require('qs');
 
-//TODO Ще подумайте над тим, як працювати з полем SaleOrder: Active/Valid from:
-// 2/12/2018, 12:57:44 PM. Оскільки бонуси розраховуються для поточного року.
 
 class sale_performance_record_controller {
-    static testOpenCRX = async (req, res) => {
+    static importSalePerformanceDataFromOpenCRX = async (req, res) => {
         try {
             const response = await axios.get(
                 'http://localhost:8887/opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder',
@@ -92,20 +90,10 @@ class sale_performance_record_controller {
                         "activeYear": Number(new Date(salesOrder.activeOn).getUTCFullYear()),
                         "priority": salesOrder.priority,
                         "salesmanHref": salesman["@href"],
-                        "salesmanGovId": salesman.governmentId,
-                        "clientHref": client["@href"],
-                        "clientRating": client.accountRating,
                         "clientFullName": client.fullName,
-                        "positionHref": position["@href"],
-                        "positionLineItemNumber": position.lineItemNumber,
                         "positionName": position.name,
                         "positionNumber": position.positionNumber,
-                        "positionPricePerUnit": position.pricePerUnit,
-                        "positionQuantity": position.quantity,
-                        "positionPricingStatus": position.pricingState,
-                        "positionBaseAmount": position.baseAmount,
-                        "positionDiscountAmount": position.discountAmount,
-                        "positionTaxAmount": position.taxAmount,
+
                         "positionTotalAmountInclTax": position.amount,
                         "productHref": product["@href"],
                         "productNumber": product.productNumber,
@@ -114,9 +102,15 @@ class sale_performance_record_controller {
                 }
             }
 
-            await salePerformanceRecordModel.insertMany(salesPerformanceRecords);
+            const currentYear = new Date().getUTCFullYear();
 
-            res.status(200).send({ salesPerformanceRecords });
+            const filteredRecords = salesPerformanceRecords.filter(
+                (record) => record.activeYear === currentYear
+            );
+
+            await salePerformanceRecordModel.insertMany(filteredRecords);
+
+            res.status(200).send({ filteredRecords });
         } catch (e) {
             res.status(500).send({ message: e.message, data: e });
         }

@@ -4,12 +4,11 @@ const Joi = require("joi");
 
 const reportSchema = new mongoose.Schema({
 
-    salesman_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'SalesMan',
+    salesman_code: {
+        type: Number,
         required: true
     },
-    salesman_code: {
+    employeeId: {
         type: Number,
         required: true
     },
@@ -29,24 +28,19 @@ const reportSchema = new mongoose.Schema({
         bonus: Number
     }],
 
-    // social_bonuses:[{
-    //     name:String,
-    //     target_value:Number,
-    //     actual_value:Number,
-    //     bonus:Number
-    // }],
-
     social_bonuses: [{
-        social_performance_id: {
-            type: Schema.Types.ObjectId,
-            ref: 'social_performance_records',
-            required: true
-        },
+        goal_description:String,
+        target_value: Number,
+        actual_value:Number,
         bonus: Number
     }],
 
     remarks: {
         type: String
+    },
+
+    year: {
+        type: Number
     },
 
     total_bonus: {
