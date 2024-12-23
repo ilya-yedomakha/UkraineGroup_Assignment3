@@ -10,7 +10,7 @@ if(process.env.NODE_ENV === 'development'){
     environment = require('../../environments/environment.prod.js').default;
 }
 
-class sale_performance_record_controller {
+class salePerformanceRecordApi {
     static importSalePerformanceDataFromOpenCRX = async (req, res) => {
         try {
             const response = await axios.get(
@@ -53,8 +53,8 @@ class sale_performance_record_controller {
 
                 const positions = positionResponse.data.objects || [];
                 for (const position of positions) {
-                    const { salesRep: salesmanHref, customer: clientHref } = salesOrder;
-                    const { product: productHref } = position;
+                    const {salesRep: salesmanHref, customer: clientHref} = salesOrder;
+                    const {product: productHref} = position;
 
                     const salesmanResponse = await axios.get(salesmanHref["@href"], {
                         auth: {
@@ -89,19 +89,34 @@ class sale_performance_record_controller {
                     });
                     const product = productResponse.data;
 
-                    salesPerformanceRecords.push({
+                    let record = {
                         "salesOrderName": salesOrder.name,
                         "activeYear": Number(new Date(salesOrder.activeOn).getUTCFullYear()),
                         "priority": salesOrder.priority,
+                        "salesmanHref": salesman["@href"],
+                        "salesmanGovId": salesman.governmentId,
+                        "clientHref": client["@href"],
+                        "clientRating": client.accountRating,
                         "clientFullName": client.fullName,
+                        "positionHref": position["@href"],
+                        "positionLineItemNumber": position.lineItemNumber,
                         "positionName": position.name,
                         "positionNumber": position.positionNumber,
                         "positionPricePerUnit": position.pricePerUnit,
                         "positionQuantity": position.quantity,
                         "positionPricingStatus": position.pricingState,
+                        "positionBaseAmount": position.baseAmount,
+                        "positionDiscountAmount": position.discountAmount,
+                        "positionTaxAmount": position.taxAmount,
+                        "positionTotalAmountInclTax": position.amount,
+                        "productHref": product["@href"],
                         "productNumber": product.productNumber,
                         "productName": product.name,
-                    });
+                    };
+
+                    if (!hasNaNFields(record)) {
+                        salesPerformanceRecords.push(record);
+                    }
                 }
             }
 
@@ -116,11 +131,9 @@ class sale_performance_record_controller {
 
             res.status(200).send({filteredRecords});
         } catch (e) {
-            res.status(500).send({ message: e.message, data: e });
+            res.status(500).send({message: e.message, data: e});
         }
     };
-
-
 }
 
-module.exports = sale_performance_record_controller
+module.exports = salePerformanceRecordApi

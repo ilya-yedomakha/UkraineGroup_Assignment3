@@ -5,31 +5,6 @@ const SocialPerformanceRecordService = require("../services/social-performance-r
 
 class socialPerformanceRecordApi {
 
-    // TODO в нас же всі маніпуляції по code, то це нам може не треба?
-    static createSocialPerformanceToSalesman = async (req, res) => {
-        try {
-            const salesMan = await salesmanModel.findById(req.params.id)
-
-            if (salesMan == null) {
-                return res.status(404).send({message: "Salesman with id" + req.params.id + " not found"})
-            }
-
-            const socialPerformanceRecordData = SocialPerformanceRecordService.saveSocialPerformanceRecord(salesMan.code, req.body)
-
-            res.status(200).send({
-                apiStatus: true,
-                message: "Social performance record successfully created",
-                data: socialPerformanceRecordData
-            });
-
-        } catch (e) {
-            if (e.status === 400)
-                res.status(400).send({message: e.message, data: e});
-            else
-                res.status(500).send({message: e.message, data: e});
-        }
-    }
-
     static createSocialPerformanceToSalesmanBySalesmanCode = async (req, res) => {
         try {
             const salesMan = await salesmanModel.findOne({code: Number(req.params.code)}).exec()
