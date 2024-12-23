@@ -19,7 +19,7 @@ const socialPerformanceSchema = new mongoose.Schema({
         max: 5,
         required: false
     },
-    year : {
+    year: {
         type:Number,
         min: 0,
         required: true

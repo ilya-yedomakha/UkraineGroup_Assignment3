@@ -9,6 +9,13 @@ const FormData = require('form-data');
 const axios = require('axios');
 const qs = require('qs');
 
+let environment;
+if(process.env.NODE_ENV === 'development'){
+    environment = require('../../environments/environment.js').default;
+}else{
+    environment = require('../../environments/environment.prod.js').default;
+}
+
 class salesmanApi {
 
     // Todo воно нам треба?
@@ -149,8 +156,8 @@ class salesmanApi {
                 client_id: 'api_oauth_id',
                 client_secret: 'oauth_secret',
                 grant_type: 'password',
-                username: 'demouser',
-                password: '*Safb02da42Demo$',
+                username: environment.orangeHRMUsername,
+                password: environment.passwordHRM,
             };
 
             const tokenResponse = await axios.post(
@@ -197,37 +204,11 @@ class salesmanApi {
 
     static calculateAllBonuses = async (req, res) => {
         try {
-            const tokenBody = {
-                client_id: 'api_oauth_id',
-                client_secret: 'oauth_secret',
-                grant_type: 'password',
-                username: 'demouser',
-                password: '*Safb02da42Demo$',
-            };
-
-            const tokenResponse = await axios.post(
-                'http://localhost:8888/symfony/web/index.php/oauth/issueToken?scope=admin',
-                qs.stringify(tokenBody),
-                {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                }
-            );
-
-            const accessToken = tokenResponse.data.access_token;
-
-            if (!accessToken) {
-                return res.status(500).send({message: 'Access token not found in response'});
-            }
-
             const salesmen = await salesmanService.getAllSalesman();
 
             if (!salesmen || salesmen.length === 0) {
                 return res.status(404).send({message: 'No salesmen found'});
             }
-
-            const bonuses = [];
 
             for (const salesman of salesmen) {
                 try {
@@ -261,8 +242,8 @@ class salesmanApi {
                 client_id: 'api_oauth_id',
                 client_secret: 'oauth_secret',
                 grant_type: 'password',
-                username: 'demouser',
-                password: '*Safb02da42Demo$',
+                username: environment.orangeHRMUsername,
+                password: environment.passwordHRM,
             };
 
             const tokenResponse = await axios.post(

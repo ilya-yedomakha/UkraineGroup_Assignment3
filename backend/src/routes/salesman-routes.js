@@ -3,13 +3,12 @@ const SalesManController = require("../apis/salesman-api")
 const {checkAuthorization} = require('../middlewares/auth-middleware');
 
 router.get("/", checkAuthorization(), SalesManController.getAllSalesmen)
-router.get("/testHRM", SalesManController.importSeniorSalesmenFromOrangeHRM)
-router.get("/:id", checkAuthorization(), SalesManController.getSalesmanById)
-router.get("/code/:code", checkAuthorization(), SalesManController.getSalesmanByCode)
+router.get("/import-from-orangeHRM", SalesManController.importSeniorSalesmenFromOrangeHRM)
+router.get("/:code", checkAuthorization(), SalesManController.getSalesmanByCode)
 
-router.post("/", checkAuthorization(),  SalesManController.createSalesman)
-router.post("/calculateBonuses", SalesManController.calculateAllBonuses)
-router.post("/sendBonuses", SalesManController.sendAllBonusesToHRM)
+// router.post("/", checkAuthorization(), SalesManController.createSalesman)
+router.post("/calculate-bonuses", checkAuthorization(), SalesManController.calculateAllBonuses)
+router.post("/send-bonuses-orangeHRM", checkAuthorization(), SalesManController.sendAllBonusesToHRM)
 
 router.put("/:id", checkAuthorization(),  SalesManController.updateSalesman)
 router.put("/code/:code", checkAuthorization(),  SalesManController.updateSalesmanByCode)
