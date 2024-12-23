@@ -248,7 +248,6 @@ class salesmanApi {
                 }
             }
 
-
             return res.status(200).send({message: 'Bonuses calculated successfully'});
 
         } catch (e) {

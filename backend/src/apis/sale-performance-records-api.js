@@ -1,14 +1,7 @@
-// noinspection LanguageDetectionInspection
-
 const salesmanModel = require("../models/SalesMan")
-const socialPerformanceRecordModel = require("../models/SocialPerformanceRecord")
 const salePerformanceRecordModel = require("../models/SalePerformanceRecord")
 
-const salesmanService = require("../services/salesman-service")
-
 const axios = require('axios');
-const qs = require('qs');
-
 
 class sale_performance_record_controller {
     static importSalePerformanceDataFromOpenCRX = async (req, res) => {
@@ -85,17 +78,15 @@ class sale_performance_record_controller {
                     const product = productResponse.data;
 
                     salesPerformanceRecords.push({
-                        "salePerformanceHref": salesOrder["@href"],
                         "salesOrderName": salesOrder.name,
                         "activeYear": Number(new Date(salesOrder.activeOn).getUTCFullYear()),
                         "priority": salesOrder.priority,
-                        "salesmanHref": salesman["@href"],
                         "clientFullName": client.fullName,
                         "positionName": position.name,
                         "positionNumber": position.positionNumber,
-
-                        "positionTotalAmountInclTax": position.amount,
-                        "productHref": product["@href"],
+                        "positionPricePerUnit": position.pricePerUnit,
+                        "positionQuantity": position.quantity,
+                        "positionPricingStatus": position.pricingState,
                         "productNumber": product.productNumber,
                         "productName": product.name,
                     });

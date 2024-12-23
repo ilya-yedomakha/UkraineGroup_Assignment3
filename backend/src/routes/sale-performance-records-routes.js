@@ -1,6 +1,5 @@
 const router = require("express").Router()
-const SalePerformanceRecordController = require("../apis/sale_performance_records_controller")
-// const { salePerformanceRecordValidationSchema } = require("../models/validationModels/SocialPerformanceRecordValidation");
+const SalePerformanceRecordApi = require("../apis/sale-performance-records-api")
 const {checkAuthorization} = require('../middlewares/auth-middleware');
 
 
@@ -16,5 +15,5 @@ const {checkAuthorization} = require('../middlewares/auth-middleware');
 // router.get("/:id", checkAuthorization(), SocialPerformanceRecordController.getSocialPerformanceRecordById)
 // router.put("/:id", checkAuthorization(), validateSocialPerformanceRecord, SocialPerformanceRecordController.updateSocialPerformanceRecord)
 // router.delete("/:id", checkAuthorization(), SocialPerformanceRecordController.deleteSocialPerformanceRecord)
-router.get("/", SalePerformanceRecordController.importSalePerformanceDataFromOpenCRX)
+router.get("/", checkAuthorization, SalePerformanceRecordApi.importSalePerformanceDataFromOpenCRX)
 module.exports = router

@@ -39,9 +39,9 @@ app.use(cors({
     credentials: true
 }));
 
-const salesmanRoutes = require("./routes/salesman.routes")
+const salesmanRoutes = require("./routes/salesman-routes")
 const socialPerformanceRecordsRoutes = require("./routes/social-performance-records-routes")
-const salePerformanceRecordsRoutes = require("./routes/sale_performance_records.routes")
+const salePerformanceRecordsRoutes = require("./routes/sale-performance-records-routes")
 
 
 const apiRouter = require('./routes/api-routes');//get api-router from routes/api
