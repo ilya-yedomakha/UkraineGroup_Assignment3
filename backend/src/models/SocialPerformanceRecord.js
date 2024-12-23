@@ -1,10 +1,10 @@
+const socialPerformanceENUM = require("./socialPerformanceENUM")
 const mongoose = require("mongoose")
-const { Schema, model } = mongoose;
 
-const socialPerformanceSchema = new Schema({
+const socialPerformanceSchema = new mongoose.Schema({
     goal_description:{
         type: String,
-        trim: true,
+        enum: Object.values(socialPerformanceENUM),
         required: true,
     },
     target_value:{
@@ -17,18 +17,13 @@ const socialPerformanceSchema = new Schema({
         type:Number,
         min: 1,
         max: 5,
-        required: true
+        required: false
     },
     year : {
         type:Number,
         min: 0,
         required: true
     },
-    // salesman_id: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'SalesMan',
-    //     required: true
-    // },
     salesman_code: {
         type: Number,
         required: true

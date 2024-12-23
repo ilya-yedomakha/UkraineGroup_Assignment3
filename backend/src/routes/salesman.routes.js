@@ -1,7 +1,7 @@
 const router = require("express").Router()
 const { salesManValidationSchema } = require("../models/validationModels/SalesManValidation");
 const { socialPerformanceRecordValidationSchema } = require("../models/validationModels/SocialPerformanceRecordValidation");
-const SalesManController = require("../apis/salesman_controller")
+const SalesManController = require("../apis/salesman-api")
 const {checkAuthorization} = require('../middlewares/auth-middleware');
 
 const validateSalesManInput = (req, res, next) => {

@@ -2,14 +2,16 @@ const salesmanModel = require("../models/SalesMan")
 const socialPerformanceRecordModel = require("../models/SocialPerformanceRecord")
 const salePerformanceRecordModel = require("../models/SalePerformanceRecord")
 const ReportModel = require("../models/Report")
-const salesmanService = require("../services/salesman-service")
-const FormData = require('form-data');
 
+const salesmanService = require("../services/salesman-service")
+
+const FormData = require('form-data');
 const axios = require('axios');
 const qs = require('qs');
 
-class salesman_controller {
+class salesmanApi {
 
+    // Todo воно нам треба?
     static createSalesman = async (req, res) => {
         try {
             const salesman = await salesmanService.saveSalesman(req.body)
@@ -19,6 +21,7 @@ class salesman_controller {
         }
     }
 
+    // Todo воно нам треба?
     static getSalesmanById = async (req, res) => {
         try {
             const salesman = await salesmanModel.findById(req.params.id);
@@ -56,6 +59,7 @@ class salesman_controller {
         }
     }
 
+    // TODO нам взагалі дозволено видаляти salesman з Orange та чи є сенс робити це по _id?
     static deleteSalesman = async (req, res) => {
         try {
             const salesman = await salesmanModel.findById(req.params.id)
@@ -76,6 +80,7 @@ class salesman_controller {
         }
     }
 
+    // TODO нам взагалі дозволено видаляти salesman з Orange?
     static deleteSalesmanByCode = async (req, res) => {
         try {
             const salesman = await salesmanModel.find({code: Number(req.params.code)})
@@ -96,60 +101,7 @@ class salesman_controller {
         }
     }
 
-
-    static createSocialPerformanceToSalesman = async (req, res) => {
-        try {
-            const salesMan = await salesmanModel.findById(req.params.id)
-
-            if (salesMan == null) {
-                return res.status(404).send({message: "Salesman with id" + req.params.id + " not found"})
-            }
-
-            const socialPerformanceRecordData = new socialPerformanceRecordModel({
-                salesman_code: salesMan.code, ...req.body
-            })
-            await socialPerformanceRecordData.save()
-
-            await salesMan.save()
-
-            res.status(200).send({
-                apiStatus: true,
-                message: "Social performance record successfully created",
-                data: salesMan
-            });
-
-        } catch (e) {
-            res.status(500).send({message: e.message, data: e});
-        }
-    }
-
-    static createSocialPerformanceToSalesmanBySalesmanCode = async (req, res) => {
-        try {
-            const salesMan = await salesmanModel.findOne({code: Number(req.params.code)}).exec()
-
-            if (salesMan == null) {
-                return res.status(404).send({message: "Salesman with code" + Number(req.params.code) + " not found"})
-            }
-
-            const socialPerformanceRecordData = new socialPerformanceRecordModel({
-                salesman_code: salesMan.code, ...req.body
-            })
-            await socialPerformanceRecordData.save()
-
-            await salesMan.save()
-
-            res.status(200).send({
-                apiStatus: true,
-                message: "Social performance record successfully created",
-                data: salesMan
-            });
-
-        } catch (e) {
-            res.status(500).send({message: e.message, data: e});
-        }
-    }
-
-
+    // TODO чи можемо чи оновлювати сейлсмена в оранжі
     static updateSalesman = async (req, res) => {
 
         if (req.params.id == null || req.body == null) {
@@ -386,4 +338,4 @@ class salesman_controller {
 
 }
 
-module.exports = salesman_controller
+module.exports = salesmanApi
