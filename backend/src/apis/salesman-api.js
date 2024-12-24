@@ -21,7 +21,7 @@ class salesmanApi {
 
     static getSalesmanByCode = async (req, res) => {
         try {
-            const salesman = await salesmanModel.find({code: Number(req.params.code)});
+            const salesman = await salesmanModel.findOne({code: Number(req.params.code)});
             if (salesman != null) {
                 res.status(200).send({apiStatus: true, message: "Salesman found", data: salesman})
             } else {
@@ -182,7 +182,7 @@ class salesmanApi {
                     responses.push({
                         employeeId: report.employeeId,
                         status: postResponse.status,
-                        data: postResponse.data,
+                        success: postResponse.data,
                         year: report.year,
                         value: report.total_bonus
 

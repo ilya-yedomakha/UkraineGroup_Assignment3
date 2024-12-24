@@ -16,9 +16,13 @@ class socialPerformanceRecordApi {
 
     static getSocialPerformancesRecordBySalesmanCode = async (req, res) => {
         try {
-            const socialPerformanceRecords = await socialPerformanceRecordModel.find({salesman_code: req.params.salesmanCode})
-            if (socialPerformanceRecords != null)
-                res.status(200).send(socialPerformanceRecords)
+            const data = await socialPerformanceRecordModel.find({salesman_code: req.params.salesmanCode})
+            if (data != null)
+                res.status(200).send({
+                    apiStatus: true,
+                    message: "Social performance record by code " + req.params.salesmanCode + " was found",
+                    data
+                })
             else
                 res.status(404).send({message: "Social performance record not found"})
         } catch (e) {
@@ -54,7 +58,7 @@ class socialPerformanceRecordApi {
 
             return res.status(200).send({
                 apiStatus: true,
-                message: "social performance record deleted",
+                message: "Social performance record deleted",
             })
         } catch (e) {
             return res.status(500).send({message: e.message, data: e})
@@ -70,7 +74,7 @@ class socialPerformanceRecordApi {
 
             return res.status(200).send({
                 apiStatus: true,
-                message: "social performance record deleted",
+                message: "Social performance record deleted",
             })
         } catch (e) {
             return res.status(500).send({message: e.message, data: e})
