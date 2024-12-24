@@ -8,6 +8,7 @@ const salesmanService = require("../services/salesman-service")
 const FormData = require('form-data');
 const axios = require('axios');
 const qs = require('qs');
+const SocialPerformanceRecordService = require("../services/social-performance-record-service");
 
 let environment;
 if(process.env.NODE_ENV === 'development'){
@@ -205,6 +206,28 @@ class salesmanApi {
             return res.status(500).send({message: e.message, data: e});
         }
     };
+
+    static createSocialPerformanceToSalesmanBySalesmanCode = async (req, res) => {
+        try {
+            const salesMan = await salesmanModel.findOne({code: Number(req.params.code)}).exec()
+
+            if (salesMan == null) {
+                return res.status(404).send({message: "Salesman with code" + Number(req.params.code) + " not found"})
+            }
+
+            const socialPerformanceRecordData = await SocialPerformanceRecordService.saveSocialPerformanceRecord(salesMan.code, req.body)
+
+            res.status(200).send({
+                apiStatus: true,
+                message: "Social performance record successfully created",
+                data: socialPerformanceRecordData
+            });
+
+        } catch (e) {
+            const statusCode = e.status || 500;
+            res.status(statusCode).send({message: e.message, data: e});
+        }
+    }
 
     // static createSalesman = async (req, res) => {
     //     try {

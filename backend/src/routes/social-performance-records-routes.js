@@ -6,8 +6,6 @@ router.get("/", checkAuthorization(), SocialPerformanceRecordApi.getAllSocialPer
 router.get("/:id", checkAuthorization(), SocialPerformanceRecordApi.getSocialPerformanceRecordById)
 router.get("/salesman/:salesmanCode", checkAuthorization(), SocialPerformanceRecordApi.getSocialPerformancesRecordBySalesmanCode)
 
-router.post("/salesman/:salesmanCode", checkAuthorization(), SocialPerformanceRecordApi.createSocialPerformanceToSalesmanBySalesmanCode)
-
 router.put("/:id", checkAuthorization(), SocialPerformanceRecordApi.updateSocialPerformanceRecord)
 
 router.delete("/:id", checkAuthorization(), SocialPerformanceRecordApi.deleteSocialPerformanceRecord)
