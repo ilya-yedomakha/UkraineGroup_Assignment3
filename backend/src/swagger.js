@@ -41,6 +41,10 @@ const swaggerDocument = {
         {
             name: "Sales Performance",
             description: "Operations with salesmen' sales performance"
+        },
+        {
+            name: "Reports",
+            description: "Operations with reports on salesmen' bonus salary"
         }
     ],
     securityDefinitions: {},
@@ -80,7 +84,15 @@ const swaggerDocument = {
             target_value : 5,
             actual_value : 1,
             year : 2021
+        },
+        reportSchema: {
+            orders_bonuses: [],
+            social_bonuses: [],
+            remarks: "remark",
+            total_bonus: 1234,
+            isConfirmed: false
         }
+
     }
 };
 const swaggerFile = "./docs/swagger.json";

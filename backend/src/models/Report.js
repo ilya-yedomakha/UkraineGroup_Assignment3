@@ -44,6 +44,11 @@ const reportSchema = new mongoose.Schema({
 
     total_bonus: {
         type: Number
+    },
+    isConfirmed: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 })
 

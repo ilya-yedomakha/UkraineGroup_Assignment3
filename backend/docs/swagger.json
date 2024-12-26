@@ -27,6 +27,10 @@
     {
       "name": "Sales Performance",
       "description": "Operations with salesmen' sales performance"
+    },
+    {
+      "name": "Reports",
+      "description": "Operations with reports on salesmen' bonus salary"
     }
   ],
   "schemes": [
@@ -392,6 +396,287 @@
         }
       }
     },
+    "/api/report/": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Delete all reports",
+        "description": "Delete all reports",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reportsalesman/{code}": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/{id}": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Update Report",
+        "description": "Update Report",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Report",
+            "in": "body",
+            "description": "Update Report",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/reportSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Delete report by Id",
+        "description": "Delete report by Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/{id}/submit": {
+      "put": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Submit Report",
+        "description": "Submit Report",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/{id}/unSubmit": {
+      "put": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Unsubmit Report",
+        "description": "Unsubmit Report",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/submit": {
+      "put": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Submit all Reports",
+        "description": "Submit all Reports",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/unSubmit": {
+      "put": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Unsubmit all Reports",
+        "description": "Unsubmit all Reports",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/login": {
       "post": {
         "tags": [
@@ -589,6 +874,33 @@
         "year": {
           "type": "number",
           "example": 2021
+        }
+      }
+    },
+    "reportSchema": {
+      "type": "object",
+      "properties": {
+        "orders_bonuses": {
+          "type": "array",
+          "example": [],
+          "items": {}
+        },
+        "social_bonuses": {
+          "type": "array",
+          "example": [],
+          "items": {}
+        },
+        "remarks": {
+          "type": "string",
+          "example": "remark"
+        },
+        "total_bonus": {
+          "type": "number",
+          "example": 1234
+        },
+        "isConfirmed": {
+          "type": "boolean",
+          "example": false
         }
       }
     }

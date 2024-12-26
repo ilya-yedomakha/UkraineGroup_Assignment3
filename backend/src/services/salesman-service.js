@@ -17,6 +17,7 @@ class SalesmanService{
             report.year = year
             report.total_bonus = 0
             report.employeeId = salesman.employeeId
+            report.isConfirmed = false
         } else {
             report = new reportModel()
             report.salesman_code = salesman.code
@@ -24,6 +25,7 @@ class SalesmanService{
             report.salesman_lastName = salesman.lastName
             report.year = year
             report.employeeId = salesman.employeeId
+            report.remarks = ""
         }
         let totalBonus = 0;
         socialData.forEach(({target_value, actual_value, goal_description}) => {

@@ -114,8 +114,7 @@ class salesmanApi {
                         salesmanGovId: salesman.code
                     });
 
-                    const totalBonus = salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances, new Date().getUTCFullYear());
-                    console.log(totalBonus)
+                    await salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances, new Date().getUTCFullYear());
                 } catch (e) {
                     return res.status(500).send({message: e.message, data: e});
                 }
@@ -154,7 +153,7 @@ class salesmanApi {
                 return res.status(500).send({message: 'Access token not found in response'});
             }
 
-            const reports = await ReportModel.find();
+            const reports = await ReportModel.find({isConfirmed: true});
 
             if (reports.length === 0) {
                 return res.status(404).send({message: 'No reports found to process'});
