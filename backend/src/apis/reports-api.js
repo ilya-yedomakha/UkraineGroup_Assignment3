@@ -26,6 +26,9 @@ if (process.env.NODE_ENV === 'development') {
 
     client.subscribe('save-confirmed', async function ({ task, taskService }) {
         const _id = task.variables.get('_id');
+        // const year = task.variables.get('year');
+        const total_bonus = task.variables.get('total_bonus');
+        const remarks = task.variables.get('remarks');
         if (!_id) {
             console.log("Empty _id!");
             return;
@@ -35,7 +38,11 @@ if (process.env.NODE_ENV === 'development') {
             console.log("Report is not found");
             return;
         }
-        await reportService.submitReport(found);
+        var newReport = {
+            remarks: remarks,
+            total_bonus: total_bonus
+        }
+        await reportService.updateReport(found, newReport);
         console.log(`Bonus '${_id}': confirmed`);
         console.log("Successfully confirmed!");
 
