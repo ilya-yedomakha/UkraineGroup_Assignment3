@@ -17,6 +17,34 @@ if (process.env.NODE_ENV === 'development') {
     environment = require('../../environments/environment.prod.js').default;
 }
 
+(async () => {
+    const { Client, logger } = await import('camunda-external-task-client-js');
+
+    const config = { baseUrl: 'http://localhost:9090/engine-rest', use: logger, asyncResponseTimeout: 10000 };
+
+    const client = new Client(config);
+
+    client.subscribe('save-confirmed', async function ({ task, taskService }) {
+        const _id = task.variables.get('_id');
+        if (!_id) {
+            console.log("Empty _id!");
+            return;
+        }
+        const found = await ReportModel.findById(_id);
+        if (!found) {
+            console.log("Report is not found");
+            return;
+        }
+        await reportService.submitReport(found);
+        console.log(`Bonus '${_id}': confirmed`);
+        console.log("Successfully confirmed!");
+
+        await taskService.complete(task);
+    });
+})();
+
+
+
 class reportApi {
 
     static getAllReports = async (req, res) => {

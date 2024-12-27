@@ -9,6 +9,7 @@ const FormData = require('form-data');
 const axios = require('axios');
 const qs = require('qs');
 const SocialPerformanceRecordService = require("../services/social-performance-record-service");
+const reportService = require("../services/report-service");
 
 let environment;
 if(process.env.NODE_ENV === 'development'){
@@ -16,6 +17,72 @@ if(process.env.NODE_ENV === 'development'){
 }else{
     environment = require('../../environments/environment.prod.js').default;
 }
+
+(async () => {
+    const { Client, logger } = await import('camunda-external-task-client-js');
+
+    const config = { baseUrl: 'http://localhost:9090/engine-rest', use: logger, asyncResponseTimeout: 10000 };
+
+    const client = new Client(config);
+
+    client.subscribe('send-bonus', async function ({ task, taskService }) {
+        const _id = task.variables.get('_id');
+        const employeeId = task.variables.get('employeeId');
+        const year = task.variables.get('year');
+        const value = task.variables.get('total_bonus');
+
+        const report = await ReportModel.findById(_id);
+
+        if(report == null) {
+            console.log("Report is not found");
+        } else {
+            const tokenBody = {
+                client_id: 'api_oauth_id',
+                client_secret: 'oauth_secret',
+                grant_type: 'password',
+                username: environment.orangeHRMUsername,
+                password: environment.passwordHRM,
+            };
+
+            const tokenResponse = await axios.post(
+                'http://localhost:8888/symfony/web/index.php/oauth/issueToken?scope=admin',
+                qs.stringify(tokenBody),
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }
+            );
+
+            const accessToken = tokenResponse.data.access_token;
+
+            const formData = new FormData();
+            formData.append('year', report.year);
+            formData.append('value', report.total_bonus);
+
+            const postResponse = await axios.post(
+                `http://localhost:8888/symfony/web/index.php/api/v1/employee/${report.employeeId}/bonussalary`,
+                formData,
+                {
+                    headers: {
+                        ...formData.getHeaders(),
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+            if (postResponse.status === 200){
+                console.log(`Bonus '${_id}': sent to hrm`);
+                console.log("Successfully sent!");
+            } else {
+                console.log(`Bonus '${_id}': is not correct`);
+                console.log("not sent!");
+            }
+
+
+        }
+        await taskService.complete(task);
+    });
+})();
 
 class salesmanApi {
 
