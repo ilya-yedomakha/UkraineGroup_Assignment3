@@ -7,12 +7,12 @@ async function startProcess(processDefinitionKey, variables) {
         const response = await axios.post(
             'http://localhost:9090/engine-rest/process-definition/key/' + processDefinitionKey + '/start',
             {
-                variables: variables, // Define your process variables here
+                variables: variables,
             },
             {
                 auth: {
-                    username: 'demo', // Replace with your username
-                    password: 'demo', // Replace with your password
+                    username: 'demo',
+                    password: 'demo',
                 },
             }
         );
