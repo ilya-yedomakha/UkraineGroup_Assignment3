@@ -1,7 +1,29 @@
 const salesmanModel = require("../models/SalesMan")
 const reportModel = require("../models/Report")
+const axios = require('axios')
 
-class SalesmanService{
+async function startProcess(processDefinitionKey, variables) {
+    try {
+        const response = await axios.post(
+            'http://localhost:9090/engine-rest/process-definition/key/' + processDefinitionKey + '/start',
+            {
+                variables: variables, // Define your process variables here
+            },
+            {
+                auth: {
+                    username: 'demo', // Replace with your username
+                    password: 'demo', // Replace with your password
+                },
+            }
+        );
+
+        console.log('Process started successfully:', response.data);
+    } catch (error) {
+        console.error('Error starting process:', error.response?.data || error.message);
+    }
+}
+
+class SalesmanService {
 
     static calculateSalesmanBonusForSalesman = async function (salesman, salesData, socialData, year) {
         const salesmanReports = await reportModel.find({salesman_code: salesman.code});
@@ -64,8 +86,25 @@ class SalesmanService{
         report.total_bonus = totalBonus
 
         await report.save()
+
+        let reportCamundaVariables = {
+            _id: {value: report._id, type: 'String'},
+            salesman_code: {value: report.salesman_code, type: 'Integer'},
+            salesman_firstName: {value: report.salesman_firstName, type: 'String'},
+            salesman_lastName:{value: report.salesman_lastName, type: 'String'},
+            employeeId: {value: report.employeeId, type: 'Integer'},
+            total_bonus: {value: report.total_bonus, type: 'Integer'},
+            remarks: {value: report.remarks, type: 'String'},
+            year: {value: report.year, type: 'Integer'}
+        }
+
+        startProcess('bonus-salary-assign', reportCamundaVariables);
+
         return totalBonus
     }
+
+
+
     /**
      * Saves data from OrangeHRM in MongoDB
      * @param salesmanFromOrangeHRM
