@@ -5,6 +5,10 @@ import {LandingPageComponent} from './pages/landing-page/landing-page.component'
 import {AuthGuardService} from './services/auth-guard.service';
 import {ExamplePageComponent} from './pages/example-page/example-page.component';
 import {NotFoundPageComponent} from './pages/not-found-page/not-found-page.component';
+import {BonusesPageComponent} from "./pages/bonuses-page/bonuses-page.component";
+import { ChangeBonusesPageComponent } from './pages/change-bonuses-page/change-bonuses-page.component';
+import { SalesmanCabinetPageComponent } from './pages/salesman-cabinet-page/salesman-cabinet-page.component';
+import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.component';
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -17,9 +21,13 @@ import {NotFoundPageComponent} from './pages/not-found-page/not-found-page.compo
  */
 const routes: Routes = [
     {path: 'login', component: LoginPageComponent},
+    {path: 'salesmen', component: SalesmenPageComponent},
+    {path: 'bonuses', component:BonusesPageComponent},
+    {path: 'edit-bonuses', component:ChangeBonusesPageComponent},
+    {path: 'cabinet', component:SalesmanCabinetPageComponent},
     {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
     {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
-    {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
+    {path: '**', component: NotFoundPageComponent}
 ];
 
 @NgModule({

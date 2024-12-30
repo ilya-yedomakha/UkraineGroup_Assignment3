@@ -1,0 +1,23 @@
+<div>
+    <div class="m-2 p-1">
+        <div class="flex justify-between items-end mb-4">
+            <label class="text-2xl mb-2 font-bold">Salesmen bonuses: {{year}}</label>
+            <div class="flex-col w-1/4">
+                <button class="bg-black p-2 rounded-lg text-yellow-100 font-semibold self-center w-full"
+                (click)="recalculateBonuses()"
+                >Recalculate bonuses</button>
+                <div class="mt-4 font-semibold flex justify-between">
+                    <button class="mr-2 bg-green-700 rounded-lg p-2 w-full"
+                    (click)="comfirmAllBonuses()"
+                    >Confirm all</button>
+                    <button class="bg-green-700 rounded-lg p-2 w-full"
+                    (click)="comfirmSelected()"
+                    >Confirm selected</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <app-table-salesmen-bonuses [bonuses]="bonusesData"></app-table-salesmen-bonuses>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="bg-[#FCE8BA] font-sans text-gray-800 border-2 border-black rounded-lg">
+    <div class="policy-container content-center border">
+      <div class="bg-black rounded-t-lg">
+      <div class="grid grid-cols-5 gap-4 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
+        <span class="heading">Name</span>
+        <span class="heading">Target Value</span>
+        <span class="heading">Actual Value</span>
+        <span class="heading">Bonus</span>
+        <span class="heading">Change Bonus</span>
+      </div>
+    </div>
+  
+  
+      <div
+        *ngFor="let bonuse of bonuses.socialBonuses | paginate: pagingConfig"
+        class="grid grid-cols-5 gap-4 items-center py-2 px-2 rounded-lg shadow-md mb-4 mx-2 mx-2hover:shadow-lg transition-shadow border-2 border-black text-base bg-[#D9D9D9]"
+      >
+  
+        <span class="flex-1 text-center">{{ bonuse.name }}</span>
+  
+        <span class="flex-1 text-center">{{ bonuse.targetValue }}</span>
+  
+        <span class="flex-1 text-center">{{ bonuse.actualValue }}</span>
+  
+        <span class="flex-1 text-center">{{ bonuse.bonus }}</span>
+
+        <span class="flex-1 text-center ">
+          <input class="border-2 border-black bg-slate-100 mx-4 text-center w-1/2 py-1 rounded-md"
+          [(ngModel)]="bonuse.bonus" 
+          >
+        </span>
+      </div>
+      <div class="flex justify-center mt-4">
+        <pagination-controls
+        previousLabel="Prev"
+        nextLabel="Next"
+        (pageChange)="onTableDataChange($event)">
+        </pagination-controls>
+      </div>  
+    </div>
+  </div>
+  <div class="flex justify-end mt-4 items-center">
+    <label class="text-base mr-2 font-semiboldw">Total sales bonus:</label>
+    <label class="py-2 px-4 border-2 border-black bg-slate-100 text-base font-semibold min-w-24 rounded-md text-center"
+    [textContent]="getSocialBonusesTotal()"
+    ></label>
+</div>
+<div class="mt-4 flex justify-end">
+  <button class="bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105"
+    (click)="saveSocialBonuses()">
+    Save</button>
+</div>

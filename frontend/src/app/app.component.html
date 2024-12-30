@@ -1,4 +1,7 @@
-<app-menu-bar *ngIf="isLoggedIn"></app-menu-bar>
+<div class="flex flex-col h-screen justify-between">
+<app-menu-bar *ngIf="!isLoggedIn"></app-menu-bar>
 <main>
   <router-outlet></router-outlet>
 </main>
+<app-footer></app-footer>
+</div>

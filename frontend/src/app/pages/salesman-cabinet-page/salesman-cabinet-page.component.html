@@ -1,0 +1,37 @@
+<div>
+    <div class="grid md:grid-cols-10 gap-1 bg-gray-400 p-2 rounded-md mx-1 mb-2">
+    <div class="col-span-3  p-1 flex flex-col items-center justify-center">
+        <img 
+        src="assets/images/default_logo.png"
+        alt="Default image"
+        class="h-60 w-40 border-2 border-gray-300 object-cover rounded-md" />
+        <label class="text-lg mt-1">{{user.personalDetails.firstname + " " +  user.personalDetails.lastname}}</label>
+    </div>
+    <div class="col-span-7">
+        <label class="underline text-gray-800 text-base font-semibold ml-2 my-2">Personal Details</label>
+        <div class="grid grid-cols-2 gap-2 ml-2">
+            <div class="col-span-1 flex flex-col mr-4">
+                <label class="mb-2">Employee id: {{user.personalDetails.employeeId}}</label>
+                <label class="mb-2">Full Name: {{user.personalDetails.firstname + " " +  user.personalDetails.lastname}}</label>
+                <label class="mb-2">Gender: {{user.personalDetails.gender}}</label>
+                <label class="mb-2">Date of Birth: {{user.personalDetails.dateOfBirth}}</label>
+                <label class="mb-2">Address: {{user.personalDetails.address}}</label>
+                <label class="mb-2">Contact number: {{user.personalDetails.contactNumber}}</label>
+            </div>
+            <div class="col-span-1 flex flex-col">
+                <label class="mb-2">Work Email: {{user.personalDetails.workEmail}}</label>
+                <label class="mb-2">Job Title: {{user.personalDetails.jobTitle}}</label>
+                <label class="mb-2">Joined Date: {{user.personalDetails.joinedDate}}</label>
+                <label class="mb-2">Salary: {{user.personalDetails.salary}}</label>
+                <label class="mb-2">Report-to: {{user.personalDetails.reportTo}}</label>
+                <label class="mb-2">Nationaity: {{user.personalDetails.nationality}}</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-table-salesman-cabinet [bonuses]="bonuses"></app-table-salesman-cabinet>
+<div class="flex justify-center mt-2 grow">
+    <app-bar-graph-salesman-bonuses [bonuses]="bonuses" class="flex justify-center"></app-bar-graph-salesman-bonuses>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="bg-[#FCE8BA] font-sans text-gray-800 border-double border-2 border-black rounded-lg">
+  <div class="policy-container content-center border">
+    <div class="bg-black rounded-t-lg">
+      <div class="grid grid-cols-6 gap-4 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
+        <span class="heading">Firstname</span>
+        <span class="heading">Lastname</span>
+        <span class="heading">Bonuses for sales</span>
+        <span class="heading">Bonuses for social performance</span>
+        <span class="heading">Total bonuses</span>
+        <span class="heading">Action</span>
+      </div>
+    </div>
+
+    <div *ngFor="let bonus of bonuses | paginate: pagingConfig"
+      [ngClass]="bonus.isConfirmed ? 'bg-green-600 text-white' : 'bg-gray-300 text-black'"
+      class="policy grid grid-cols-6 gap-4 items-cente py-4 px-2 rounded-lg shadow-md mb-4 mx-2 mx-2hover:shadow-lg transition-shadow border-2 border-black">
+
+      <span class="flex-1 text-center">{{ bonus.firstname }}</span>
+
+      <span class="flex-1 text-center">{{ bonus.lastname }}</span>
+
+      <span class="flex-1 text-center">{{ bonus.getOrderBonusesTotal() }}</span>
+
+      <span class="flex-1 text-center">{{ bonus.getSocialBonusesTotal() }}</span>
+
+      <span class="flex-1 text-center">{{ bonus.getTotalBonuses() }}</span>
+
+      <span class="flex-1 flex justify-center gap-2 items-center">
+        <button [disabled]="bonus.isConfirmed" (click)="toEditSalesmanBonus(bonus)"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-300">
+          Edit
+
+        </button>
+        <input type="checkbox" [disabled]="bonus.isConfirmed" [checked]="bonus.isConfirmed"
+          class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+      </span>
+    </div>
+    <div class="flex justify-center mt-4">
+      <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+      </pagination-controls>
+    </div>
+  </div>
+</div>
