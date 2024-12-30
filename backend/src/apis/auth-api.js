@@ -7,13 +7,14 @@ const authService = require('../services/auth-service');
  * @param res express response
  * @return {Promise<void>}
  */
-exports.login = function (req, res){
+exports.login = function (req, res) {
+
     const db = req.app.get('db');//get database from express
 
-    userService.verify(db, req.body).then(user=> { //verify credentials via user-service
+    userService.verify(db, req.body).then(user => { //verify credentials via user-service
         authService.authenticate(req.session, user); //mark session as authenticated
         res.send('login successful');
-    }).catch(_=>{
+    }).catch(_ => {
         res.status(401).send('login failed');
     })
 }
@@ -24,7 +25,7 @@ exports.login = function (req, res){
  * @param res express response
  * @return {Promise<void>}
  */
-exports.logout = function (req, res){
+exports.logout = function (req, res) {
     authService.deAuthenticate(req.session); //destroy session
     res.send('logout successful');
 }
@@ -35,10 +36,10 @@ exports.logout = function (req, res){
  * @param res express response
  * @return {Promise<void>}
  */
-exports.isLoggedIn = function (req, res){
-    if(authService.isAuthenticated(req.session)){ //check via auth-service
+exports.isLoggedIn = function (req, res) {
+    if (authService.isAuthenticated(req.session)) { //check via auth-service
         res.send({loggedIn: true});
-    }else {
+    } else {
         res.send({loggedIn: false});
     }
 }

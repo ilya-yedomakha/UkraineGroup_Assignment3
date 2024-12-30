@@ -12,7 +12,12 @@ const environment = {
     },
     corsOrigins: [
         'http://localhost:4200'
-    ]
+    ],
+    orangeHRMUsername: 'demouser',
+    passwordHRM: '*Safb02da42Demo$',
+    openCRXUsername: 'guest',
+    passwordCRX: 'guest'
+
 };
 
 exports.default = environment;

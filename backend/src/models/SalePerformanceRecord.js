@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const salePerformanceSchema = new Schema({
-    // CRX href for SalePerformance
-    salePerformanceHref: { type: String, required: true },
-
     // Name of sales order
     salesOrderName: { type: String, required: true },
+
+    // Year from when its active
+    activeYear: {type: Number, required: true},
 
     // Priority of sales order
     priority: {type: Number, required: true},

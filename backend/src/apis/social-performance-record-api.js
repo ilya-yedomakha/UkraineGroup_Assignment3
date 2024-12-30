@@ -1,12 +1,30 @@
 const socialPerformanceRecordModel = require("../models/SocialPerformanceRecord")
 const salesmanModel = require("../models/SalesMan");
 
-class social_performance_record_controller {
+const SocialPerformanceRecordService = require("../services/social-performance-record-service")
+
+class socialPerformanceRecordApi {
 
     static getAllSocialPerformanceRecords = async (req, res) => {
         try {
             const data = await socialPerformanceRecordModel.find()
             res.status(200).send({apiStatus: true, message: "all social performance records were found", data})
+        } catch (e) {
+            res.status(500).send({message: e.message, data: e})
+        }
+    }
+
+    static getSocialPerformancesRecordBySalesmanCode = async (req, res) => {
+        try {
+            const data = await socialPerformanceRecordModel.find({salesman_code: req.params.salesmanCode})
+            if (data != null)
+                res.status(200).send({
+                    apiStatus: true,
+                    message: "Social performance record by code " + req.params.salesmanCode + " was found",
+                    data
+                })
+            else
+                res.status(404).send({message: "Social performance record not found"})
         } catch (e) {
             res.status(500).send({message: e.message, data: e})
         }
@@ -31,7 +49,6 @@ class social_performance_record_controller {
         }
     }
 
-
     static deleteSocialPerformanceRecord = async (req, res) => {
         try {
             const socialPerformanceRecord = await socialPerformanceRecordModel.findByIdAndDelete(req.params.id)
@@ -39,15 +56,25 @@ class social_performance_record_controller {
                 return res.status(404).send({apiStatus: false, message: "Social Performance record not found"});
             }
 
-            await salesmanModel.updateOne(
-                {_id: socialPerformanceRecord.salesman_id},
-                {$pull: {performance_record_ids: socialPerformanceRecord._id}}
-            );
+            return res.status(200).send({
+                apiStatus: true,
+                message: "Social performance record deleted",
+            })
+        } catch (e) {
+            return res.status(500).send({message: e.message, data: e})
+        }
+    }
+
+    static deleteSocialPerformanceRecordBySalesmanCode = async (req, res) => {
+        try {
+            const socialPerformanceRecord = await socialPerformanceRecordModel.deleteMany({salesman_code: req.params.salesmanCode})
+            if (!socialPerformanceRecord) {
+                return res.status(404).send({apiStatus: false, message: "Social Performance records not found"});
+            }
 
             return res.status(200).send({
                 apiStatus: true,
-                message: "social performance record deleted",
-                data: socialPerformanceRecord
+                message: "Social performance record deleted",
             })
         } catch (e) {
             return res.status(500).send({message: e.message, data: e})
@@ -55,21 +82,15 @@ class social_performance_record_controller {
     }
 
     static updateSocialPerformanceRecord = async (req, res) => {
-
         try {
-            if (req.params.id === undefined || req.body === undefined || req.params.id === "" || req.params.body === "" ) {
+            if (req.params.id === undefined || req.body === undefined || req.params.id === "" || req.params.body === "") {
                 return res.status(400).send({message: "Invalid request parameters"});
             }
             let found = await socialPerformanceRecordModel.findById(req.params.id)
             if (found == null) {
                 return res.status(404).send({message: "Social Performance not found"});
             }
-
-            await socialPerformanceRecordModel.findByIdAndUpdate(
-                req.params.id,
-                req.body
-            )
-            let recordUpdated = await socialPerformanceRecordModel.findById(req.params.id)
+            let recordUpdated = await SocialPerformanceRecordService.updateSocialPerformanceRecord(found, req.body)
             return res.status(200).send({message: "Social Performance was found", data: recordUpdated});
 
         } catch (e) {
@@ -79,4 +100,4 @@ class social_performance_record_controller {
 
 }
 
-module.exports = social_performance_record_controller
+module.exports = socialPerformanceRecordApi

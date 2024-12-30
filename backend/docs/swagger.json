@@ -1,0 +1,908 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "SmartHoover United",
+    "description": "API for Managing SmartHoover's salesmen bonus calculation and their social performance",
+    "contact": {
+      "name": "Ukraine Group",
+      "url": "https://github.com/ilya-yedomakha/UkraineGroup_Assignment3.git"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "User-related requests"
+    },
+    {
+      "name": "Salesmen",
+      "description": "Operations with salesmen"
+    },
+    {
+      "name": "Social Performance",
+      "description": "Operations with salesmen' social performance"
+    },
+    {
+      "name": "Sales Performance",
+      "description": "Operations with salesmen' sales performance"
+    },
+    {
+      "name": "Reports",
+      "description": "Operations with reports on salesmen' bonus salary"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {},
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/salesman/": {
+      "get": {
+        "tags": [
+          "Salesmen"
+        ],
+        "summary": "Get All salesmen",
+        "description": "Get all salesmen",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/salesman/import-from-orangeHRM": {
+      "get": {
+        "tags": [
+          "Salesmen"
+        ],
+        "summary": "Import senior salesman from OrangeHRM",
+        "description": "Import senior salesman from OrangeHRM",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/salesman/{code}": {
+      "get": {
+        "tags": [
+          "Salesmen"
+        ],
+        "summary": "Get salesman by code",
+        "description": "Get salesman by code",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/salesman/calculate-bonuses": {
+      "post": {
+        "tags": [
+          "Salesmen"
+        ],
+        "summary": "Calculate all bonuses",
+        "description": "Calculate all bonuses",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/salesman/send-bonuses-orangeHRM": {
+      "post": {
+        "tags": [
+          "Salesmen"
+        ],
+        "summary": "Send all bonuses to OrangeHRM",
+        "description": "Send all bonuses to OrangeHRM",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/salesman/{code}/social_performance_record": {
+      "post": {
+        "tags": [
+          "Salesmen"
+        ],
+        "summary": "Create social performance record",
+        "description": "Create social performance record",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Social Performance",
+            "in": "body",
+            "description": "Create social performance",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/socialPerformanceRecordSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/social_performance_record/": {
+      "get": {
+        "tags": [
+          "Social Performance"
+        ],
+        "summary": "Get all social performance records",
+        "description": "Get all social performance records",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/social_performance_record/{id}": {
+      "get": {
+        "tags": [
+          "Social Performance"
+        ],
+        "summary": "Get social performance record by id",
+        "description": "Get social performance record by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Social Performance"
+        ],
+        "summary": "Update social performance record",
+        "description": "Update social performance record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Social Performance",
+            "in": "body",
+            "description": "Update social performance",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/socialPerformanceRecordSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Social Performance"
+        ],
+        "summary": "Delete social performance record",
+        "description": "Delete social performance record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/social_performance_record/salesman/{salesmanCode}": {
+      "get": {
+        "tags": [
+          "Social Performance"
+        ],
+        "summary": "Get social performance record by salesman code",
+        "description": "Get social performance record by salesman code",
+        "parameters": [
+          {
+            "name": "salesmanCode",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Social Performance"
+        ],
+        "summary": "Delete social performance record by salesman code",
+        "description": "Delete social performance record by salesman code",
+        "parameters": [
+          {
+            "name": "salesmanCode",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sale_performance_record/import-from-openCRX": {
+      "get": {
+        "tags": [
+          "Sales Performance"
+        ],
+        "summary": "Import sale performance form OpenCRX",
+        "description": "Import sale performance form OpenCRX",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Delete all reports",
+        "description": "Delete all reports",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/reportsalesman/{code}": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/{id}": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Update Report",
+        "description": "Update Report",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Report",
+            "in": "body",
+            "description": "Update Report",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/reportSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Delete report by Id",
+        "description": "Delete report by Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/{id}/submit": {
+      "put": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Submit Report",
+        "description": "Submit Report",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/{id}/unSubmit": {
+      "put": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Unsubmit Report",
+        "description": "Unsubmit Report",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/submit": {
+      "put": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Submit all Reports",
+        "description": "Submit all Reports",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/unSubmit": {
+      "put": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Unsubmit all Reports",
+        "description": "Unsubmit all Reports",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Log in",
+        "description": "Log in",
+        "parameters": [
+          {
+            "name": "User credentials",
+            "in": "body",
+            "description": "Login with your credentials",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Log out",
+        "description": "Log out",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Check if logged in",
+        "description": "Check if logged in",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Get current user data",
+        "description": "Get current user data",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/people": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Get all people",
+        "description": "Get all people",
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "apiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 200
+        },
+        "message": {
+          "type": "string",
+          "example": "Success"
+        }
+      }
+    },
+    "errorResponse.400": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 400
+        },
+        "message": {
+          "type": "string",
+          "example": "The request was malformed or invalid. Please check the request parameters."
+        }
+      }
+    },
+    "errorResponse.401": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 401
+        },
+        "message": {
+          "type": "string",
+          "example": "Authentication failed or user lacks proper authorization."
+        }
+      }
+    },
+    "errorResponse.403": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 403
+        },
+        "message": {
+          "type": "string",
+          "example": "You do not have permission to access this resource."
+        }
+      }
+    },
+    "errorResponse.404": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "404"
+        },
+        "message": {
+          "type": "string",
+          "example": "The requested resource could not be found on the server."
+        }
+      }
+    },
+    "errorResponse.500": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 500
+        },
+        "message": {
+          "type": "string",
+          "example": "An unexpected error occurred on the server. Please try again later."
+        }
+      }
+    },
+    "userSchema": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "admin"
+        },
+        "password": {
+          "type": "string",
+          "example": "5$c3inw%"
+        }
+      }
+    },
+    "socialPerformanceRecordSchema": {
+      "type": "object",
+      "properties": {
+        "goal_description": {
+          "type": "string",
+          "example": "Attitude toward Client"
+        },
+        "target_value": {
+          "type": "number",
+          "example": 5
+        },
+        "actual_value": {
+          "type": "number",
+          "example": 1
+        },
+        "year": {
+          "type": "number",
+          "example": 2021
+        }
+      }
+    },
+    "reportSchema": {
+      "type": "object",
+      "properties": {
+        "orders_bonuses": {
+          "type": "array",
+          "example": [],
+          "items": {}
+        },
+        "social_bonuses": {
+          "type": "array",
+          "example": [],
+          "items": {}
+        },
+        "remarks": {
+          "type": "string",
+          "example": "remark"
+        },
+        "total_bonus": {
+          "type": "number",
+          "example": 1234
+        },
+        "isConfirmed": {
+          "type": "boolean",
+          "example": false
+        }
+      }
+    }
+  }
+}

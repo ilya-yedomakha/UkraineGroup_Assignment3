@@ -1,6 +1,4 @@
 const mongoose = require("mongoose")
-const {Schema} = require("mongoose");
-const Joi = require("joi");
 
 const salesManSchema = new mongoose.Schema({
     firstName:{
@@ -37,12 +35,7 @@ const salesManSchema = new mongoose.Schema({
         type: Number,
         trim: true,
         required: true,
-    },
-
-    performance_record_ids:[{
-        type: Schema.Types.ObjectId,
-        ref: 'socialPerformanceSchema',
-    }],
+    }
 })
 
 const SalesMan = mongoose.model("SalesMan", salesManSchema)

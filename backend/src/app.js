@@ -14,6 +14,10 @@ const cors = require('cors');
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
+const swaggerUIPath= require("swagger-ui-express");
+const swaggerjsonFilePath = require("../docs/swagger.json");
+
+
 let environment;
 if(process.env.NODE_ENV === 'development'){
     environment = require('../environments/environment.js').default;
@@ -39,9 +43,10 @@ app.use(cors({
     credentials: true
 }));
 
-const salesmanRoutes = require("./routes/salesman.routes")
-const socialPerformanceRecordsRoutes = require("./routes/social_performance_records.routes")
-const salePerformanceRecordsRoutes = require("./routes/sale_performance_records.routes")
+const salesmanRoutes = require("./routes/salesman-routes")
+const socialPerformanceRecordsRoutes = require("./routes/social-performance-records-routes")
+const salePerformanceRecordsRoutes = require("./routes/sale-performance-records-routes")
+const apiReportsRoutes = require("./routes/report-routes")
 
 
 const apiRouter = require('./routes/api-routes');//get api-router from routes/api
@@ -49,7 +54,9 @@ const mongoose = require("mongoose");
 app.use("/api/salesman", salesmanRoutes)
 app.use("/api/social_performance_record", socialPerformanceRecordsRoutes)
 app.use("/api/sale_performance_record", salePerformanceRecordsRoutes)
+app.use("/api/report", apiReportsRoutes)
 app.use('/api', apiRouter); //mount api-router at path "/api"
+app.use("/api-docs", swaggerUIPath.serve, swaggerUIPath.setup(swaggerjsonFilePath));
 // !!!! attention all middlewares, mounted after the router wont be called for any requests
 
 //preparing database credentials for establishing the connection:
@@ -69,6 +76,7 @@ mongoose
         app.listen(environment.port, () => {
             // Start webserver after database connection is established
             console.log('Webserver started.');
+            // swaggerDocs(app, environment.port);
         });
     })
     .catch((error) => {
