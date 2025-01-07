@@ -29,7 +29,7 @@ class salesmanApi {
             }
 
         } catch (e) {
-            res.status(500).send({message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
         }
     }
 
@@ -38,7 +38,7 @@ class salesmanApi {
             const salesman = await salesmanService.getAllSalesman();
             res.status(200).send({apiStatus: true, message: "All salesmen fetched", data: salesman})
         } catch (e) {
-            res.status(500).send({message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
         }
     }
 
@@ -65,7 +65,7 @@ class salesmanApi {
             const accessToken = tokenResponse.data.access_token;
 
             if (!accessToken) {
-                return res.status(500).send({message: 'Access token not found in response'});
+                return res.status(500).send({apiStatus: false, message: 'Access token not found in response'});
             }
 
             const employeeResponse = await axios.get(
@@ -84,13 +84,13 @@ class salesmanApi {
 
             try {
                 const savedEmployees = await salesmanService.saveSalesmanFromOrangeHRMToDB(filteredEmployees);
-                return res.status(200).send({message: 'Data saved successfully', savedEmployees});
+                return res.status(200).send({apiStatus: true, message: 'Data saved successfully', data: savedEmployees});
             } catch (e) {
-                return res.status(500).send({message: 'Error saving data', error: e.message});
+                return res.status(500).send({apiStatus: false, message: 'Error saving data', error: e.message});
             }
 
         } catch (e) {
-            res.status(500).send({message: e.message, data: e});
+            res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }
 
@@ -99,7 +99,7 @@ class salesmanApi {
             const salesmen = await salesmanService.getAllSalesman();
 
             if (!salesmen || salesmen.length === 0) {
-                return res.status(404).send({message: 'No salesmen found'});
+                return res.status(404).send({apiStatus: false, message: 'No salesmen found'});
             }
 
             for (const salesman of salesmen) {
@@ -116,14 +116,14 @@ class salesmanApi {
 
                     await salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances, new Date().getUTCFullYear());
                 } catch (e) {
-                    return res.status(500).send({message: e.message, data: e});
+                    return res.status(500).send({apiStatus: false, message: e.message, data: e});
                 }
             }
 
-            return res.status(200).send({message: 'Bonuses calculated successfully'});
+            return res.status(200).send({apiStatus: true, message: 'Bonuses calculated successfully'});
 
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }
 
@@ -150,7 +150,7 @@ class salesmanApi {
             const accessToken = tokenResponse.data.access_token;
 
             if (!accessToken) {
-                return res.status(500).send({message: 'Access token not found in response'});
+                return res.status(500).send({apiStatus: true, message: 'Access token not found in response'});
             }
 
             const reports = await ReportModel.find({isConfirmed: true});
@@ -168,7 +168,7 @@ class salesmanApi {
                     formData.append('value', report.total_bonus);
 
                     const postResponse = await axios.post(
-                        `http://localhost:8888/symfony/web/index.php/api/v1/employee/${report.employeeId}/bonussalary`,
+                        `http://localhost:8888/symfony/web/index.php/api/v1/employee/${(await report).employeeId}/bonussalary`,
                         formData,
                         {
                             headers: {
@@ -181,11 +181,11 @@ class salesmanApi {
                     responses.push({
                         employeeId: report.employeeId,
                         status: postResponse.status,
-                        success: postResponse.data,
                         year: report.year,
                         value: report.total_bonus
-
                     });
+                    (await report).isSent = true
+                    await report.save()
                 } catch (postError) {
                     responses.push({
                         employeeId: report.employeeId,
@@ -198,11 +198,12 @@ class salesmanApi {
             }
 
             return res.status(200).send({
-                message: 'Processing completed',
-                details: responses,
+                apiStatus: true,
+                message: 'All confirmed bonuses were sent to OrangeHRM!',
+                data: responses,
             });
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     };
 
@@ -211,7 +212,7 @@ class salesmanApi {
             const salesMan = await salesmanModel.findOne({code: Number(req.params.code)}).exec()
 
             if (salesMan == null) {
-                return res.status(404).send({message: "Salesman with code" + Number(req.params.code) + " not found"})
+                return res.status(404).send({apiStatus: false, message: "Salesman with code" + Number(req.params.code) + " not found"})
             }
 
             const socialPerformanceRecordData = await SocialPerformanceRecordService.saveSocialPerformanceRecord(salesMan.code, req.body)
@@ -224,7 +225,7 @@ class salesmanApi {
 
         } catch (e) {
             const statusCode = e.status || 500;
-            res.status(statusCode).send({message: e.message, data: e});
+            res.status(statusCode).send({apiStatus: false, message: e.message, data: e});
         }
     }
 

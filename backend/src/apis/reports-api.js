@@ -24,7 +24,7 @@ class reportApi {
             const reports = await ReportModel.find();
             res.status(200).send({apiStatus: true, message: "All reports fetched", data: reports})
         } catch (e) {
-            res.status(500).send({message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
         }
     }
 
@@ -35,12 +35,12 @@ class reportApi {
                 res.status(200).send({
                     apiStatus: true,
                     message: "Report record by code " + req.params.code + " was found",
-                    data
+                    data: data
                 })
             else
-                res.status(404).send({message: "Report record not found"})
+                res.status(404).send({apiStatus: false, message: "Report record not found"})
         } catch (e) {
-            res.status(500).send({message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
         }
     }
 
@@ -56,43 +56,43 @@ class reportApi {
             return res.status(200).send({
                 apiStatus: true,
                 message: "Report record by id " + req.params.id + " was found",
-                data
+                data: data
             })
         } catch (e) {
-            res.status(500).send({message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
         }
     }
     static updateReport = async (req, res) => {
         try {
             if (req.params.id === undefined || req.body === undefined || req.params.id === "" || req.params.body === "") {
-                return res.status(400).send({message: "Invalid request parameters"});
+                return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
             }
             let found = await ReportModel.findById(req.params.id)
             if (found == null) {
-                return res.status(404).send({message: "Report is not found"});
+                return res.status(404).send({apiStatus: false, message: "Report is not found"});
             }
             let recordUpdated = await reportService.updateReport(found, req.body)
-            return res.status(200).send({message: "Report was found", data: recordUpdated});
+            return res.status(200).send({apiStatus: true, message: "Report was found", data: recordUpdated});
 
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }
 
     static submitReport = async (req, res) => {
         try {
             if (req.params.id === undefined || req.params.id === "") {
-                return res.status(400).send({message: "Invalid request parameters"});
+                return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
             }
             let found = await ReportModel.findById(req.params.id)
             if (found == null) {
-                return res.status(404).send({message: "Report is not found"});
+                return res.status(404).send({apiStatus: false, message: "Report is not found"});
             }
             let recordUpdated = await reportService.submitReport(found)
-            return res.status(200).send({message: "Report was submitted", data: recordUpdated});
+            return res.status(200).send({apiStatus: true, message: "Report was submitted", data: recordUpdated});
 
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }
 
@@ -108,27 +108,27 @@ class reportApi {
                 let updatedRecord = await reportService.submitReport(report);
                 recordUpdated.push(updatedRecord);
             }
-            return res.status(200).send({message: "Reports were submitted", data: recordUpdated});
+            return res.status(200).send({apiStatus: true, message: "Reports were submitted", data: recordUpdated});
 
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }
 
     static unSubmitReport = async (req, res) => {
         try {
             if (req.params.id === undefined || req.params.id === "") {
-                return res.status(400).send({message: "Invalid request parameters"});
+                return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
             }
             let found = await ReportModel.findById(req.params.id)
             if (found == null) {
-                return res.status(404).send({message: "Report is not found"});
+                return res.status(404).send({apiStatus: false, message: "Report is not found"});
             }
             let recordUpdated = await reportService.unSubmitReport(found)
-            return res.status(200).send({message: "Report was unsubmitted", data: recordUpdated});
+            return res.status(200).send({apiStatus: true, message: "Report was unsubmitted", data: recordUpdated});
 
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }
 
@@ -136,7 +136,7 @@ class reportApi {
         try {
             let found = await ReportModel.find()
             if (found == null || found.length === 0) {
-                return res.status(404).send({message: "There are no Reports"});
+                return res.status(404).send({apiStatus: false, message: "There are no Reports"});
             }
             let recordUpdated = [];
 
@@ -144,10 +144,10 @@ class reportApi {
                 let updatedRecord = await reportService.unSubmitReport(report);
                 recordUpdated.push(updatedRecord);
             }
-            return res.status(200).send({message: "Reports were submitted", data: recordUpdated});
+            return res.status(200).send({apiStatus: true, message: "Reports were submitted", data: recordUpdated});
 
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }
 
@@ -156,7 +156,7 @@ class reportApi {
             const reports = await ReportModel.deleteMany();
             res.status(200).send({apiStatus: true, message: "All reports deleted", data: reports})
         } catch (e) {
-            res.status(500).send({message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
         }
     }
 
@@ -172,7 +172,7 @@ class reportApi {
                 message: "Report deleted",
             })
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e})
+            return res.status(500).send({apiStatus: true, message: e.message, data: e})
         }
     }
 

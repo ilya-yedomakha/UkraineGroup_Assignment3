@@ -129,9 +129,9 @@ class salePerformanceRecordApi {
             await salePerformanceRecordModel.deleteMany({});
             await salePerformanceRecordModel.insertMany(filteredRecords);
 
-            res.status(200).send({filteredRecords});
+            res.status(200).send({apiStatus: true, message:"Sale performances from OpenCRX", data: filteredRecords});
         } catch (e) {
-            res.status(500).send({message: e.message, data: e});
+            res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     };
 }
