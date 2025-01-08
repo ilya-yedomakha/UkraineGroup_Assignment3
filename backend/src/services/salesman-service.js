@@ -1,4 +1,5 @@
 const salesmanModel = require("../models/SalesMan")
+const socialPerformanceModel = require("../models/SocialPerformanceRecord")
 const reportModel = require("../models/Report")
 
 class SalesmanService{
@@ -18,6 +19,7 @@ class SalesmanService{
             report.total_bonus = 0
             report.employeeId = salesman.employeeId
             report.isConfirmed = false
+            report.isSent = false
         } else {
             report = new reportModel()
             report.salesman_code = salesman.code
@@ -82,6 +84,9 @@ class SalesmanService{
                 })
                 if (!salesman) {
                     await salesmanModel.findByIdAndDelete(element._id)
+                    //TODO possible errors
+                    await socialPerformanceModel.deleteMany({salesman_code: element.code})
+                    await reportModel.deleteMany({salesman_code: element.code})
                 } else {
                     const saved = await SalesmanService.updateSalesman(element, salesman)
                     savedRecords.push(saved)

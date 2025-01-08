@@ -15,6 +15,7 @@ class ReportService {
                 oldData.total_bonus = newData.total_bonus;
             if (newData.hasOwnProperty("isConfirmed"))
                 oldData.isConfirmed = newData.isConfirmed;
+            oldData.isSent = false;
             return await oldData.save()
         } catch (e) {
             throw new Error(e.message)

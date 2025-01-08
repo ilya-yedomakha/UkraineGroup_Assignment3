@@ -10,7 +10,7 @@ class socialPerformanceRecordApi {
             const data = await socialPerformanceRecordModel.find()
             res.status(200).send({apiStatus: true, message: "all social performance records were found", data})
         } catch (e) {
-            res.status(500).send({message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
         }
     }
 
@@ -21,12 +21,12 @@ class socialPerformanceRecordApi {
                 res.status(200).send({
                     apiStatus: true,
                     message: "Social performance record by code " + req.params.salesmanCode + " was found",
-                    data
+                    data: data
                 })
             else
-                res.status(404).send({message: "Social performance record not found"})
+                res.status(404).send({apiStatus: false, message: "Social performance record not found"})
         } catch (e) {
-            res.status(500).send({message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
         }
     }
 
@@ -35,17 +35,17 @@ class socialPerformanceRecordApi {
             const data = await socialPerformanceRecordModel.findById(req.params.id)
             if (data == null) {
                 return res.status(404).send({
-                    apiStatus: true,
+                    apiStatus: false,
                     message: "Social performance record by id " + req.params.id + " was not found"
                 })
             }
             return res.status(200).send({
                 apiStatus: true,
                 message: "Social performance record by id " + req.params.id + " was found",
-                data
+                data: data
             })
         } catch (e) {
-            res.status(500).send({message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
         }
     }
 
@@ -77,24 +77,24 @@ class socialPerformanceRecordApi {
                 message: "Social performance record deleted",
             })
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e})
+            return res.status(500).send({apiStatus: false, message: e.message, data: e})
         }
     }
 
     static updateSocialPerformanceRecord = async (req, res) => {
         try {
             if (req.params.id === undefined || req.body === undefined || req.params.id === "" || req.params.body === "") {
-                return res.status(400).send({message: "Invalid request parameters"});
+                return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
             }
             let found = await socialPerformanceRecordModel.findById(req.params.id)
             if (found == null) {
                 return res.status(404).send({message: "Social Performance not found"});
             }
             let recordUpdated = await SocialPerformanceRecordService.updateSocialPerformanceRecord(found, req.body)
-            return res.status(200).send({message: "Social Performance was found", data: recordUpdated});
+            return res.status(200).send({apiStatus: true, message: "Social Performance was found", data: recordUpdated});
 
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }
 
