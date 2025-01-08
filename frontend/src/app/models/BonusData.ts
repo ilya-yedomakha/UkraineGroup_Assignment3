@@ -18,7 +18,8 @@ export class BonusData {
         }>,
         public remarks: string | null,
         public totalBonus: number,
-        public isConfirmed: boolean
+        public isConfirmedByCEO: boolean,
+        public isConfirmedBySalesman: boolean
     ) {}
 
    public getOrderBonusesTotal(): number {

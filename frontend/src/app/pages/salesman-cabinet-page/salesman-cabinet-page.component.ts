@@ -12,6 +12,7 @@ export class SalesmanCabinetPageComponent implements OnInit{
 
   user: User;
   bonuses:Bonuses[];
+  isRejectWindowVisible: boolean = false;
 
   ngOnInit(): void {
     this.user = new User(
@@ -36,7 +37,7 @@ export class SalesmanCabinetPageComponent implements OnInit{
       false
   );
 
-  this.bonuses = [new Bonuses(2024, 400,500,900),new Bonuses(2023, 344,234,700),new Bonuses(2022, 322,333,435),new Bonuses(2021, 150,100,250),
+  this.bonuses = [new Bonuses(2025, 400,500,900),new Bonuses(2023, 344,234,700),new Bonuses(2022, 322,333,435),new Bonuses(2021, 150,100,250),
     new Bonuses(2021, 322,333,435),new Bonuses(2020, 150,100,250),
     new Bonuses(2019, 322,333,435),new Bonuses(2018, 150,100,250),
     new Bonuses(2017, 322,333,435),new Bonuses(2016, 150,100,250)];

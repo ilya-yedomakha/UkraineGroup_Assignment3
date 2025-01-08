@@ -33,6 +33,8 @@ import { NgChartsModule } from 'ng2-charts';
 import {NgxPaginationModule} from "ngx-pagination";
 import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.component';
 import { TableSalesmenComponent } from './components/tables/table-salesmen/table-salesmen.component';
+import { RejectBonusesCalculationWindowComponent } from './components/popouts/reject-bonuses-calculation-window/reject-bonuses-calculation-window.component';
+import { AddSotialPerformanceWindowComponent } from './components/popouts/add-sotial-performance-window/add-sotial-performance-window.component';
 
 @NgModule({
     declarations: [
@@ -53,7 +55,9 @@ import { TableSalesmenComponent } from './components/tables/table-salesmen/table
         SalesmanCabinetPageComponent,
         BarGraphSalesmanBonusesComponent,
         SalesmenPageComponent,
-        TableSalesmenComponent
+        TableSalesmenComponent,
+        RejectBonusesCalculationWindowComponent,
+        AddSotialPerformanceWindowComponent
     ],
     imports: [
         BrowserModule,

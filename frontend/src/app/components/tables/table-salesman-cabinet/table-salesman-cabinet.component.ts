@@ -10,6 +10,7 @@ import { Bonuses } from 'src/app/models/Bonuses';
 export class TableSalesmanCabinetComponent implements OnInit{
 
   @Input() bonuses: Bonuses[];
+  isRejectWindowVisible:boolean = false;
   currentYear: number = new Date().getFullYear();
   currentPage: number = 1;
   itemsPerPage: number = 8;
@@ -33,7 +34,7 @@ public pagingConfig : PaginationInstance = {
     this.pagingConfig.currentPage = 1;
   }
 
-  askAboutBonuses(){
+  rejectBonusCalculation(){
 
   }
 
