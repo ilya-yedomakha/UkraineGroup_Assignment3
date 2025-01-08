@@ -4,16 +4,18 @@ const salePerformanceRecordModel = require("../models/SalePerformanceRecord")
 const ReportModel = require("../models/Report")
 
 const salesmanService = require("../services/salesman-service")
+const userService = require("../services/user-service")
 
 const FormData = require('form-data');
 const axios = require('axios');
 const qs = require('qs');
 const SocialPerformanceRecordService = require("../services/social-performance-record-service");
+const mongoose = require("mongoose");
 
 let environment;
-if(process.env.NODE_ENV === 'development'){
+if (process.env.NODE_ENV === 'development') {
     environment = require('../../environments/environment.js').default;
-}else{
+} else {
     environment = require('../../environments/environment.prod.js').default;
 }
 
@@ -78,21 +80,76 @@ class salesmanApi {
             );
 
             const employees = employeeResponse.data.data || [];
-            const filteredEmployees = employees.filter(
-                (employee) => employee.jobTitle === 'Senior Salesman'
+            const filteredEmployees = employees.filter((employee) => employee.jobTitle === 'Senior Salesman');
+
+            const enrichedEmployees = await Promise.all(
+                filteredEmployees.map(async (employee) => {
+                    try {
+                        const contactDetailResponse = await axios.get(
+                            `http://localhost:8888/symfony/web/index.php/api/v1/employee/${employee.employeeId}/contact-detail`,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${accessToken}`,
+                                },
+                            }
+                        );
+
+                        const contactDetails = contactDetailResponse.data.data;
+                        return {
+                            ...employee,
+                            workTelephone: contactDetails.workTelephone || null,
+                            workEmail: contactDetails.workEmail || null,
+                        };
+                    } catch (error) {
+                        console.error(`Error fetching contact details for employee ${employee.employeeId}:`, error.message);
+                        return employee;
+                    }
+                })
             );
 
             try {
-                const savedEmployees = await salesmanService.saveSalesmanFromOrangeHRMToDB(filteredEmployees);
-                return res.status(200).send({apiStatus: true, message: 'Data saved successfully', data: savedEmployees});
+                const savedEmployees = await salesmanService.saveSalesmanFromOrangeHRMToDB(enrichedEmployees);
+
+                await this.createUsersForEmployees(savedEmployees);
+
+                return res.status(200).send({
+                    apiStatus: true,
+                    message: 'Data saved successfully',
+                    data: savedEmployees
+                });
             } catch (e) {
                 return res.status(500).send({apiStatus: false, message: 'Error saving data', error: e.message});
             }
-
         } catch (e) {
             res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
-    }
+    };
+
+    static createUsersForEmployees = async (employees) => {
+        try {
+            const users = employees.map((employee) => ({
+                username: employee.workEmail,
+                code: employee.code,
+                password: '1234',
+                //todo ROLE_SALESMAN,
+                firstname: employee.firstName,
+                lastname: employee.lastName,
+                email:employee.workEmail,
+                isAdmin: false
+            }));
+            for (const user of users) {
+                let foundUser = await userService.getByCode(mongoose.connection, user.code);
+                if (!foundUser) {
+                    await userService.add(mongoose.connection, user);
+                }
+            }
+
+        } catch (error) {
+            console.error('Error creating users:', error.message);
+            throw new Error('Failed to create users from employees.');
+        }
+    };
+
 
     static calculateAllBonuses = async (req, res) => {
         try {
@@ -212,7 +269,10 @@ class salesmanApi {
             const salesMan = await salesmanModel.findOne({code: Number(req.params.code)}).exec()
 
             if (salesMan == null) {
-                return res.status(404).send({apiStatus: false, message: "Salesman with code" + Number(req.params.code) + " not found"})
+                return res.status(404).send({
+                    apiStatus: false,
+                    message: "Salesman with code" + Number(req.params.code) + " not found"
+                })
             }
 
             const socialPerformanceRecordData = await SocialPerformanceRecordService.saveSocialPerformanceRecord(salesMan.code, req.body)
