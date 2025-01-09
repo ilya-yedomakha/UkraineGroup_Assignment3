@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { PersonalDetails } from 'src/app/models/PersonalDetails';
+import { Salesman } from 'src/app/models/Salesman';
 import {PaginationInstance} from "ngx-pagination";
 
 
@@ -10,7 +10,7 @@ import {PaginationInstance} from "ngx-pagination";
 })
 export class TableSalesmenComponent implements OnInit {
 
-  @Input() salesmenPersonalDetails: PersonalDetails[];
+  @Input() salesmen: Salesman[];
   currentPage: number = 1;
   itemsPerPage: number = 8;
   totalItems: number = 0;
@@ -24,7 +24,7 @@ export class TableSalesmenComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    this.totalItems = this.salesmenPersonalDetails.length;
+    this.totalItems = this.salesmen.length;
   }
 
 
