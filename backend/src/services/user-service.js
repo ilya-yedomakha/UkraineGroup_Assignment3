@@ -23,6 +23,10 @@ exports.get = async function (db, username){
     return db.collection('users').findOne({username: username});
 }
 
+exports.getByCode = async function (db, code){
+    return db.collection('users').findOne({code: code});
+}
+
 /**
  * verifies provided credentials against a database
  * @param db source database

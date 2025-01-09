@@ -113,14 +113,15 @@ class SalesmanService{
         const salesman = await salesmanModel.findOne({code: data.code})
         try {
             if (!salesman) {
-                const salesman = new salesmanModel({
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    middleName: data.middleName,
-                    fullName: data.fullName,
-                    employeeId: data.employeeId,
-                    code: data.code,
-                })
+                // const salesman = new salesmanModel({
+                //     firstName: data.firstName,
+                //     lastName: data.lastName,
+                //     middleName: data.middleName,
+                //     fullName: data.fullName,
+                //     employeeId: data.employeeId,
+                //     code: data.code,
+                // })
+                const salesman = new salesmanModel(data)
                 await salesman.save()
                 return salesman
             } else {
@@ -130,7 +131,7 @@ class SalesmanService{
             throw new Error(e.message)
         }
     }
-
+// TODO rework changes for salesman
     static updateSalesman = async function (oldData, newData) {
         try {
             if (newData.hasOwnProperty("firstName"))
