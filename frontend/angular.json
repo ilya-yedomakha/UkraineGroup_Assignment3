@@ -71,7 +71,7 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "app:build:production"
+              "browserTarget": "app:build:development"
             },
             "development": {
               "browserTarget": "diarchitect-platform-frontend:build:development",
@@ -120,7 +120,7 @@
           },
           "configurations": {
             "production": {
-              "devServerTarget": "app:serve:production"
+              "devServerTarget": "app:serve:development"
             }
           }
         }

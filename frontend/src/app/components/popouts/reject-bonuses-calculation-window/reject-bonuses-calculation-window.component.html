@@ -1,11 +1,19 @@
-<div class=" bg-[#FCE8BA] border-2 border-black rounded-md m-2 py-2 px-4">
-
-    <div class="flex flex-col justify-start mb-2">
-    <p class="text-xl font-bold">Rejection Bonuses</p>
-    <label class="text-base ">Reason:</label>
-    <textarea></textarea>
-    <button class="self-end align-bottom pm-1 bg-green-400 rounded-lg p-2 w-full transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105"
-    >
-    Send</button>
-</div>
+<div class=" bg-[#FCE8BA] border-2 border-black rounded-md m-2 py-2 px-4 flex-col">
+    <div class="flex justify-between">
+        <p class="text-xl font-bold self-end">Rejection Bonuses</p>
+        <a 
+        class="justify-self-end self-top my-1 mx-1"
+        (click)="toClose()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 hover:stroke-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </a>
+    </div>
+    <div class="flex flex-col justify-start mt-3 mb-2 px-1">
+        <label class="text-base my-2 font-semibold">Reason:</label>
+        <textarea class="w-full h-14 text-base border-2 border-black rounded-md"></textarea>
+        <button class="self-end justify-self-end  my-2  bg-green-400 rounded-lg py-2 px-4 w-auto transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
+            Send
+        </button>
+    </div>
 </div>

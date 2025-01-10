@@ -16,8 +16,8 @@ export class SalesmanCabinetPageComponent implements OnInit{
 
   ngOnInit(): void {
   //service!!
-  this.salesman = null;
-  this.bonuses = [];
+  this.salesman = new Salesman(2342,"fsdf","fdsfsd","fsdfs","fds","fsdfs","fsdfs","fdsfsf","fdsfs","fsdfsfs","fdsfs","fdsfs");
+  this.bonuses = [new Bonuses(2025,234,234,564)];
 }
   }
 
