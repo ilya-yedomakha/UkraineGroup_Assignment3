@@ -210,7 +210,7 @@ class salesmanApi {
                 return res.status(500).send({apiStatus: true, message: 'Access token not found in response'});
             }
 
-            const reports = await ReportModel.find({isConfirmed: true});
+            const reports = await ReportModel.find({isConfirmedByCEO: true});
 
             if (reports.length === 0) {
                 return res.status(404).send({message: 'No reports found to process'});
@@ -222,7 +222,7 @@ class salesmanApi {
                 try {
                     const formData = new FormData();
                     formData.append('year', report.year);
-                    formData.append('value', report.total_bonus);
+                    formData.append('value', report.totalBonus);
 
                     const postResponse = await axios.post(
                         `http://localhost:8888/symfony/web/index.php/api/v1/employee/${(await report).employeeId}/bonussalary`,
@@ -239,7 +239,7 @@ class salesmanApi {
                         employeeId: report.employeeId,
                         status: postResponse.status,
                         year: report.year,
-                        value: report.total_bonus
+                        value: report.totalBonus
                     });
                     (await report).isSent = true
                     await report.save()
@@ -249,7 +249,7 @@ class salesmanApi {
                         status: postError.response?.status || 500,
                         error: postError.message,
                         year: report.year,
-                        value: report.total_bonus
+                        value: report.totalBonus
                     });
                 }
             }

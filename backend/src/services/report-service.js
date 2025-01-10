@@ -6,15 +6,19 @@ class ReportService {
     static updateReport = async function (oldData, newData) {
         try {
             if (newData.hasOwnProperty("orders_bonuses"))
-                oldData.orders_bonuses = newData.orders_bonuses;
+                oldData.ordersBonuses = newData.ordersBonuses;
             if (newData.hasOwnProperty("social_bonuses"))
-                oldData.social_bonuses = newData.social_bonuses;
+                oldData.socialBonuses = newData.socialBonuses;
             if (newData.hasOwnProperty("remarks"))
                 oldData.remarks = newData.remarks;
             if (newData.hasOwnProperty("total_bonus"))
-                oldData.total_bonus = newData.total_bonus;
-            if (newData.hasOwnProperty("isConfirmed"))
-                oldData.isConfirmed = newData.isConfirmed;
+                oldData.totalBonus = newData.totalBonus;
+            if (newData.hasOwnProperty("isConfirmedByCEO"))
+                oldData.isConfirmedByCEO = newData.isConfirmedByCEO
+            if (newData.hasOwnProperty("isConfirmedBySalesman"))
+                oldData.isConfirmedBySalesman = newData.isConfirmedBySalesman
+            if (newData.hasOwnProperty("isConfirmedByHR"))
+                oldData.isConfirmedByHR = newData.isConfirmedByHR;
             oldData.isSent = false;
             return await oldData.save()
         } catch (e) {
@@ -24,7 +28,7 @@ class ReportService {
 
     static submitReport = async function (report) {
         try {
-            report.isConfirmed = true;
+            report.isConfirmedByCEO = true;
             return await report.save()
         } catch (e) {
             throw new Error(e.message)
@@ -33,7 +37,7 @@ class ReportService {
 
     static unSubmitReport = async function (report) {
         try {
-            report.isConfirmed = false;
+            report.isConfirmedByCEO = false;
             return await report.save()
         } catch (e) {
             throw new Error(e.message)

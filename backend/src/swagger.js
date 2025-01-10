@@ -86,11 +86,11 @@ const swaggerDocument = {
             year : 2021
         },
         reportSchema: {
-            orders_bonuses: [],
-            social_bonuses: [],
+            ordersBonuses: [],
+            socialBonuses: [],
             remarks: "remark",
-            total_bonus: 1234,
-            isConfirmed: false
+            totalBonus: 1234,
+            isConfirmedByCEO: false
         }
 
     }

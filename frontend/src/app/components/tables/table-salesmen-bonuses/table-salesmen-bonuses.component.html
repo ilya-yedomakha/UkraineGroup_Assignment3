@@ -13,7 +13,7 @@
     </div>
 
     <div *ngFor="let bonus of bonuses | paginate: pagingConfig"
-      [ngClass]="bonus.isConfirmed ? 'bg-green-600 text-white' : 'bg-gray-300 text-black'"
+      [ngClass]="bonus.isConfirmedByCEO ? 'bg-green-600 text-white' : 'bg-gray-300 text-black'"
       class="policy grid grid-cols-7 gap-2 items-cente py-4 px-2 rounded-lg shadow-md mb-4 mx-2 mx-2hover:shadow-lg transition-shadow border-2 border-black">
 
       <span class="flex-1 text-center">{{ bonus.firstname }}</span>
@@ -29,13 +29,13 @@
       <span class="flex-1 text-center">{{ bonus.isConfirmedBySalesman }}</span>
 
       <span class="flex-1 flex justify-center gap-2 items-center">
-        <button [disabled]="bonus.isConfirmed" (click)="toEditSalesmanBonus(bonus)"
-          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-300">
+        <button [disabled]="bonus.isConfirmedByCEO" (click)="toEditSalesmanBonus(bonus)"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-300">
           Edit
 
         </button>
-        <input type="checkbox" [disabled]="bonus.isConfirmed" [checked]="bonus.isConfirmed"
-          class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+        <input type="checkbox" [disabled]="bonus.isConfirmedByCEO" [checked]="bonus.isConfirmedByCEO"
+               class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
       </span>
     </div>
     <div class="flex justify-center mt-4">

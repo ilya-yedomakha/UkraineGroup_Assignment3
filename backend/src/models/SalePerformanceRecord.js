@@ -42,7 +42,7 @@ const salePerformanceSchema = new Schema({
     positionPricePerUnit: { type: Number, required: true },
 
     // Quantity for Position
-    positionQuantity: { type: Number, required: true },
+    items: { type: Number, required: true },
 
     // Pricing status for Position
     positionPricingStatus: { type: String, required: true },

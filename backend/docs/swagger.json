@@ -898,7 +898,7 @@
           "type": "number",
           "example": 1234
         },
-        "isConfirmed": {
+        "isConfirmedByCEO": {
           "type": "boolean",
           "example": false
         }

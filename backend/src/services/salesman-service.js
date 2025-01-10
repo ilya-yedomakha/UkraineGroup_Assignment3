@@ -10,21 +10,23 @@ class SalesmanService{
         let report
         if (reportForYear) {
             report = reportForYear
-            report.social_bonuses = []
-            report.orders_bonuses = []
+            report.socialBonuses = []
+            report.ordersBonuses = []
             report.salesman_code = salesman.code
-            report.salesman_firstName = salesman.firstName
-            report.salesman_lastName = salesman.lastName
+            report.firstname = salesman.firstName
+            report.lastname = salesman.lastName
             report.year = year
-            report.total_bonus = 0
+            report.totalBonus = 0
             report.employeeId = salesman.employeeId
-            report.isConfirmed = false
+            report.isConfirmedByCEO = false
+            report.isConfirmedBySalesman = false
+            report.isConfirmedByHR = false
             report.isSent = false
         } else {
             report = new reportModel()
             report.salesman_code = salesman.code
-            report.salesman_firstName = salesman.firstName
-            report.salesman_lastName = salesman.lastName
+            report.firstname = salesman.firstName
+            report.lastname = salesman.lastName
             report.year = year
             report.employeeId = salesman.employeeId
             report.remarks = ""
@@ -33,7 +35,7 @@ class SalesmanService{
         socialData.forEach(({target_value, actual_value, goal_description}) => {
             let relation = actual_value - target_value;
             const currBonus = socialBonusCoefficient(relation)
-            report.social_bonuses.push({
+            report.socialBonuses.push({
                 target_value: target_value,
                 actual_value: actual_value,
                 goal_description: goal_description,
@@ -43,27 +45,27 @@ class SalesmanService{
         });
         // priority 1-5 = coeffs 0,0,25,50,100
         // clientRating 1-5 = coefs 100, 50, 25, 0, 0
-        // {positionQuantity * positionPricePerUnit} *0.1 or 0.05
+        // {items * positionPricePerUnit} *0.1 or 0.05
         // productName
         salesData.forEach(({
                                priority,
                                clientFullName,
                                clientRating,
-                               positionQuantity,
+                               items,
                                positionPricePerUnit,
                                productName
                            }) => {
-            const tempBonus = priorityCoefficient(priority) + clientRatingCoefficient(clientRating) + positionQuantity * positionPricePerUnit * 0.1;
-            report.orders_bonuses.push({
+            const tempBonus = priorityCoefficient(priority) + clientRatingCoefficient(clientRating) + items * positionPricePerUnit * 0.1;
+            report.ordersBonuses.push({
                 productName: productName,
                 clientFullName: clientFullName,
                 clientRating: clientRating,
-                positionQuantity: positionQuantity,
+                items: items,
                 bonus: tempBonus
             })
             totalBonus += tempBonus
         })
-        report.total_bonus = totalBonus
+        report.totalBonus = totalBonus
 
         await report.save()
         return totalBonus
