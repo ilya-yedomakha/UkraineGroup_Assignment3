@@ -7,6 +7,9 @@ export class User{
         public _id: string,
         public username: string,
         public code: number,
+        public lastname: string,
+        public firstname: string,
+        public email: string,
         public isAdmin: boolean
     ) {  }
 }

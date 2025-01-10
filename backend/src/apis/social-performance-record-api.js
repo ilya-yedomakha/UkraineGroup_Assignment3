@@ -8,7 +8,7 @@ class socialPerformanceRecordApi {
     static getAllSocialPerformanceRecords = async (req, res) => {
         try {
             const data = await socialPerformanceRecordModel.find()
-            res.status(200).send({apiStatus: true, message: "all social performance records were found", data})
+            res.status(200).send({apiStatus: true, message: "all social performance records were found", data: data})
         } catch (e) {
             res.status(500).send({apiStatus: false, message: e.message, data: e})
         }

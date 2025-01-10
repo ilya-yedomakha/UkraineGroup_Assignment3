@@ -11,25 +11,45 @@ export class BonusData {
             bonus: number;
         }>,
         public socialBonuses: Array<{
-            name:string,
-            targetValue:number,
-            actualValue:number,
+            goal_description: string;
+            target_value: number;
+            actual_value: number;
             bonus: number;
         }>,
         public remarks: string | null,
         public totalBonus: number,
         public isConfirmedByCEO: boolean,
-        public isConfirmedBySalesman: boolean
-    ) {}
+        public isConfirmedBySalesman: boolean,
+        public isConfirmedByHR: boolean,
+        public isSent: boolean
+    ) {
+    }
 
-   public getOrderBonusesTotal(): number {
+    public getOrderBonusesTotal(): number {
         return this.ordersBonuses.reduce((sum, ob) => sum + ob.bonus, 0);
     }
+
     public getSocialBonusesTotal(): number {
-        return  this.socialBonuses.reduce((sum, sb) => sum + sb.bonus, 0);
+        return this.socialBonuses.reduce((sum, sb) => sum + sb.bonus, 0);
     }
+
     public getTotalBonuses(): number {
         return this.getOrderBonusesTotal() + this.getSocialBonusesTotal();
     }
 
+    static fromApi(data: any): BonusData {
+        return new BonusData(
+            data.id,
+            data.firstname,
+            data.lastname,
+            data.ordersBonuses,
+            data.socialBonuses,
+            data.remarks,
+            data.totalBonus,
+            data.isConfirmedByCEO,
+            data.isConfirmedBySalesman,
+            data.isConfirmedByHR,
+            data.isSent
+        );
+    }
 }

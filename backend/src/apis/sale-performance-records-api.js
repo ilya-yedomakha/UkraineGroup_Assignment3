@@ -103,7 +103,7 @@ class salePerformanceRecordApi {
                         "positionName": position.name,
                         "positionNumber": position.positionNumber,
                         "positionPricePerUnit": position.pricePerUnit,
-                        "positionQuantity": position.quantity,
+                        "items": position.quantity,
                         "positionPricingStatus": position.pricingState,
                         "positionBaseAmount": position.baseAmount,
                         "positionDiscountAmount": position.discountAmount,

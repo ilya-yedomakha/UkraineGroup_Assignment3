@@ -35,6 +35,7 @@ import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.compo
 import { TableSalesmenComponent } from './components/tables/table-salesmen/table-salesmen.component';
 import { RejectBonusesCalculationWindowComponent } from './components/popouts/reject-bonuses-calculation-window/reject-bonuses-calculation-window.component';
 import { AddSotialPerformanceWindowComponent } from './components/popouts/add-sotial-performance-window/add-sotial-performance-window.component';
+import { ForbiddenPageComponent } from './pages/forbiden-page/forbidden-page.component';
 
 @NgModule({
     declarations: [
@@ -57,7 +58,8 @@ import { AddSotialPerformanceWindowComponent } from './components/popouts/add-so
         SalesmenPageComponent,
         TableSalesmenComponent,
         RejectBonusesCalculationWindowComponent,
-        AddSotialPerformanceWindowComponent
+        AddSotialPerformanceWindowComponent,
+        ForbiddenPageComponent
     ],
     imports: [
         BrowserModule,

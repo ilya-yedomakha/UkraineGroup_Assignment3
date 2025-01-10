@@ -11,15 +11,15 @@ const reportSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    salesman_firstName: {
+    firstname: {
         type: String,
         required: true
     },
-    salesman_lastName: {
+    lastname: {
         type: String,
         required: true
     },
-    orders_bonuses: [{
+    ordersBonuses: [{
         productName: String,
         clientFullName: String,
         clientRating: String,
@@ -27,7 +27,7 @@ const reportSchema = new mongoose.Schema({
         bonus: Number
     }],
 
-    social_bonuses: [{
+    socialBonuses: [{
         goal_description:String,
         target_value: Number,
         actual_value:Number,
@@ -42,11 +42,21 @@ const reportSchema = new mongoose.Schema({
         type: Number
     },
 
-    total_bonus: {
+    totalBonus: {
         type: Number
     },
 
-    isConfirmed: {
+    isConfirmedByCEO: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    isConfirmedBySalesman: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    isConfirmedByHR: {
         type: Boolean,
         required: true,
         default: false
