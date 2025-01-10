@@ -9,6 +9,7 @@ import {BonusesPageComponent} from "./pages/bonuses-page/bonuses-page.component"
 import { ChangeBonusesPageComponent } from './pages/change-bonuses-page/change-bonuses-page.component';
 import { SalesmanCabinetPageComponent } from './pages/salesman-cabinet-page/salesman-cabinet-page.component';
 import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.component';
+import {ForbiddenPageComponent} from "./pages/forbiden-page/forbidden-page.component";
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -27,6 +28,7 @@ const routes: Routes = [
     {path: 'cabinet', component:SalesmanCabinetPageComponent},
     {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
     {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
+    {path: 'forbidden', component: ForbiddenPageComponent},
     {path: '**', component: NotFoundPageComponent}
 ];
 

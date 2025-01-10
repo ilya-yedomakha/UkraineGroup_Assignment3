@@ -24,3 +24,7 @@ button.menu-button.active{
 button.menu-button.active:hover{
   background: rgba(255,255,255,0.1);
 }
+
+.gradient{
+    background: linear-gradient(90deg, #0076EB 35.5%, #004385 100%);
+}

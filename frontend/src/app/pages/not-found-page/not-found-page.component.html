@@ -1,8 +1,13 @@
-<h1>Page Not Found!</h1>
-<p>
-  There is no page registered in angular router under this path.<br>
-  If you expected one of your pages here, maybe take a look at the routing definitions <code>frontend/src/app/app.routing.ts</code> there might be your problem.
-</p>
-<p>
-  If you clicked on a button in the menu-bar and expected a different path the problem might be located in the menu-entry: <code>frontend/src/app/app.routing.ts</code> .
-</p>
+<app-menu-bar/>
+<div class="flex items-center justify-center h-full">
+    <div class="flex items-center space-x-4">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-20 h-20 text-yellow-500">
+            <path d="M12 2L2 22h20L12 2z" />
+            <text x="12" y="18" text-anchor="middle" fill="black" font-size="14" font-weight="bold">!</text>
+        </svg>
+        <p class="text-lg font-bold text-center">We couldn’t find the page you were looking for<br>
+            It might have been removed, renamed, or it’s temporarily unavailable<br>
+            Please check the URL or return to the homepage</p>
+    </div>
+</div>
+
