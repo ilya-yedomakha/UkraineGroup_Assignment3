@@ -5,7 +5,12 @@ const {checkAuthorization} = require('../middlewares/auth-middleware');
 router.get("/",
     // #swagger.tags = ['Reports']
     checkAuthorization(), ReportApi.getAllReports)
-router.get("salesman/:code",
+
+router.get("/year/:year",
+    // #swagger.tags = ['Reports']
+    checkAuthorization(), ReportApi.getAllReportsByYear)
+
+router.get("/salesman/:code",
     // #swagger.tags = ['Reports']
     checkAuthorization(), ReportApi.getAllReportsBySalesmanCode)
 

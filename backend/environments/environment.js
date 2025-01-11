@@ -17,8 +17,8 @@ const environment = {
     orangeHRMUsername: 'demouser',
     passwordHRM: '*Safb02da42Demo$',
     openCRXUsername: 'guest',
-    passwordCRX: 'guest'
-
+    passwordCRX: 'guest',
+    SECRET_KEY: 'SECRET_KEY'
 };
 
 exports.default = environment;

@@ -19,9 +19,7 @@ import { ExamplePageComponent } from './pages/example-page/example-page.componen
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import {MatTableModule} from '@angular/material/table';
 import { BonusesPageComponent } from './pages/bonuses-page/bonuses-page.component';
-import {
-    TableSalesmenBonusesComponent
-} from "./components/tables/table-salesmen-bonuses/table-salesmen-bonuses.component";
+import { TableSalesmenBonusesComponent} from "./components/tables/table-salesmen-bonuses/table-salesmen-bonuses.component";
 import { FooterComponent } from './components/footer/footer.component';
 import { ChangeBonusesPageComponent } from './pages/change-bonuses-page/change-bonuses-page.component';
 import { TableSocialBonusesComponent } from './components/tables/table-social-bonuses/table-social-bonuses.component';
@@ -36,6 +34,7 @@ import { TableSalesmenComponent } from './components/tables/table-salesmen/table
 import { RejectBonusesCalculationWindowComponent } from './components/popouts/reject-bonuses-calculation-window/reject-bonuses-calculation-window.component';
 import { AddSotialPerformanceWindowComponent } from './components/popouts/add-sotial-performance-window/add-sotial-performance-window.component';
 import { ForbiddenPageComponent } from './pages/forbiden-page/forbidden-page.component';
+import { CalculateConfirmationWindowComponent } from './components/popouts/calculate-confirmation-window/calculate-confirmation-window.component';
 import { TableManageSocialPerformanceComponent } from './components/tables/table-manage-social-performance/table-manage-social-performance.component';
 import { TableViewSalePerformanceComponent } from './components/tables/table-view-sale-performance/table-view-sale-performance.component';
 
@@ -61,9 +60,7 @@ import { TableViewSalePerformanceComponent } from './components/tables/table-vie
         TableSalesmenComponent,
         RejectBonusesCalculationWindowComponent,
         AddSotialPerformanceWindowComponent,
-        ForbiddenPageComponent,
-        TableManageSocialPerformanceComponent,
-        TableViewSalePerformanceComponent
+        ForbiddenPageComponent
     ],
     imports: [
         BrowserModule,
