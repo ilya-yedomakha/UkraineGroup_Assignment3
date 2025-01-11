@@ -72,7 +72,7 @@ export class TableSalesmenBonusesComponent  implements OnChanges{
         } else {
             this.changes.push({
                 _id: bonusId,
-                originalValue: false, // Якщо значення немає, встановіть за замовчуванням
+                originalValue: false,
                 currentValue: newValue
             });
         }
