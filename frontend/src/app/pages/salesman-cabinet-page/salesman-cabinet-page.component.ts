@@ -16,7 +16,7 @@ export class SalesmanCabinetPageComponent implements OnInit{
   bonuses:Bonuses[];
   socialRecords: SocialPerformanceRecord[];
   saleRecords: SalePerformanceRecord[];
-  isRejectWindowVisible: boolean = false;
+  isAddSocialPerformanceWindowVisible: boolean = false;
 
   ngOnInit(): void {
   //service!!

@@ -34,8 +34,10 @@
           Edit
 
         </button>
-        <input type="checkbox" [disabled]="bonus.isConfirmedByCEO" [checked]="bonus.isConfirmedByCEO"
-               class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+        <input type="checkbox" 
+        [checked]="bonus.isConfirmedByCEO"
+        (change)="onCheckboxChange(bonus._id, $event.target.checked)"
+        class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
       </span>
     </div>
     <div class="flex justify-center mt-4">

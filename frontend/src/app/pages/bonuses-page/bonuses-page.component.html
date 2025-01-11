@@ -7,17 +7,14 @@
                 (click)="calculateBonuses()"
                 >Calculate bonuses</button>
                 <div class="mt-4 font-semibold flex justify-between">
-                    <button class="mr-2 bg-green-700 rounded-lg p-2 w-full"
-                    (click)="confirmAllBonuses()"
-                    >Confirm all</button>
                     <button class="bg-green-700 rounded-lg p-2 w-full"
-                    (click)="confirmSelected()"
-                    >Confirm selected</button>
+                    (click)="saveSelected()"
+                    >Save selected</button>
                 </div>
             </div>
         </div>
         <div>
-            <app-table-salesmen-bonuses [bonuses]="bonusesData"></app-table-salesmen-bonuses>
+            <app-table-salesmen-bonuses  (changesDetected)="handleChanges($event)" [bonuses]="bonusesData"></app-table-salesmen-bonuses>
         </div>
     </div>
 </div>

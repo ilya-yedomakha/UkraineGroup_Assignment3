@@ -1,6 +1,6 @@
 export class BonusData {
     constructor(
-        public _id: number,
+        public _id: string,
         public firstname: string,
         public lastname: string,
         public ordersBonuses: Array<{

@@ -1,7 +1,7 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {BonusData} from 'src/app/models/BonusData';
-import {Salesman} from '../../models/Salesman';
-import {BonusesService} from '../../services/bonuses.service';
+import { Component, inject, OnInit } from '@angular/core';
+import { BonusData } from 'src/app/models/BonusData';
+import { Salesman } from '../../models/Salesman';
+import { BonusesService } from '../../services/bonuses.service';
 
 @Component({
     selector: 'app-bonuses-page',
@@ -16,6 +16,12 @@ export class BonusesPageComponent implements OnInit {
     salesmen: Salesman[] = [];
     private bonusesService = inject(BonusesService);
 
+    updatedChanges: { _id: string, originalValue: boolean, currentValue: boolean }[] = [];
+
+
+    handleChanges(changes: { _id: string, originalValue: boolean, currentValue: boolean }[]) {
+        this.updatedChanges = changes.filter(change => change.originalValue !== change.currentValue);
+    }
 
     public ngOnInit(): void {
 
@@ -56,12 +62,8 @@ export class BonusesPageComponent implements OnInit {
         this.isCalculationWindowVisible = true;
     }
 
-    confirmAllBonuses(): void {
-
-    }
-
-    confirmSelected(): void {
-
+    saveSelected(): void {
+        const changedIds = this.updatedChanges.map(change => change._id);
     }
 
     updateTable($event: boolean): void {

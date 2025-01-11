@@ -60,7 +60,10 @@ import { TableViewSalePerformanceComponent } from './components/tables/table-vie
         TableSalesmenComponent,
         RejectBonusesCalculationWindowComponent,
         AddSotialPerformanceWindowComponent,
-        ForbiddenPageComponent
+        ForbiddenPageComponent,
+        TableViewSalePerformanceComponent,
+        TableManageSocialPerformanceComponent,
+        CalculateConfirmationWindowComponent
     ],
     imports: [
         BrowserModule,

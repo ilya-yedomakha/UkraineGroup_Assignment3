@@ -1,1 +1,55 @@
-<p>add-sotial-performance-window works!</p>
+<form [formGroup]="rejectionForm" (ngSubmit)="onSubmit()" class="bg-[#FCE8BA] border-2 border-black rounded-md m-2 py-2 px-4 flex-col">
+    
+    <div class="flex justify-between">
+      <p class="text-xl font-bold self-end">Rejection Bonuses</p>
+      <a 
+        class="justify-self-end self-top my-1 mx-1"
+        (click)="toClose()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 hover:stroke-2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="flex flex-col justify-start mt-3 mb-2 px-1">
+      <label for="reason" class="text-base my-2 font-semibold">Reason:</label>
+      <select 
+        id="reason" 
+        formControlName="reason" 
+        class="w-full h-10 text-base border-2 border-black rounded-md">
+        <option *ngFor="let reason of reasons" [value]="reason">{{ reason }}</option>
+      </select>
+      <div *ngIf="rejectionForm.get('reason')?.invalid && rejectionForm.get('reason')?.touched" class="text-red-500 text-sm">
+        Please select a reason.
+      </div>
+    </div>
+  
+    <div class="flex justify-between mt-3 mb-2 px-1 gap-2">
+      <div class="flex flex-col w-1/2">
+        <label for="targetValue" class="text-base my-2 font-semibold">Target Value:</label>
+        <select 
+          id="targetValue" 
+          formControlName="targetValue" 
+          class="w-full h-10 text-base border-2 border-black rounded-md">
+          <option *ngFor="let value of valueOptions" [value]="value">{{ value }}</option>
+        </select>
+      </div>
+      <div class="flex flex-col w-1/2">
+        <label for="actualValue" class="text-base my-2 font-semibold">Actual Value:</label>
+        <select 
+          id="actualValue" 
+          formControlName="actualValue" 
+          class="w-full h-10 text-base border-2 border-black rounded-md">
+          <option *ngFor="let value of valueOptions" [value]="value">{{ value }}</option>
+        </select>
+      </div>
+    </div>
+  
+    <button 
+      type="submit" 
+      [disabled]="rejectionForm.invalid" 
+      class="self-end justify-self-end my-2 bg-green-400 rounded-lg py-2 px-4 w-auto transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
+      Send
+    </button>
+  </form>
+  

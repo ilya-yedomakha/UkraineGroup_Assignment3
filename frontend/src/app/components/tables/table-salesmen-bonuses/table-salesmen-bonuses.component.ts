@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { PaginationInstance } from 'ngx-pagination';
 import { BonusData } from 'src/app/models/BonusData';
@@ -11,6 +11,8 @@ import { BonusData } from 'src/app/models/BonusData';
 export class TableSalesmenBonusesComponent  implements OnInit{
 
     @Input() bonuses: BonusData[];
+    @Output() changesDetected = new EventEmitter<{ _id: string, originalValue: boolean, currentValue: boolean }[]>();
+    changes: { _id: string, originalValue: boolean, currentValue: boolean }[] = [];
     currentPage = 1;
     itemsPerPage = 8;
     totalItems = 0;
@@ -26,6 +28,11 @@ export class TableSalesmenBonusesComponent  implements OnInit{
 
     ngOnInit(): void {
         this.totalItems = this.bonuses.length;
+        this.changes = this.bonuses.map(bonus => ({
+          _id: bonus._id,
+          originalValue: bonus.isConfirmedByCEO,
+          currentValue: bonus.isConfirmedByCEO,
+        }));
     }
 
     toEditSalesmanBonus(bonuse: BonusData){
@@ -44,6 +51,14 @@ export class TableSalesmenBonusesComponent  implements OnInit{
     onTableSizeChange(event: any): void {
         this.pagingConfig.itemsPerPage = event.target.value;
         this.pagingConfig.currentPage = 1;
+    }
+
+    onCheckboxChange(bonusId: string, newValue: boolean) {
+      const change = this.changes.find(change => change._id === bonusId);
+      if (change) {
+        change.currentValue = newValue;
+        this.changesDetected.emit(this.changes);
+      }
     }
 
 }
