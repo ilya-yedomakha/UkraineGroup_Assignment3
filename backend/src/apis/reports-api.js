@@ -92,7 +92,7 @@ class reportApi {
         }
     }
 
-    static submitReport = async (req, res) => {
+    static submitReportByCEO = async (req, res) => {
         try {
             if (req.params.id === undefined || req.params.id === "") {
                 return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
@@ -101,7 +101,7 @@ class reportApi {
             if (found == null) {
                 return res.status(404).send({apiStatus: false, message: "Report is not found"});
             }
-            let recordUpdated = await reportService.submitReport(found)
+            let recordUpdated = await reportService.submitReportByCEO(found)
             return res.status(200).send({apiStatus: true, message: "Report was submitted", data: recordUpdated});
 
         } catch (e) {
@@ -109,7 +109,7 @@ class reportApi {
         }
     }
 
-    static submitAllReports = async (req, res) => {
+    static submitAllReportsByCEO = async (req, res) => {
         try {
             let found = await ReportModel.find()
             if (found == null || found.length === 0) {
@@ -118,7 +118,7 @@ class reportApi {
             let recordUpdated = [];
 
             for (let report of found) {
-                let updatedRecord = await reportService.submitReport(report);
+                let updatedRecord = await reportService.submitReportByCEO(report);
                 recordUpdated.push(updatedRecord);
             }
             return res.status(200).send({apiStatus: true, message: "Reports were submitted", data: recordUpdated});
@@ -128,7 +128,7 @@ class reportApi {
         }
     }
 
-    static unSubmitReport = async (req, res) => {
+    static unSubmitReportByCEO = async (req, res) => {
         try {
             if (req.params.id === undefined || req.params.id === "") {
                 return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
@@ -137,7 +137,7 @@ class reportApi {
             if (found == null) {
                 return res.status(404).send({apiStatus: false, message: "Report is not found"});
             }
-            let recordUpdated = await reportService.unSubmitReport(found)
+            let recordUpdated = await reportService.unSubmitReportByCEO(found)
             return res.status(200).send({apiStatus: true, message: "Report was unsubmitted", data: recordUpdated});
 
         } catch (e) {
@@ -145,7 +145,7 @@ class reportApi {
         }
     }
 
-    static unSubmitAllReports = async (req, res) => {
+    static unSubmitAllReportsByCEO = async (req, res) => {
         try {
             let found = await ReportModel.find()
             if (found == null || found.length === 0) {
@@ -154,7 +154,7 @@ class reportApi {
             let recordUpdated = [];
 
             for (let report of found) {
-                let updatedRecord = await reportService.unSubmitReport(report);
+                let updatedRecord = await reportService.unSubmitReportByCEO(report);
                 recordUpdated.push(updatedRecord);
             }
             return res.status(200).send({apiStatus: true, message: "Reports were submitted", data: recordUpdated});
@@ -163,6 +163,54 @@ class reportApi {
             return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }
+
+    static confirmationReverseWithIdsArrayByCEO = async (req, res) => {
+        try {
+            const idArray = req.body.ids;
+
+            if (!Array.isArray(idArray) || idArray.length === 0) {
+                return res.status(400).json({ error: 'Invalid or empty IDs array' });
+            }
+
+            const reports = await ReportModel.find({ _id: { $in: idArray } });
+
+            if (!reports || reports.length === 0) {
+                return res.status(404).json({ error: 'No reports found for the provided IDs' });
+            }
+
+            const result = await reportService.confirmationReverseWithIdsArrayBbyCEO(reports);
+
+            res.status(200).json({ message: 'Reports processed successfully', result });
+        } catch (error) {
+            console.error('Error processing reports:', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    };
+
+    static confirmationPairsArrayByCEO = async (req, res) => {
+        try {
+            const pairsArray = req.body.pairs;
+
+            if (!Array.isArray(pairsArray) || pairsArray.length === 0) {
+                return res.status(400).json({ error: 'Invalid or empty pairs array' });
+            }
+
+            const ids = pairsArray.map((entry) => entry._id);
+            const reports = await ReportModel.find({ _id: { $in: ids } });
+
+            if (!reports || reports.length === 0) {
+                return res.status(404).json({ error: 'No reports found for the provided IDs' });
+            }
+
+            const result = await reportService.confirmationPairsArrayByCEO(reports, pairsArray);
+
+            res.status(200).json({ message: 'Reports processed successfully', result });
+        } catch (error) {
+            console.error('Error processing reports:', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    };
+
 
     static deleteAllReports = async (req, res) => {
         try {

@@ -2,12 +2,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-add-sotial-performance-window',
-  templateUrl: './add-sotial-performance-window.component.html',
-  styleUrls: ['./add-sotial-performance-window.component.css']
+  selector: 'app-add-social-performance-window',
+  templateUrl: './add-social-performance-window.component.html',
+  styleUrls: ['./add-social-performance-window.component.css']
 })
-export class AddSotialPerformanceWindowComponent {
-  
+export class AddSocialPerformanceWindowComponent {
+
   rejectionForm!: FormGroup;
   @Output() close  = new EventEmitter<boolean>();
   reasons: string[] = ['Reason 1', 'Reason 2', 'Reason 3', 'Reason 4'];

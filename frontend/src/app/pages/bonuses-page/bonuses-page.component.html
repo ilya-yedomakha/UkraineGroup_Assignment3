@@ -20,5 +20,5 @@
 </div>
 
 <div *ngIf="isCalculationWindowVisible" class="fixed inset-0 flex items-center justify-center backdrop-blur-md bg-white bg-opacity-30 md:w-full, md:h-full">
-    <app-calculate-confirmation-window class="w-full h-full" (confirmationSuccess)="updateTable($event)" (close)="isCalculationWindowVisible = false"></app-calculate-confirmation-window>
+    <app-calculate-confirmation-window class="w-full h-full flex items-center justify-center" (confirmationSuccess)="updateTable($event)" (close)="isCalculationWindowVisible = false"></app-calculate-confirmation-window>
 </div>

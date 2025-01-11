@@ -681,6 +681,80 @@
         }
       }
     },
+    "/api/report/submit/confirmationArrayReverse": {
+      "put": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Reverse array",
+        "description": "Reverse array",
+        "parameters": [
+          {
+            "name": "Report",
+            "in": "body",
+            "description": "Reverse array",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/reverseArray"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/submit/confirmationPairCEO": {
+      "put": {
+        "tags": [
+          "confirmationPairCEO"
+        ],
+        "summary": "confirmationPairCEO",
+        "description": "confirmationPairCEO",
+        "parameters": [
+          {
+            "name": "confirmationPairCEO",
+            "in": "body",
+            "description": "confirmationPairCEO",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/confirmationPairCEO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/report/unSubmit": {
       "put": {
         "tags": [
@@ -928,6 +1002,42 @@
         "isConfirmedByCEO": {
           "type": "boolean",
           "example": false
+        }
+      }
+    },
+    "reverseArray": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "example": [
+            "678010157d630c79c9312c7d",
+            "678010167d630c79c9312c88"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "confirmationPairCEO": {
+      "type": "object",
+      "properties": {
+        "pairs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "678010167d630c79c9312c88"
+              },
+              "confirm": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
         }
       }
     }

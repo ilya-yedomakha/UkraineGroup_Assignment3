@@ -80,10 +80,10 @@ const swaggerDocument = {
             password: '5$c3inw%'
         },
         socialPerformanceRecordSchema: {
-            goal_description : "Attitude toward Client",
-            target_value : 5,
-            actual_value : 1,
-            year : 2021
+            goal_description: "Attitude toward Client",
+            target_value: 5,
+            actual_value: 1,
+            year: 2021
         },
         reportSchema: {
             ordersBonuses: [],
@@ -91,12 +91,29 @@ const swaggerDocument = {
             remarks: "remark",
             totalBonus: 1234,
             isConfirmedByCEO: false
+        },
+        reverseArray: {
+            ids: ["678010157d630c79c9312c7d",
+                "678010167d630c79c9312c88"
+            ]
+        },
+        confirmationPairCEO: {
+            pairs: [
+                {
+                    _id: "678010157d630c79c9312c7d",
+                    confirm: true
+                },
+                {
+                    _id: "678010167d630c79c9312c88",
+                    confirm: false
+                }
+            ]
         }
 
     }
 };
 const swaggerFile = "./docs/swagger.json";
 const apiRouteFile = ["./app.js"];
-generateSwagger(swaggerFile, apiRouteFile, swaggerDocument).then(({ success }) => {
+generateSwagger(swaggerFile, apiRouteFile, swaggerDocument).then(({success}) => {
     console.log(`Generated: ${success}`)
 });

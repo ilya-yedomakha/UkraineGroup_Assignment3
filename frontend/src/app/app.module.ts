@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
@@ -32,7 +32,7 @@ import {NgxPaginationModule} from "ngx-pagination";
 import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.component';
 import { TableSalesmenComponent } from './components/tables/table-salesmen/table-salesmen.component';
 import { RejectBonusesCalculationWindowComponent } from './components/popouts/reject-bonuses-calculation-window/reject-bonuses-calculation-window.component';
-import { AddSotialPerformanceWindowComponent } from './components/popouts/add-sotial-performance-window/add-sotial-performance-window.component';
+import { AddSocialPerformanceWindowComponent } from './components/popouts/add-social-performance-window/add-social-performance-window.component';
 import { ForbiddenPageComponent } from './pages/forbiden-page/forbidden-page.component';
 import { CalculateConfirmationWindowComponent } from './components/popouts/calculate-confirmation-window/calculate-confirmation-window.component';
 import { TableManageSocialPerformanceComponent } from './components/tables/table-manage-social-performance/table-manage-social-performance.component';
@@ -59,7 +59,7 @@ import { TableViewSalePerformanceComponent } from './components/tables/table-vie
         SalesmenPageComponent,
         TableSalesmenComponent,
         RejectBonusesCalculationWindowComponent,
-        AddSotialPerformanceWindowComponent,
+        AddSocialPerformanceWindowComponent,
         ForbiddenPageComponent,
         TableViewSalePerformanceComponent,
         TableManageSocialPerformanceComponent,
@@ -79,6 +79,7 @@ import { TableViewSalePerformanceComponent } from './components/tables/table-vie
         MatTableModule,
         NgChartsModule,
         NgxPaginationModule,
+        ReactiveFormsModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

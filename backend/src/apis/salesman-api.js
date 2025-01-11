@@ -6,6 +6,7 @@ const ReportModel = require("../models/Report")
 const salesmanService = require("../services/salesman-service")
 const userService = require("../services/user-service")
 
+const Role = require("../models/Role")
 const FormData = require('form-data');
 const axios = require('axios');
 const qs = require('qs');
@@ -131,10 +132,10 @@ class salesmanApi {
                 username: employee.workEmail,
                 code: employee.code,
                 password: '1234',
-                //todo ROLE_SALESMAN,
                 firstname: employee.firstName,
                 lastname: employee.lastName,
-                email:employee.workEmail,
+                email: employee.workEmail,
+                role: Role.SALESMAN,
                 isAdmin: false
             }));
             for (const user of users) {

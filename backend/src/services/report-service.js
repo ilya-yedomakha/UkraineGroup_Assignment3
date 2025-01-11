@@ -26,7 +26,7 @@ class ReportService {
         }
     }
 
-    static submitReport = async function (report) {
+    static submitReportByCEO = async function (report) {
         try {
             report.isConfirmedByCEO = true;
             return await report.save()
@@ -35,10 +35,32 @@ class ReportService {
         }
     }
 
-    static unSubmitReport = async function (report) {
+    static unSubmitReportByCEO = async function (report) {
         try {
             report.isConfirmedByCEO = false;
             return await report.save()
+        } catch (e) {
+            throw new Error(e.message)
+        }
+    }
+
+    static confirmationReverseWithIdsArrayBbyCEO = async function (reports) {
+        try {
+            for (const report of reports) {
+                report.isConfirmedByCEO = !report.isConfirmedByCEO;
+                await report.save()
+            }
+        } catch (e) {
+            throw new Error(e.message)
+        }
+    }
+
+    static confirmationPairsArrayByCEO = async function (reports, pairsArray) {
+        try {
+            for (const report of reports) {
+                report.isConfirmedByCEO = pairsArray.find((p) => p._id.toString() === report._id.toString()).confirm;
+                await report.save()
+            }
         } catch (e) {
             throw new Error(e.message)
         }
