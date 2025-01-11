@@ -1,6 +1,6 @@
 export class BonusData {
     constructor(
-        public id: number,
+        public _id: number,
         public firstname: string,
         public lastname: string,
         public ordersBonuses: Array<{
@@ -39,7 +39,7 @@ export class BonusData {
 
     static fromApi(data: any): BonusData {
         return new BonusData(
-            data.id,
+            data._id,
             data.firstname,
             data.lastname,
             data.ordersBonuses,

@@ -133,7 +133,7 @@ class SalesmanService{
             throw new Error(e.message)
         }
     }
-// TODO rework changes for salesman
+
     static updateSalesman = async function (oldData, newData) {
         try {
             if (newData.hasOwnProperty("firstName"))
@@ -143,9 +143,26 @@ class SalesmanService{
             if (newData.hasOwnProperty("middleName"))
                 oldData.middleName = newData.middleName;
             if (newData.hasOwnProperty("fullName"))
-                oldData.fullName = newData.fullName;
+                oldData.fullName = newData.fullName
             if (newData.hasOwnProperty("employeeId"))
-                oldData.employeeId = newData.employeeId;
+                oldData.employeeId = newData.employeeId
+            if (newData.hasOwnProperty("nationality"))
+                oldData.nationality = newData.nationality
+            if (newData.hasOwnProperty("dob"))
+                oldData.dob = newData.dob
+            if (newData.hasOwnProperty("maritalStatus"))
+                oldData.maritalStatus = newData.maritalStatus
+            if (newData.hasOwnProperty("gender"))
+                oldData.gender = newData.gender
+            if (newData.hasOwnProperty("unit"))
+                oldData.unit = newData.unit
+            if (newData.hasOwnProperty("jobTitle"))
+                oldData.jobTitle = newData.jobTitle
+            if (newData.hasOwnProperty("workEmail"))
+                oldData.workEmail = newData.workEmail
+            if (newData.hasOwnProperty("workTelephone"))
+                oldData.workTelephone = newData.workTelephone
+            ;
             await oldData.save()
             return oldData
         } catch (e) {

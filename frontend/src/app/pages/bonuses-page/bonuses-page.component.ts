@@ -10,6 +10,7 @@ import {BonusesService} from '../../services/bonuses.service';
 })
 export class BonusesPageComponent implements OnInit {
 
+    isCalculationWindowVisible = false;
     year: number = new Date().getFullYear();
     bonusesData: BonusData[] = [];
     salesmen: Salesman[] = [];
@@ -18,7 +19,7 @@ export class BonusesPageComponent implements OnInit {
 
     public ngOnInit(): void {
 
-        this.bonusesService.getBonuses().subscribe((response) => {
+        this.bonusesService.getBonusesByYear(this.year).subscribe((response) => {
             this.bonusesData = response;
         });
         // get request
@@ -51,15 +52,21 @@ export class BonusesPageComponent implements OnInit {
 
     }
 
-    recalculateBonuses() {
+    calculateBonuses(): void {
+        this.isCalculationWindowVisible = true;
+    }
+
+    confirmAllBonuses(): void {
 
     }
 
-    comfirmAllBonuses() {
+    confirmSelected(): void {
 
     }
 
-    comfirmSelected() {
-
+    updateTable($event: boolean): void {
+        this.bonusesService.getBonusesByYear(this.year).subscribe((response) => {
+            this.bonusesData = response;
+        });
     }
 }

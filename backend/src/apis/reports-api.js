@@ -28,6 +28,19 @@ class reportApi {
         }
     }
 
+    static getAllReportsByYear = async (req, res) => {
+        try {
+            const reports = await ReportModel.find({year: req.params.year});
+            res.status(200).send({
+                apiStatus: true,
+                message: "All reports fetched by year" + req.params.year,
+                data: reports
+            })
+        } catch (e) {
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
+        }
+    }
+
     static getAllReportsBySalesmanCode = async (req, res) => {
         try {
             const data = await ReportModel.find({salesman_code: req.params.code})

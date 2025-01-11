@@ -102,7 +102,9 @@ async function initDb(db){
 
         const adminPassword = environment.defaultAdminPassword;
         const adminCode = environment.defaultAdminCode;
-        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true, adminCode));
+        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, Role.CEO, adminCode));
+        await userService.add(db, new User('hr', 'Chantal', 'Banks', '', adminPassword, Role.HR, adminCode));
+        await userService.add(db, new User('salesmen', 'John', 'Smith', '', adminPassword, Role.SALESMAN, adminCode));
 
         console.log('created admin user with password: '+adminPassword);
     }

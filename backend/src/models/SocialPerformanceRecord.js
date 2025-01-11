@@ -21,7 +21,6 @@ const socialPerformanceSchema = new mongoose.Schema({
     },
     year: {
         type:Number,
-        min: 0,
         required: true
     },
     salesman_code: {

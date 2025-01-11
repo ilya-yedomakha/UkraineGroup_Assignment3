@@ -433,7 +433,34 @@
         }
       }
     },
-    "/api/reportsalesman/{code}": {
+    "/api/report/year/{year}": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/salesman/{code}": {
       "get": {
         "tags": [
           "Reports"
@@ -880,12 +907,12 @@
     "reportSchema": {
       "type": "object",
       "properties": {
-        "orders_bonuses": {
+        "ordersBonuses": {
           "type": "array",
           "example": [],
           "items": {}
         },
-        "social_bonuses": {
+        "socialBonuses": {
           "type": "array",
           "example": [],
           "items": {}
@@ -894,7 +921,7 @@
           "type": "string",
           "example": "remark"
         },
-        "total_bonus": {
+        "totalBonus": {
           "type": "number",
           "example": 1234
         },
