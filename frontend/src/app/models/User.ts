@@ -10,6 +10,7 @@ export class User{
         public lastname: string,
         public firstname: string,
         public email: string,
+        public role: number,
         public isAdmin: boolean
     ) {  }
 }
