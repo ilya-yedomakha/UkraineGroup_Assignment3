@@ -37,6 +37,7 @@ import { ForbiddenPageComponent } from './pages/forbiden-page/forbidden-page.com
 import { CalculateConfirmationWindowComponent } from './components/popouts/calculate-confirmation-window/calculate-confirmation-window.component';
 import { TableManageSocialPerformanceComponent } from './components/tables/table-manage-social-performance/table-manage-social-performance.component';
 import { TableViewSalePerformanceComponent } from './components/tables/table-view-sale-performance/table-view-sale-performance.component';
+import { AboutBonusCalculationDropDownComponent } from './components/popouts/about-bonus-calculation-drop-down/about-bonus-calculation-drop-down.component';
 
 @NgModule({
     declarations: [
@@ -63,7 +64,8 @@ import { TableViewSalePerformanceComponent } from './components/tables/table-vie
         ForbiddenPageComponent,
         TableViewSalePerformanceComponent,
         TableManageSocialPerformanceComponent,
-        CalculateConfirmationWindowComponent
+        CalculateConfirmationWindowComponent,
+        AboutBonusCalculationDropDownComponent
     ],
     imports: [
         BrowserModule,

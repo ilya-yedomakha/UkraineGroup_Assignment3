@@ -1,0 +1,92 @@
+<div class="cursor-pointer mx-auto p-3 m-4 border border-black rounded-md">
+    <!-- Trigger Text -->
+    <h3
+        class="underline text-lg uppercase"
+        (click)="toggleVisibility()"
+    >
+        How are bonuses calculated?
+    </h3>
+
+    <!-- Hidden Content -->
+    <div class="markdown prose w-full break-words mt-4 transition-all duration-300 ease-in-out"
+         [@fadeToggle]="isVisible ? 'visible' : 'hidden'"
+         (click)="toggleVisibility()">
+        <h4>1. <strong>Bonuses for Social performance</strong></h4>
+        <ul>
+            <li>
+                Each social performance has a <em>target value</em> and an <em>actual value</em>.
+                The difference between these values determines your bonus.
+            </li>
+            <li>
+                Formula:
+                <ul>
+                    <li>If the actual value <strong>matches</strong> the target value → you earn <strong>50 points</strong>.</li>
+                    <li>If the actual value exceeds the target → you earn <strong>100 points</strong>.</li>
+                    <li>If the actual value is 1 below the target → you earn <strong>20 points</strong>.</li>
+                    <li>If the actual value is 2 below the target → you earn <strong>10 points</strong>.</li>
+                    <li>If the actual value is more than 2 below → the bonus is <strong>0</strong>.</li>
+                </ul>
+            </li>
+        </ul>
+        <h4>2. <strong>Bonuses for Orders</strong></h4>
+        <p>Each order is evaluated based on several criteria:</p>
+        <ul>
+            <li>
+                <p><strong>Order Priority:</strong></p>
+                <ul>
+                    <li>Priority 5 → + 100 points.</li>
+                    <li>Priority 4 → + 50 points.</li>
+                    <li>Priority 3 → + 25 points.</li>
+                    <li>Priority 1 or 2 → <strong>0</strong>.</li>
+                </ul>
+            </li>
+            <li>
+                <p><strong>Client Rating:</strong></p>
+                <ul>
+                    <li>Rating 1 → + 100 points.</li>
+                    <li>Rating 2 → + 50 points.</li>
+                    <li>Rating 3 → + 25 points.</li>
+                    <li>Rating 4 or 5 → <strong>0</strong>.</li>
+                </ul>
+            </li>
+            <li>
+                <p><strong>Quantity of sold items</strong></p>
+            </li>
+            <li>
+                <p><strong>Order Value:</strong></p>
+                <ul>
+                    <li>Formula: <code>order priority + client rating + items * price per unit * coefficient (0.1)</code>.</li>
+                    <li>A portion of the order's value is added to your bonus.</li>
+                </ul>
+            </li>
+        </ul>
+        <h4>3. <strong>Total Bonus</strong></h4>
+        <ul>
+            <li>The total bonus is the sum of all bonuses for social goals and orders.</li>
+            <li>This total is recorded in your annual report and is available for review.</li>
+        </ul>
+        <hr>
+        <h3>How It Works in Practice</h3>
+        <ol>
+            <li>
+                <p><strong>The system automatically gathers data:</strong></p>
+                <ul>
+                    <li>Information about social goals.</li>
+                    <li>Details about all orders for the year.</li>
+                </ul>
+            </li>
+            <li>
+                <p><strong>Bonus Calculation:</strong></p>
+                <ul>
+                    <li>Formulas described above are applied to calculate your bonuses.</li>
+                </ul>
+            </li>
+            <li>
+                <p><strong>Result:</strong></p>
+                <ul>
+                    <li>Your final bonus is recorded in your report for the year.</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+</div>
