@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { BonusData } from 'src/app/models/BonusData';
-import { Salesman } from '../../models/Salesman';
-import { BonusesService } from '../../services/bonuses.service';
+import {Component, inject, OnInit} from '@angular/core';
+import {BonusData} from 'src/app/models/BonusData';
+import {Salesman} from '../../models/Salesman';
+import {BonusesService} from '../../services/bonuses.service';
 
 @Component({
     selector: 'app-bonuses-page',
@@ -21,13 +21,13 @@ export class BonusesPageComponent implements OnInit {
 
     handleChanges(changes: { _id: string, originalValue: boolean, currentValue: boolean }[]) {
         this.updatedChanges = changes.filter(change => change.originalValue !== change.currentValue);
+        console.log(this.updatedChanges);
     }
 
     public ngOnInit(): void {
 
-        this.bonusesService.getBonusesByYear(this.year).subscribe((response) => {
-            this.bonusesData = response;
-        });
+        this.loadBonuses();
+
         // get request
         // this.bonusesData = [
         //     new BonusData(1, 'some1', 'last1', [
@@ -64,9 +64,19 @@ export class BonusesPageComponent implements OnInit {
 
     saveSelected(): void {
         const changedIds = this.updatedChanges.map(change => change._id);
+        this.bonusesService.sendAllConfirmedBonusesToOrangeHRM(changedIds).subscribe(() => {
+            this.updatedChanges = [];
+            // this.bonusesData = [];
+            this.loadBonuses();
+        });
+
     }
 
     updateTable($event: boolean): void {
+        this.loadBonuses();
+    }
+
+    loadBonuses(): void {
         this.bonusesService.getBonusesByYear(this.year).subscribe((response) => {
             this.bonusesData = response;
         });

@@ -43,21 +43,13 @@ export class BonusesService {
         );
     }
 
-    sendAllConfirmedBonusesToOrangeHRM(): Observable<string> {
-        return this.http.post<{ message: string }>(
-            `${environment.apiEndpoint}/api/send-bonuses-orangeHRM`,
+    sendAllConfirmedBonusesToOrangeHRM(changedIds): Observable<string> {
+        return this.http.put<{ message: string }>(
+            `${environment.apiEndpoint}/api/report/submit/confirmationArrayReverse`,
+            {"ids":changedIds},
             { withCredentials: true }
         ).pipe(
             map(response => response.message)
-        );
-    }
-
-    confirmAllBonuses(): Observable<string> {
-        return this.http.put<{ message: string }>(
-            `${environment.apiEndpoint}/api/report/submit`,
-            { withCredentials: true }
-        ).pipe(
-            map(response => response.message) // Extract only the message field
         );
     }
 
