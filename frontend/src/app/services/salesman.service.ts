@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
+import {SocialPerformanceRecord} from '../models/SocialPerformanceRecord';
 
 @Injectable({
     providedIn: 'root'
@@ -35,8 +36,11 @@ export class SalesmanService {
             .pipe(map(o => o.data));
     }
 
-    createSocialPerformanceToSalesmanBySalesmanCode(code: number): Observable<any>{
-        return this.http.post<any>(`${environment.apiEndpoint}/api/salesman/${code}/social_performance_record`, {withCredentials: true})
+    createSocialPerformanceToSalesmanBySalesmanCode(code: number, socialPerformanceRecord: SocialPerformanceRecord): Observable<any>{
+        return this.http.post<any>(
+            `${environment.apiEndpoint}/api/salesman/${code}/social_performance_record`,
+            {socialPerformanceRecord},
+            {withCredentials: true})
             .pipe(map(o => o.data));
     }
 }
