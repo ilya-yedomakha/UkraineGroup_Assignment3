@@ -36,6 +36,8 @@ import { TableSalesmenComponent } from './components/tables/table-salesmen/table
 import { RejectBonusesCalculationWindowComponent } from './components/popouts/reject-bonuses-calculation-window/reject-bonuses-calculation-window.component';
 import { AddSotialPerformanceWindowComponent } from './components/popouts/add-sotial-performance-window/add-sotial-performance-window.component';
 import { ForbiddenPageComponent } from './pages/forbiden-page/forbidden-page.component';
+import { TableManageSocialPerformanceComponent } from './components/tables/table-manage-social-performance/table-manage-social-performance.component';
+import { TableViewSalePerformanceComponent } from './components/tables/table-view-sale-performance/table-view-sale-performance.component';
 
 @NgModule({
     declarations: [
@@ -59,7 +61,9 @@ import { ForbiddenPageComponent } from './pages/forbiden-page/forbidden-page.com
         TableSalesmenComponent,
         RejectBonusesCalculationWindowComponent,
         AddSotialPerformanceWindowComponent,
-        ForbiddenPageComponent
+        ForbiddenPageComponent,
+        TableManageSocialPerformanceComponent,
+        TableViewSalePerformanceComponent
     ],
     imports: [
         BrowserModule,

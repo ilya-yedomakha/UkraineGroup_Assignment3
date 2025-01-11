@@ -8,13 +8,13 @@ export class SalePerformanceRecord {
         public clientRating: number,
         public positionLineItemNumber: number,
         public positionName: string,
-        public positionNumber: string,
+        public positionNumber: number,
         public positionPricePerUnit: number,
         public items: number,
         public positionPricingStatus: string,
         public positionBaseAmount: number,
         public positionDiscountAmount: number,
-        public productNumber: string,
+        public productNumber: number,
         public productName: string,
     ) {
     }

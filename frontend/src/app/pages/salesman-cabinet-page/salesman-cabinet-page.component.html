@@ -1,10 +1,7 @@
-<app-menu-bar/>
 <div>
     <div class="grid md:grid-cols-10 gap-1 bg-slate-300 p-2 rounded-md mx-1 mb-2">
         <div class="col-span-3 p-1 flex flex-col items-center justify-center">
-            <img
-                src="assets/images/default_logo.png"
-                alt="Default image"
+            <img src="assets/images/default_logo.png" alt="Default image"
                 class="h-60 w-40 border-2 border-gray-300 object-cover rounded-md" />
             <label class="text-lg mt-1">{{salesman.firstName + " " + salesman.lastName}}</label>
         </div>
@@ -13,7 +10,8 @@
             <div class="grid grid-cols-2 gap-2 ml-2">
                 <div class="col-span-1 flex flex-col mr-4">
                     <label class="mb-2">Code: {{salesman.code}}</label>
-                    <label class="mb-2">Full name: {{salesman.firstName + " " + salesman.middleName + " " + salesman.lastName}}</label>
+                    <label class="mb-2">Full name: {{salesman.firstName + " " + salesman.middleName + " " +
+                        salesman.lastName}}</label>
                     <label class="mb-2">Gender: {{salesman.gender}}</label>
                     <label class="mb-2">Date of birth: {{salesman.dob}}</label>
                     <label class="mb-2">Work number: {{salesman.workNumber}}</label>
@@ -32,6 +30,20 @@
     <app-table-salesman-cabinet [bonuses]="bonuses"></app-table-salesman-cabinet>
 
     <div class="flex justify-center mt-2 grow">
-        <app-bar-graph-salesman-bonuses [bonuses]="bonuses" class="flex justify-center"></app-bar-graph-salesman-bonuses>
+        <app-bar-graph-salesman-bonuses [bonuses]="bonuses"
+            class="flex justify-center"></app-bar-graph-salesman-bonuses>
     </div>
-</div>
+
+    <div class="mt-4 mb-1 flex justify-between w-full">
+        <p class="text-xl">Social Performance</p>
+        <button
+            class=" bg-green-400 rounded-lg py-2 px-4 w-auto transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105"
+            (click)="toAddSocialPerformanceRecord()">Add social performance</button>
+    </div>
+
+    <app-table-manage-social-performance [socialPerformancesRecords]="socialRecords"></app-table-manage-social-performance>
+
+    <p class="text-xl mt-6 mb-1">Sale Performance</p>
+    <app-table-view-sale-performance [salePerformanceRecords]="saleRecords"></app-table-view-sale-performance>
+
+<div>
