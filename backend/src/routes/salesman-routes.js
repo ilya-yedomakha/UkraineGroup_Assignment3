@@ -7,7 +7,7 @@ router.get("/",
     //#swagger.description = 'Get all salesmen'
     //#swagger.summary = 'Get All salesmen'
     // #swagger.tags = ['Salesmen']
-    checkAuthorization(), SalesManController.getAllSalesmen)
+    checkAuthorization([0,1]), SalesManController.getAllSalesmen)
 router.get("/import-from-orangeHRM",
     //#swagger.description = 'Import senior salesman from OrangeHRM'
     //#swagger.summary = 'Import senior salesman from OrangeHRM'
@@ -17,19 +17,19 @@ router.get("/:code",
     //#swagger.description = 'Get salesman by code'
     //#swagger.summary = 'Get salesman by code'
     // #swagger.tags = ['Salesmen']
-    checkAuthorization(), SalesManController.getSalesmanByCode)
+    checkAuthorization([0,1]), SalesManController.getSalesmanByCode)
 
-// router.post("/", checkAuthorization(), SalesManController.createSalesman)
+// router.post("/", checkAuthorization([0]), SalesManController.createSalesman)
 router.post("/calculate-bonuses",
     //#swagger.description = 'Calculate all bonuses'
     //#swagger.summary = 'Calculate all bonuses'
     // #swagger.tags = ['Salesmen']
-    checkAuthorization(), SalesManController.calculateAllBonuses)
+    checkAuthorization([0,1]), SalesManController.calculateAllBonuses)
 router.post("/send-bonuses-orangeHRM",
     //#swagger.description = 'Send all bonuses to OrangeHRM'
     //#swagger.summary = 'Send all bonuses to OrangeHRM'
     // #swagger.tags = ['Salesmen']
-    checkAuthorization(), SalesManController.sendAllBonusesToHRM)
+    checkAuthorization([0,1]), SalesManController.sendAllBonusesToHRM)
 
 router.post("/:code/social_performance_record",
     //#swagger.description = 'Create social performance record'
@@ -42,12 +42,12 @@ type: 'object',
 required: true,
 schema: { $ref: '#/definitions/socialPerformanceRecordSchema' }
 } */
-    checkAuthorization(), SalesManController.createSocialPerformanceToSalesmanBySalesmanCode)
+    checkAuthorization([0,1]), SalesManController.createSocialPerformanceToSalesmanBySalesmanCode)
 
-// router.put("/:id", checkAuthorization(),  SalesManController.updateSalesman)
-// router.put("/code/:code", checkAuthorization(),  SalesManController.updateSalesmanByCode)
+// router.put("/:id", checkAuthorization([0]),  SalesManController.updateSalesman)
+// router.put("/code/:code", checkAuthorization([0]),  SalesManController.updateSalesmanByCode)
 //
-// router.delete("/:id", checkAuthorization(), SalesManController.deleteSalesman)
-// router.delete("/code/:code", checkAuthorization(), SalesManController.deleteSalesmanByCode)
+// router.delete("/:id", checkAuthorization([0]), SalesManController.deleteSalesman)
+// router.delete("/code/:code", checkAuthorization([0]), SalesManController.deleteSalesmanByCode)
 
 module.exports = router

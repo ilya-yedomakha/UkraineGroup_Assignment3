@@ -55,16 +55,27 @@ class ReportService {
         }
     }
 
-    static confirmationPairsArrayByCEO = async function (reports, pairsArray) {
+    static confirmationReverseWithIdsArrayBbyHR = async function (reports) {
         try {
             for (const report of reports) {
-                report.isConfirmedByCEO = pairsArray.find((p) => p._id.toString() === report._id.toString()).confirm;
+                report.isConfirmedByHR = !report.isConfirmedByHR;
                 await report.save()
             }
         } catch (e) {
             throw new Error(e.message)
         }
     }
+
+    // static confirmationPairsArrayByCEO = async function (reports, pairsArray) {
+    //     try {
+    //         for (const report of reports) {
+    //             report.isConfirmedByCEO = pairsArray.find((p) => p._id.toString() === report._id.toString()).confirm;
+    //             await report.save()
+    //         }
+    //     } catch (e) {
+    //         throw new Error(e.message)
+    //     }
+    // }
 }
 
 module.exports = ReportService;
