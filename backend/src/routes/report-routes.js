@@ -4,23 +4,25 @@ const {checkAuthorization} = require('../middlewares/auth-middleware');
 
 router.get("/",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0]), ReportApi.getAllReports)
+    checkAuthorization([0, 1]), ReportApi.getAllReports)
 
 router.get("/year/:year",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0]), ReportApi.getAllReportsByYear)
+    checkAuthorization([0, 1]), ReportApi.getAllReportsByYear)
 
+// todo for specific current selesman only (self)
 router.get("/salesman/:code/year/current",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0]), ReportApi.getReportBySalesmanCodeForCurrentYear)
-
+    checkAuthorization([0, 1, 2]), ReportApi.getReportBySalesmanCodeForCurrentYear)
+// todo for specific current salesman only (self)
 router.get("/salesman/:code",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0]), ReportApi.getAllReportsBySalesmanCode)
+    checkAuthorization([0, 1, 2]), ReportApi.getAllReportsBySalesmanCode)
 
+// todo for specific current salesman only (self)
 router.get("/:id",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0]), ReportApi.getReportById)
+    checkAuthorization([0,1,2]), ReportApi.getReportById)
 
 router.patch("/:id",
     //#swagger.description = 'Update Report'
@@ -33,7 +35,7 @@ router.patch("/:id",
    required: true,
    schema: { $ref: '#/definitions/reportSchema' }
  } */
-    checkAuthorization([0]), ReportApi.updateReport)
+    checkAuthorization([0,1]), ReportApi.updateReport)
 
 router.put("/:id/submit",
     //#swagger.description = 'Submit Report'
@@ -64,7 +66,7 @@ router.put("/submit/confirmationArrayReverse",
    required: true,
    schema: { $ref: '#/definitions/reverseArray' }
  } */
-    checkAuthorization([0]), ReportApi.confirmationReverseWithIdsArray)
+    checkAuthorization([0,1]), ReportApi.confirmationReverseWithIdsArray)
 
 // router.put("/submit/confirmationPairCEO",
 //     //#swagger.description = 'confirmationPairCEO'
@@ -89,12 +91,12 @@ router.delete("/",
     //#swagger.description = 'Delete all reports'
     //#swagger.summary = 'Delete all reports'
     // #swagger.tags = ['Reports']
-    checkAuthorization([0]), ReportApi.deleteAllReports)
+    checkAuthorization([0,1]), ReportApi.deleteAllReports)
 
 router.delete("/:id",
     //#swagger.description = 'Delete report by Id'
     //#swagger.summary = 'Delete report by Id'
     // #swagger.tags = ['Reports']
-    checkAuthorization([0]), ReportApi.deleteReport)
+    checkAuthorization([0,1]), ReportApi.deleteReport)
 
 module.exports = router

@@ -21,9 +21,6 @@ class reportApi {
 
     static getAllReports = async (req, res) => {
         try {
-            if (req.session.user.role !== 0 && req.session.user.role !== 1) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
             const reports = await ReportModel.find();
             res.status(200).send({apiStatus: true, message: "All reports fetched", data: reports})
         } catch (e) {
@@ -33,9 +30,6 @@ class reportApi {
 
     static getAllReportsByYear = async (req, res) => {
         try {
-            if (req.session.user.role !== 0 && req.session.user.role !== 1) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
             const reports = await ReportModel.find({year: req.params.year});
             res.status(200).send({
                 apiStatus: true,
@@ -49,9 +43,6 @@ class reportApi {
 
     static getAllReportsBySalesmanCode = async (req, res) => {
         try {
-            if (req.session.user.role !== 0 && req.session.user.role !== 1) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
             const data = await ReportModel.find({salesman_code: req.params.code})
             if (data != null)
                 res.status(200).send({
@@ -68,9 +59,6 @@ class reportApi {
 
     static getReportBySalesmanCodeForCurrentYear = async (req, res) => {
         try {
-            if (req.session.user.role !== 0 && req.session.user.role !== 1) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
             const data = await ReportModel.find({salesman_code: req.params.code, year: new Date().getFullYear()})
             if (data != null)
                 res.status(200).send({
@@ -87,9 +75,6 @@ class reportApi {
 
     static getReportById = async (req, res) => {
         try {
-            if (req.session.user.role !== 0 && req.session.user.role !== 1 && req.session.user.role !== 2) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
             const data = await ReportModel.findById(req.params.id)
             if (data == null) {
                 return res.status(404).send({
@@ -108,9 +93,6 @@ class reportApi {
     }
     static updateReport = async (req, res) => {
         try {
-            if (req.session.user.role !== 0 && req.session.user.role !== 1) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
             if (req.params.id === undefined || req.body === undefined || req.params.id === "" || req.params.body === "") {
                 return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
             }
@@ -128,9 +110,6 @@ class reportApi {
 
     static submitReportByCEO = async (req, res) => {
         try {
-            if (req.session.user.role !== 0) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
             if (req.params.id === undefined || req.params.id === "") {
                 return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
             }
@@ -148,9 +127,6 @@ class reportApi {
 
     static submitAllReportsByCEO = async (req, res) => {
         try {
-            if (req.session.user.role !== 0) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
             let found = await ReportModel.find()
             if (found == null || found.length === 0) {
                 return res.status(404).send({message: "There are no Reports"});
@@ -170,9 +146,6 @@ class reportApi {
 
     static unSubmitReportByCEO = async (req, res) => {
         try {
-            if (req.session.user.role !== 0) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
             if (req.params.id === undefined || req.params.id === "") {
                 return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
             }
@@ -190,10 +163,6 @@ class reportApi {
 
     static unSubmitAllReportsByCEO = async (req, res) => {
         try {
-            if (req.session.user.role !== 0) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
-
             let found = await ReportModel.find()
             if (found == null || found.length === 0) {
                 return res.status(404).send({apiStatus: false, message: "There are no Reports"});
@@ -273,10 +242,6 @@ class reportApi {
 
     static deleteAllReports = async (req, res) => {
         try {
-            if (req.session.user.role !== 0 && req.session.user.role !== 1) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
-
             const reports = await ReportModel.deleteMany();
             res.status(200).send({ apiStatus: true, message: "All reports deleted", data: reports });
         } catch (e) {
@@ -286,10 +251,6 @@ class reportApi {
 
     static deleteReport = async (req, res) => {
         try {
-            if (req.session.user.role !== 0 && req.session.user.role !== 1) {
-                return res.status(403).send({ apiStatus: false, message: "Unauthorized role" });
-            }
-
             const report = await ReportModel.findByIdAndDelete(req.params.id);
             if (!report) {
                 return res.status(404).send({ apiStatus: false, message: "Report not found" });
