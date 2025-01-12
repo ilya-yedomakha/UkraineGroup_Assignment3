@@ -6,17 +6,17 @@ router.get("/",
     // #swagger.tags = ['Social Performance']
     //#swagger.description = 'Get all social performance records'
     //#swagger.summary = 'Get all social performance records'
-    checkAuthorization(), SocialPerformanceRecordApi.getAllSocialPerformanceRecords)
+    checkAuthorization([0]), SocialPerformanceRecordApi.getAllSocialPerformanceRecords)
 router.get("/:id",
     //#swagger.description = 'Get social performance record by id'
     //#swagger.summary = 'Get social performance record by id'
     // #swagger.tags = ['Social Performance']
-    checkAuthorization(), SocialPerformanceRecordApi.getSocialPerformanceRecordById)
+    checkAuthorization([0]), SocialPerformanceRecordApi.getSocialPerformanceRecordById)
 router.get("/salesman/:salesmanCode",
     //#swagger.description = 'Get social performance record by salesman code'
     //#swagger.summary = 'Get social performance record by salesman code'
     // #swagger.tags = ['Social Performance']
-    checkAuthorization(), SocialPerformanceRecordApi.getSocialPerformancesRecordBySalesmanCode)
+    checkAuthorization([0]), SocialPerformanceRecordApi.getSocialPerformancesRecordBySalesmanCode)
 
 router.put("/:id",
     //#swagger.description = 'Update social performance record'
@@ -29,17 +29,17 @@ router.put("/:id",
    required: true,
    schema: { $ref: '#/definitions/socialPerformanceRecordSchema' }
  } */
-    checkAuthorization(), SocialPerformanceRecordApi.updateSocialPerformanceRecord)
+    checkAuthorization([0]), SocialPerformanceRecordApi.updateSocialPerformanceRecord)
 
 router.delete("/:id",
     //#swagger.description = 'Delete social performance record'
     //#swagger.summary = 'Delete social performance record'
     // #swagger.tags = ['Social Performance']
-    checkAuthorization(), SocialPerformanceRecordApi.deleteSocialPerformanceRecord)
+    checkAuthorization([0]), SocialPerformanceRecordApi.deleteSocialPerformanceRecord)
 router.delete("/salesman/:salesmanCode",
     //#swagger.description = 'Delete social performance record by salesman code'
     //#swagger.summary = 'Delete social performance record by salesman code'
     // #swagger.tags = ['Social Performance']
-    checkAuthorization(), SocialPerformanceRecordApi.deleteSocialPerformanceRecordBySalesmanCode)
+    checkAuthorization([0]), SocialPerformanceRecordApi.deleteSocialPerformanceRecordBySalesmanCode)
 
 module.exports = router

@@ -1,17 +1,12 @@
-/**
- * this express middleware checks if a user is authenticated or even has admin permissions;
- * otherwise the request gets intercepted and status 401 is returned
- * @param {boolean} beAdmin if true, user needs to be admin
- * @return {(function(*, *, *): void)|*}
- */
-exports.checkAuthorization = (beAdmin) => {
+exports.checkAuthorization = (allowedRoles) => {
     return (req, res, next) => {
-        if(req.session.authenticated){ //check if session was marked as authenticated
-            if(!beAdmin || req.session.user.isAdmin){ //check if admin-requirement is met
-                next(); //proceed with next middleware or handler
+        if (req.session.authenticated) { // Check if session is authenticated
+            if (Array.isArray(allowedRoles) && allowedRoles.includes(req.session.user.role)) {
+                next(); // User is authorized; proceed to the next middleware or handler
                 return;
             }
+            return res.status(403).send({ error: 'Forbidden: Insufficient role permissions' }); // Role not sufficient
         }
-        res.status(401).send(); //intercept request
-    }
-}
+        res.status(401).send({ error: 'Unauthorized: Authentication required' }); // Session not authenticated
+    };
+};
