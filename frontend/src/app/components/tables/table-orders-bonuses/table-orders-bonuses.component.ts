@@ -10,6 +10,7 @@ import { BonusData } from 'src/app/models/BonusData';
 export class TableOrdersBonusesComponent implements OnInit {
 
   @Input() bonuses: BonusData;
+  @Input() userRole!: 0 | 1 | 2;
   currentPage: number = 1;
   itemsPerPage: number = 8;
   totalItems: number = 0;
@@ -37,7 +38,9 @@ export class TableOrdersBonusesComponent implements OnInit {
     this.pagingConfig.currentPage = 1;
   }
 
+  //TODO
   saveSalesBonuses() {
 
   }
+
 }

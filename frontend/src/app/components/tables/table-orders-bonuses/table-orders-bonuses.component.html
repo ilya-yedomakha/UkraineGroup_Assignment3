@@ -1,19 +1,26 @@
 <div class="bg-[#FCE8BA] font-sans text-gray-800 border-2 border-black rounded-lg">
   <div class="policy-container content-center border">
     <div class="bg-black rounded-t-lg">
-      <div class="grid grid-cols-6 gap-4 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
+      <div [ngClass]="{
+        'grid-cols-6': userRole !== 2,
+        'grid-cols-5': userRole === 2
+      }" class="grid gap-4 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
         <span class="heading">Name of Product</span>
         <span class="heading">Client</span>
         <span class="heading">Client Ranking</span>
         <span class="heading">Items</span>
         <span class="heading">Bonus</span>
-        <span class="heading">Change Bonus</span>
+        <span class="heading" *ngIf="userRole !== 2">Change Bonus</span>
       </div>
     </div>
 
 
-    <div *ngFor="let bonuse of bonuses.ordersBonuses | paginate: pagingConfig"
-      class="policy grid grid-cols-6 gap-4 items-center py-2 px-2 rounded-lg shadow-md mb-4 mx-2 mx-2hover:shadow-lg transition-shadow border-2 border-black text-base bg-[#D9D9D9]">
+    <div *ngFor="let bonuse of bonuses.ordersBonuses | paginate: pagingConfig" 
+    [ngClass]="{
+      'grid-cols-6': userRole !== 2,
+      'grid-cols-5': userRole === 2
+    }"
+      class="policy grid gap-4 items-center py-2 px-2 rounded-lg shadow-md mb-4 mx-2 mx-2hover:shadow-lg transition-shadow border-2 border-black text-base bg-[#D9D9D9]">
 
       <span class="flex-1 text-center">{{ bonuse.productName }}</span>
 
@@ -25,7 +32,7 @@
 
       <span class="flex-1 text-center">{{ bonuse.bonus }}</span>
 
-      <span class="flex-1 text-center ">
+      <span class="flex-1 text-center " *ngIf="userRole !== 2">
         <input class="border-2 border-black bg-slate-100 mx-4 text-center w-1/2 py-1 rounded-md"
           [(ngModel)]="bonuse.bonus">
       </span>
@@ -43,7 +50,8 @@
     [textContent]="getOrderBonusesTotal()">
   </label>
 </div>
-<div class="mt-4 flex justify-end">
+<div class="mt-4 flex justify-end"
+  *ngIf="userRole !== 2">
   <button
     class="bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105"
     (click)="saveSalesBonuses()">

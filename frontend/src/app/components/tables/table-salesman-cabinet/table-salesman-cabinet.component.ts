@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PaginationInstance } from 'ngx-pagination';
 import { Bonuses } from 'src/app/models/Bonuses';
 
@@ -15,12 +16,15 @@ export class TableSalesmanCabinetComponent implements OnInit{
   currentPage: number = 1;
   itemsPerPage: number = 8;
   totalItems: number = 0;
+  private 
 
 public pagingConfig : PaginationInstance = {
     itemsPerPage: this.itemsPerPage,
     currentPage: this.currentPage,
     totalItems: this.totalItems
   };
+
+   constructor(private router: Router){}
 
   ngOnInit(): void {
     this.totalItems = this.bonuses.length;
@@ -39,6 +43,12 @@ public pagingConfig : PaginationInstance = {
   }
 
   showDetails(){
-
+    this.router.navigate(['edit-bonuses'], {
+      state: {
+        //TODO - bonuses for one salesman
+       // bonuses
+      }
+  }
+  );
   }
 }

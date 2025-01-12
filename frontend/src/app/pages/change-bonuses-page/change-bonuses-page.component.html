@@ -14,11 +14,11 @@
         </div>
         <div class="mt-2">
             <p class="font-bold text-xl mb-1">Orders Evalution </p>
-            <app-table-orders-bonuses  [bonuses]="bonusesData"></app-table-orders-bonuses>
+            <app-table-orders-bonuses  [bonuses]="bonusesData" [userRole]="user.role"></app-table-orders-bonuses>
         </div>
         <div class="mt-4">
             <p class="font-bold text-xl mb-1">Social Performance Evaluation</p>
-            <app-table-social-bonuses  class="mt-4" [bonuses]="bonusesData"></app-table-social-bonuses>
+            <app-table-social-bonuses  class="mt-4" [bonuses]="bonusesData" [userRole]="user.role"></app-table-social-bonuses>
         </div>
 
         <hr class="my-4 mx-1 bg-gray-800 h-2 border-0 rounded ">

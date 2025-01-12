@@ -10,6 +10,7 @@ import {PaginationInstance} from "ngx-pagination";
 export class TableSocialBonusesComponent implements OnInit{
 
   @Input() bonuses: BonusData;
+  @Input() userRole!: 0 | 1 | 2;
   currentPage: number = 1;
   itemsPerPage: number = 8;
   totalItems: number = 0;
@@ -40,8 +41,10 @@ export class TableSocialBonusesComponent implements OnInit{
     this.pagingConfig.currentPage = 1;
   }
 
+  //TODO
   saveSocialBonuses(){
 
   }
+
 }
 
