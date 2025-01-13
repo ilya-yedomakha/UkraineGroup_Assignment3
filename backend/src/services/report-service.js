@@ -65,6 +65,15 @@ class ReportService {
             throw new Error(e.message)
         }
     }
+
+    static recalculateSingleBonus = async function (report){
+        try {
+            report
+            await report.save()
+        } catch (e) {
+            throw new Error(e.message)
+        }
+    }
 }
 
 module.exports = ReportService;

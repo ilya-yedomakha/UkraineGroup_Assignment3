@@ -36,23 +36,11 @@ router.patch("/:id",
  } */
     checkAuthorization([0]), ReportApi.updateReport)
 
-router.put("/:id/submit",
-    //#swagger.description = 'Submit Report'
-    //#swagger.summary = 'Submit Report'
+router.put("/report/recalculate/:id",
+    //#swagger.description = 'Recalculate report'
+    //#swagger.summary = 'Recalculate report'
     // #swagger.tags = ['Reports']
-    checkAuthorization([0]), ReportApi.submitReportByCEO)
-
-router.put("/:id/unSubmit",
-    //#swagger.description = 'Unsubmit Report'
-    //#swagger.summary = 'Unsubmit Report'
-    // #swagger.tags = ['Reports']
-    checkAuthorization([0]), ReportApi.unSubmitReportByCEO)
-
-router.put("/submit",
-    //#swagger.description = 'Submit all Reports'
-    //#swagger.summary = 'Submit all Reports'
-    // #swagger.tags = ['Reports']
-    checkAuthorization([0]), ReportApi.submitAllReportsByCEO)
+    checkAuthorization([0,1]), ReportApi.recalculateSingleBonusById)
 
 router.put("/submit/confirmationArrayReverse",
     //#swagger.description = 'Reverse array'
@@ -67,24 +55,11 @@ router.put("/submit/confirmationArrayReverse",
  } */
     checkAuthorization([0,1]), ReportApi.confirmationReverseWithIdsArray)
 
-// router.put("/submit/confirmationPairCEO",
-//     //#swagger.description = 'confirmationPairCEO'
-//     //#swagger.summary = 'confirmationPairCEO'
-//     // #swagger.tags = ['confirmationPairCEO']
-//     /* #swagger.parameters['confirmationPairCEO'] = {
-//    in: 'body',
-//    description: 'confirmationPairCEO',
-//    type: 'object',
-//    required: true,
-//    schema: { $ref: '#/definitions/confirmationPairCEO' }
-//  } */
-//     checkAuthorization([0]), ReportApi.confirmationPairsArrayByCEO)
-
-router.put("/unSubmit",
-    //#swagger.description = 'Unsubmit all Reports'
-    //#swagger.summary = 'Unsubmit all Reports'
+router.put("/reverseConfirm/:id",
+    //#swagger.description = 'Confirm single report'
+    //#swagger.summary = 'Confirm single report'
     // #swagger.tags = ['Reports']
-    checkAuthorization([0]), ReportApi.unSubmitAllReportsByCEO)
+    checkAuthorization([0,1]), ReportApi.confirmationReverseSingleReport)
 
 router.delete("/",
     //#swagger.description = 'Delete all reports'
