@@ -12,6 +12,7 @@ import {User} from 'src/app/models/User';
 })
 export class SalesmanCabinetPageComponent implements OnInit {
 
+    user: User;
     salesman: Salesman;
     bonuses: Bonuses[];
     socialRecords: SocialPerformanceRecord[];
@@ -19,6 +20,7 @@ export class SalesmanCabinetPageComponent implements OnInit {
     isAddSocialPerformanceWindowVisible: boolean = false;
 
     ngOnInit(): void {
+        this.fetchUser();
         //service!!
         this.salesman = new Salesman(90732, "fsdf", "fdsfsd", "fsdfs", "fds", "fsdfs", "fsdfs", "fdsfsf", "fdsfs", "fsdfsfs", "fdsfs", "fdsfs");
         this.bonuses = [new Bonuses(2025, 234, 234, 564)];
@@ -36,5 +38,10 @@ export class SalesmanCabinetPageComponent implements OnInit {
     toAddSocialPerformanceRecord() {
 
     }
+
+    fetchUser(): void{
+        this.userService.getOwnUser().subscribe((user): void => {
+            this.user = user;
+        });
 }
 

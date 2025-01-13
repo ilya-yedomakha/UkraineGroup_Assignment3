@@ -10,6 +10,7 @@ import { SocialPerformanceRecord } from 'src/app/models/SocialPerformanceRecord'
 export class TableManageSocialPerformanceComponent implements OnInit{
 
   @Input() socialPerformancesRecords: SocialPerformanceRecord[];
+  @Input() userRole!: 0 | 1 | 2;
   currentPage: number = 1;
   itemsPerPage: number = 8;
   totalItems: number = 0;

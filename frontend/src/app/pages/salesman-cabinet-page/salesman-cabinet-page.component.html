@@ -42,13 +42,13 @@
             (click)="isAddSocialPerformanceWindowVisible = true">Add social performance</button>
     </div>
 
-    <app-table-manage-social-performance [socialPerformancesRecords]="socialRecords"></app-table-manage-social-performance>
+    <app-table-manage-social-performance [socialPerformancesRecords]="socialRecords" [userRole]="user.role"></app-table-manage-social-performance>
 
     <p class="text-xl mt-6 mb-1">Sale Performance</p>
     <app-table-view-sale-performance [salePerformanceRecords]="saleRecords"></app-table-view-sale-performance>
 
 
-    <div *ngIf="isAddSocialPerformanceWindowVisible" class="fixed inset-0 flex items-center justify-center backdrop-blur-md mt-[60px] bg-white bg-opacity-30">
+    <div *ngIf="isAddSocialPerformanceWindowVisible && user.role === 1" class="fixed inset-0 flex items-center justify-center backdrop-blur-md mt-[60px] bg-white bg-opacity-30">
         <app-add-social-performance-window [salesmenCode]="salesman.code" class="w-1/2 h-1/3" (close)="isAddSocialPerformanceWindowVisible = false"></app-add-social-performance-window>
       </div>
 </div>
