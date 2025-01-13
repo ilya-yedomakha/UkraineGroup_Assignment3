@@ -15,6 +15,8 @@ export class TableSocialBonusesComponent implements OnInit{
     itemsPerPage = 8;
     totalItems = 0;
 
+    originalSocialBonuses: [string,number][] = []
+    isEditing: boolean[] = []
 
 
     public pagingConfig: PaginationInstance = {
@@ -25,6 +27,8 @@ export class TableSocialBonusesComponent implements OnInit{
 
     ngOnInit(): void {
         this.totalItems = this.bonuses.socialBonuses.length;
+        this.originalSocialBonuses = this.bonuses.socialBonuses.map(el=>[el.goal_description,el.bonus]);
+        this.isEditing = this.bonuses.socialBonuses.map(()=>false);
     }
 
 
@@ -44,6 +48,16 @@ export class TableSocialBonusesComponent implements OnInit{
     // TODO
     saveSocialBonuses(){
 
+    }
+
+    cancelEdit(bonuse:any, index:number){
+        const originalBonus = this.originalSocialBonuses.find(([goalDescription]) => goalDescription === bonuse.goal_description)
+        bonuse.bonus = originalBonus;
+        this.isEditing[index] = false;
+    }
+
+    saveEdit(index:number){
+        this.isEditing[index] = false;
     }
 
 }

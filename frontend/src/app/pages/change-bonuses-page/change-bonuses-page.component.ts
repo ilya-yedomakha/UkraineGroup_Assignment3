@@ -14,6 +14,8 @@ export class ChangeBonusesPageComponent implements OnInit {
   user: User;
   private userService: UserService = inject(UserService);
 
+  
+
   public ngOnInit(): void {
     this.fetchUser();
     this.bonusesData = history.state.bonuse;
