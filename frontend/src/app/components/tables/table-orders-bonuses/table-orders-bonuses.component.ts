@@ -26,7 +26,7 @@ export class TableOrdersBonusesComponent implements OnInit {
   }
 
   getOrderBonusesTotal(): number {
-    return parseInt(this.bonuses.ordersBonuses.reduce((sum, ob) => sum + ob.bonus, 0).toString());
+    return parseInt(this.bonuses.ordersBonuses.reduce((sum, ob) => Number(sum) + Number(ob.bonus), 0).toString());
   }
 
   onTableDataChange(event: any) {
