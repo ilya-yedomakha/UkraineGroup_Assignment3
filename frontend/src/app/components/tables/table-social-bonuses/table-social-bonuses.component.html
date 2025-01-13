@@ -18,7 +18,7 @@
 
 
       <div
-        *ngFor="let bonuse of bonuses.socialBonuses; let i = index | paginate: pagingConfig"
+        *ngFor="let bonuse of bonuses.socialBonuses | paginate: pagingConfig; let i = index"
         [ngClass]="{
           'grid-cols-6': userRole === 0,
           'grid-cols-5': userRole !== 0

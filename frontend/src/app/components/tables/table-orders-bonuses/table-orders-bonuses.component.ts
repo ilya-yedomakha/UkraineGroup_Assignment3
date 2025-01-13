@@ -15,6 +15,9 @@ export class TableOrdersBonusesComponent implements OnInit {
     itemsPerPage = 8;
     totalItems = 0;
 
+    originalOrderBonuses: number[] = []
+    isEditing: boolean[] = []
+
     public pagingConfig: PaginationInstance = {
         itemsPerPage: this.itemsPerPage,
         currentPage: this.currentPage,
@@ -23,6 +26,8 @@ export class TableOrdersBonusesComponent implements OnInit {
 
     ngOnInit(): void {
         this.totalItems = this.bonuses.ordersBonuses.length;
+        this.originalOrderBonuses = this.bonuses.ordersBonuses.map(el=>el.bonus);
+        this.isEditing = this.bonuses.ordersBonuses.map(()=>false);
     }
 
     getOrderBonusesTotal(): number {
@@ -41,6 +46,16 @@ export class TableOrdersBonusesComponent implements OnInit {
     // TODO
     saveSalesBonuses() {
 
+    }
+
+    cancelEdit(bonuse:any, index:number){
+        const originalBonus = this.originalOrderBonuses[index]
+        bonuse.bonus = originalBonus;
+        this.isEditing[index] = false;
+    }
+
+    saveEdit(index:number){
+        this.isEditing[index] = false;
     }
 
 }
