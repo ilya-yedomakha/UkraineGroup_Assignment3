@@ -16,11 +16,11 @@ class socialPerformanceRecordApi {
 
     static getSocialPerformancesRecordBySalesmanCode = async (req, res) => {
         try {
-            const data = await socialPerformanceRecordModel.find({salesman_code: req.params.salesmanCode})
+            const data = await socialPerformanceRecordModel.find({salesman_code: req.params.code})
             if (data != null)
                 res.status(200).send({
                     apiStatus: true,
-                    message: "Social performance record by code " + req.params.salesmanCode + " was found",
+                    message: "Social performance record by code " + req.params.code + " was found",
                     data: data
                 })
             else

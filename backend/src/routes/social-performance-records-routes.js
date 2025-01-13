@@ -7,18 +7,18 @@ router.get("/",
     //#swagger.description = 'Get all social performance records'
     //#swagger.summary = 'Get all social performance records'
     checkAuthorization([0,1]), SocialPerformanceRecordApi.getAllSocialPerformanceRecords)
-//todo specific current salesman (self)
+
 router.get("/:id",
     //#swagger.description = 'Get social performance record by id'
     //#swagger.summary = 'Get social performance record by id'
     // #swagger.tags = ['Social Performance']
-    checkAuthorization([0]), SocialPerformanceRecordApi.getSocialPerformanceRecordById)
+    checkAuthorization([0,1]), SocialPerformanceRecordApi.getSocialPerformanceRecordById)
 //todo specific current salesman (self)
-router.get("/salesman/:salesmanCode",
+router.get("/salesman/:code",
     //#swagger.description = 'Get social performance record by salesman code'
     //#swagger.summary = 'Get social performance record by salesman code'
     // #swagger.tags = ['Social Performance']
-    checkAuthorization([0,1,2]), SocialPerformanceRecordApi.getSocialPerformancesRecordBySalesmanCode)
+    checkAuthorization([0,1,2], true), SocialPerformanceRecordApi.getSocialPerformancesRecordBySalesmanCode)
 
 router.put("/:id",
     //#swagger.description = 'Update social performance record'

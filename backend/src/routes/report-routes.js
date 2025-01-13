@@ -13,16 +13,15 @@ router.get("/year/:year",
 // todo for specific current selesman only (self)
 router.get("/salesman/:code/year/current",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0, 1, 2]), ReportApi.getReportBySalesmanCodeForCurrentYear)
+    checkAuthorization([0, 1, 2], true), ReportApi.getReportBySalesmanCodeForCurrentYear)
 // todo for specific current salesman only (self)
 router.get("/salesman/:code",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0, 1, 2]), ReportApi.getAllReportsBySalesmanCode)
+    checkAuthorization([0, 1, 2], true), ReportApi.getAllReportsBySalesmanCode)
 
-// todo for specific current salesman only (self)
 router.get("/:id",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0,1,2]), ReportApi.getReportById)
+    checkAuthorization([0, 1]), ReportApi.getReportById)
 
 router.patch("/:id",
     //#swagger.description = 'Update Report'
@@ -35,7 +34,7 @@ router.patch("/:id",
    required: true,
    schema: { $ref: '#/definitions/reportSchema' }
  } */
-    checkAuthorization([0,1]), ReportApi.updateReport)
+    checkAuthorization([0]), ReportApi.updateReport)
 
 router.put("/:id/submit",
     //#swagger.description = 'Submit Report'
