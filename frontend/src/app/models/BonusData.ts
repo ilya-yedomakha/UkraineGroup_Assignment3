@@ -8,12 +8,14 @@ export class BonusData {
             clientFullName: string;
             clientRating: string;
             items: number;
+            initialBonus: number;
             bonus: number;
         }>,
         public socialBonuses: Array<{
             goal_description: string;
             target_value: number;
             actual_value: number;
+            initialBonus: number;
             bonus: number;
         }>,
         public remarks: string | null,

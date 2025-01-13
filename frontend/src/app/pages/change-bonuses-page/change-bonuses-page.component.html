@@ -19,6 +19,10 @@
         <div class="mt-4">
             <p class="font-bold text-xl mb-1">Social Performance Evaluation</p>
             <app-table-social-bonuses  class="mt-4" [bonuses]="bonusesData" [userRole]="user.role"></app-table-social-bonuses>
+            <button
+            *ngIf="user.role === 1"
+            class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105 flex justify-self-end">
+              Confirm social performance </button>
         </div>
 
         <hr class="my-4 mx-1 bg-gray-800 h-2 border-0 rounded ">
@@ -33,7 +37,9 @@
     <div class="flex justify-start items-center">
             <label class="text-xl font-semibold mr-1">Remarks:</label>
             <textarea class="border-2 border-black text-lg p-2 h-16 rounded-md w-full md:w-1/2"></textarea>
-                <button class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
+                <button
+                *ngIf="user.role === 0"
+                class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
                   Save</button>
     </div>
 </div>
