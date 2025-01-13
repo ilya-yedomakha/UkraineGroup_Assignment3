@@ -169,7 +169,8 @@ class salesmanApi {
                         year: currentYear
                     });
                     const salesPerformances = await salePerformanceRecordModel.find({
-                        salesmanGovId: salesman.code
+                        salesmanGovId: salesman.code,
+                        activeYear: currentYear
                     });
 
                     await salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances, new Date().getUTCFullYear());
@@ -289,108 +290,6 @@ class salesmanApi {
             res.status(statusCode).send({apiStatus: false, message: e.message, data: e});
         }
     }
-
-    // static createSalesman = async (req, res) => {
-    //     try {
-    //         const salesman = await salesmanService.saveSalesman(req.body)
-    //         res.status(200).send({apiStatus: true, message: "Salesman created", data: salesman})
-    //     } catch (e) {
-    //         res.status(500).send({message: e.message, data: e})
-    //     }
-    // }
-
-    // static getSalesmanById = async (req, res) => {
-    //     try {
-    //         const salesman = await salesmanModel.findById(req.params.id);
-    //         if (salesman != null) {
-    //             res.status(200).send({apiStatus: true, message: "Salesman found", data: salesman})
-    //         } else {
-    //             res.status(404).send({apiStatus: true, message: "Salesman not found"})
-    //         }
-    //
-    //     } catch (e) {
-    //         res.status(500).send({message: e.message, data: e})
-    //     }
-    // }
-    // static deleteSalesman = async (req, res) => {
-    //     try {
-    //         const salesman = await salesmanModel.findById(req.params.id)
-    //
-    //         if (!salesman) {
-    //             return res.status(404).send({apiStatus: false, message: "Salesman not found"});
-    //         }
-    //
-    //         await socialPerformanceRecordModel.deleteMany({salesman_code: salesman.code});
-    //
-    //         await salesmanModel.deleteOne({_id: req.params.id});
-    //
-    //         res.status(200).send({
-    //             apiStatus: true, message: "Salesman successfully deleted", data: salesman
-    //         });
-    //     } catch (e) {
-    //         res.status(500).send({message: e.message, data: e});
-    //     }
-    // }
-    //
-    // static deleteSalesmanByCode = async (req, res) => {
-    //     try {
-    //         const salesman = await salesmanModel.find({code: Number(req.params.code)})
-    //
-    //         if (!salesman) {
-    //             return res.status(404).send({apiStatus: false, message: "Salesman not found"});
-    //         }
-    //
-    //         await socialPerformanceRecordModel.deleteMany({salesman_code: salesman.code});
-    //
-    //         await salesmanModel.deleteOne({code: Number(req.params.code)});
-    //
-    //         res.status(200).send({
-    //             apiStatus: true, message: "Salesman successfully deleted", data: salesman
-    //         });
-    //     } catch (e) {
-    //         res.status(500).send({message: e.message, data: e});
-    //     }
-    // }
-    //
-    // static updateSalesman = async (req, res) => {
-    //
-    //     if (req.params.id == null || req.body == null) {
-    //         return res.status(400).send({message: "Invalid request parameters"});
-    //     }
-    //
-    //     try {
-    //         const salesman = await salesmanModel.findById(req.params.id)
-    //         if (salesman == null) {
-    //             return res.status(404).send({message: "Salesman not found"});
-    //         }
-    //         const newSalesman = await salesmanService.updateSalesman(salesman, req.body)
-    //
-    //         res.status(200).send({message: "Salesman updated", data: newSalesman});
-    //
-    //     } catch (e) {
-    //         res.status(500).send({message: e.message, data: e});
-    //     }
-    // }
-    //
-    // static updateSalesmanByCode = async (req, res) => {
-    //
-    //     if (Number(req.params.code) == null || req.body == null) {
-    //         return res.status(400).send({message: "Invalid request parameters"});
-    //     }
-    //
-    //     try {
-    //         const salesman = await salesmanModel.find({code: Number(req.params.code)}).exec()
-    //         if (salesman == null) {
-    //             return res.status(404).send({message: "Salesman not found"});
-    //         }
-    //         const newSalesman = await salesmanService.updateSalesman(salesman, req.body)
-    //
-    //         res.status(200).send({message: "Salesman updated", data: newSalesman});
-    //
-    //     } catch (e) {
-    //         res.status(500).send({message: e.message, data: e});
-    //     }
-    // }
 
 }
 
