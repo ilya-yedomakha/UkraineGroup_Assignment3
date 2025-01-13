@@ -3,7 +3,7 @@
     <div class="bg-black rounded-t-lg">
       <div [ngClass]="{
         'grid-cols-7': userRole === 0,
-        'grid-cols-6': userRole === 2
+        'grid-cols-6': userRole !== 0
       }" class="grid gap-2 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
         <span class="heading">Name of product</span>
         <span class="heading">Client</span>
@@ -16,7 +16,7 @@
     </div>
 
 
-    <div *ngFor="let bonuse of bonuses.ordersBonuses | paginate: pagingConfig" 
+    <div *ngFor="let bonuse of bonuses.ordersBonuses | paginate: pagingConfig"
     [ngClass]="{
       'grid-cols-7': userRole === 0,
       'grid-cols-6': userRole !== 0

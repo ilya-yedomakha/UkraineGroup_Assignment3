@@ -36,13 +36,13 @@ router.get('/user',
     // #swagger.tags = ['Authentication']
     //#swagger.description = 'Get current user data'
     //#swagger.summary = 'Get current user data'
-    checkAuthorization([0]), userApi.getSelf);
+    checkAuthorization([0,1,2]), userApi.getSelf);
 
-const peopleDemoApi = require('../apis/people-demo-api');
-router.get('/people',
-    // #swagger.tags = ['Authentication']
-    //#swagger.description = 'Get all people'
-    //#swagger.summary = 'Get all people'
-    checkAuthorization([0]), peopleDemoApi.getPeople);
+// const peopleDemoApi = require('../apis/people-demo-api');
+// router.get('/people',
+//     // #swagger.tags = ['Authentication']
+//     //#swagger.description = 'Get all people'
+//     //#swagger.summary = 'Get all people'
+//     checkAuthorization([0]), peopleDemoApi.getPeople);
 
 module.exports = router;

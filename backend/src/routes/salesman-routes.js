@@ -12,12 +12,12 @@ router.get("/import-from-orangeHRM",
     //#swagger.description = 'Import senior salesman from OrangeHRM'
     //#swagger.summary = 'Import senior salesman from OrangeHRM'
     // #swagger.tags = ['Salesmen']
-    SalesManController.importSeniorSalesmenFromOrangeHRM)
+    checkAuthorization([0,1]), SalesManController.importSeniorSalesmenFromOrangeHRM)
 router.get("/:code",
     //#swagger.description = 'Get salesman by code'
     //#swagger.summary = 'Get salesman by code'
     // #swagger.tags = ['Salesmen']
-    checkAuthorization([0,1]), SalesManController.getSalesmanByCode)
+    checkAuthorization([0,1,2],true), SalesManController.getSalesmanByCode)
 
 // router.post("/", checkAuthorization([0]), SalesManController.createSalesman)
 router.post("/calculate-bonuses",
