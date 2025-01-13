@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {Bonuses} from 'src/app/models/Bonuses';
 import {SalePerformanceRecord} from 'src/app/models/SalePerformanceRecord';
 import {Salesman} from 'src/app/models/Salesman';
 import {SocialPerformanceRecord} from 'src/app/models/SocialPerformanceRecord';
 import {User} from 'src/app/models/User';
+import {UserService} from "../../services/user.service";
 
 @Component({
     selector: 'app-salesman-cabinet-page',
@@ -18,6 +19,7 @@ export class SalesmanCabinetPageComponent implements OnInit {
     socialRecords: SocialPerformanceRecord[];
     saleRecords: SalePerformanceRecord[];
     isAddSocialPerformanceWindowVisible: boolean = false;
+    private userService: UserService = inject(UserService);
 
     ngOnInit(): void {
         this.fetchUser();
@@ -39,9 +41,9 @@ export class SalesmanCabinetPageComponent implements OnInit {
 
     }
 
-    fetchUser(): void{
+    fetchUser(): void {
         this.userService.getOwnUser().subscribe((user): void => {
             this.user = user;
         });
+    }
 }
-

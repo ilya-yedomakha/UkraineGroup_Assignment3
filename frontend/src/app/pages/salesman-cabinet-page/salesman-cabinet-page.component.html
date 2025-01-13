@@ -38,6 +38,7 @@
     <div class="mt-4 mb-1 flex justify-between w-full">
         <p class="text-xl">Social Performance</p>
         <button
+            *ngIf = "user.role === 1"
             class=" bg-green-400 rounded-lg py-2 px-4 w-auto transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105"
             (click)="isAddSocialPerformanceWindowVisible = true">Add social performance</button>
     </div>

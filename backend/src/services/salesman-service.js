@@ -39,6 +39,7 @@ class SalesmanService{
                 target_value: target_value,
                 actual_value: actual_value,
                 goal_description: goal_description,
+                initialBonus: currBonus,
                 bonus: currBonus
             })
             totalBonus += currBonus
@@ -61,6 +62,7 @@ class SalesmanService{
                 clientFullName: clientFullName,
                 clientRating: clientRating,
                 items: items,
+                initialBonus: tempBonus,
                 bonus: tempBonus
             })
             totalBonus += tempBonus

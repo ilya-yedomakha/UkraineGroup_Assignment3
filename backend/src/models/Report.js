@@ -24,13 +24,15 @@ const reportSchema = new mongoose.Schema({
         clientFullName: String,
         clientRating: String,
         items: Number,
-        bonus: Number
+        initialBonus: Number,
+        bonus: Number,
     }],
 
     socialBonuses: [{
         goal_description:String,
         target_value: Number,
         actual_value:Number,
+        initialBonus:Number,
         bonus: Number
     }],
 

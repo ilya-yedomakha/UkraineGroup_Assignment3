@@ -26,24 +26,6 @@ class ReportService {
         }
     }
 
-    static submitReportByCEO = async function (report) {
-        try {
-            report.isConfirmedByCEO = true;
-            return await report.save()
-        } catch (e) {
-            throw new Error(e.message)
-        }
-    }
-
-    static unSubmitReportByCEO = async function (report) {
-        try {
-            report.isConfirmedByCEO = false;
-            return await report.save()
-        } catch (e) {
-            throw new Error(e.message)
-        }
-    }
-
     static confirmationReverseWithIdsArrayBbyCEO = async function (reports) {
         try {
             for (const report of reports) {
@@ -66,16 +48,23 @@ class ReportService {
         }
     }
 
-    // static confirmationPairsArrayByCEO = async function (reports, pairsArray) {
-    //     try {
-    //         for (const report of reports) {
-    //             report.isConfirmedByCEO = pairsArray.find((p) => p._id.toString() === report._id.toString()).confirm;
-    //             await report.save()
-    //         }
-    //     } catch (e) {
-    //         throw new Error(e.message)
-    //     }
-    // }
+    static reverseConfirmSingleReportByHR = async function (report) {
+        try {
+            report.isConfirmedByHR = !report.isConfirmedByHR;
+            await report.save()
+        } catch (e) {
+            throw new Error(e.message)
+        }
+    }
+
+    static reverseConfirmSingleReportByCEO = async function (report) {
+        try {
+            report.isConfirmedByCEO = !report.isConfirmedByCEO;
+            await report.save()
+        } catch (e) {
+            throw new Error(e.message)
+        }
+    }
 }
 
 module.exports = ReportService;

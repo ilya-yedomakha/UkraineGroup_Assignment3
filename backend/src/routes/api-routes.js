@@ -32,6 +32,7 @@ router.get('/login',
     authApi.isLoggedIn); //the function, which handles requests is specified as the last parameter
 
 const userApi = require('../apis/user-api');
+
 router.get('/user',
     // #swagger.tags = ['Authentication']
     //#swagger.description = 'Get current user data'
