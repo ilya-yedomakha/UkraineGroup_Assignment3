@@ -39,13 +39,13 @@
             <input class="border-2 border-black bg-slate-100 mx-4 text-center w-1/2 py-1 rounded-md"
             [(ngModel)]="bonuse.bonus"
             >
-            <svg 
-            (click)="saveEdit(i)"
+            <svg
+            (click)="saveEdit(i,bonuse.bonus)"
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mx-2">
               <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-            </svg>   
+            </svg>
 
-            <svg 
+            <svg
             (click)="cancelEdit(bonuse,i)"
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -54,7 +54,7 @@
         </ng-container>
 
         <ng-container *ngIf="!isEditing[i] && userRole === 0">
-          <span class="flex-1 text-center">{{ bonuse.bonus }} 
+          <span class="flex-1 text-center">{{ bonuse.bonus }}
             <svg
             (click)="isEditing[i]=true"
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 ml-1 transition-all duration-300 ease-in-out hover:scale-105 ">
@@ -62,7 +62,7 @@
             </svg>
           </span>
         </ng-container>
-      
+
       </div>
       <div class="flex justify-center mt-4">
         <pagination-controls

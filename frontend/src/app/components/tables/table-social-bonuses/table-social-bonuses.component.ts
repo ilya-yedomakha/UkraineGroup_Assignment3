@@ -1,23 +1,26 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { BonusData } from 'src/app/models/BonusData';
+import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {BonusData} from 'src/app/models/BonusData';
 import {PaginationInstance} from 'ngx-pagination';
+import {BonusesService} from "../../../services/bonuses.service";
 
 @Component({
     selector: 'app-table-social-bonuses',
     templateUrl: './table-social-bonuses.component.html',
     styleUrls: ['./table-social-bonuses.component.css']
 })
-export class TableSocialBonusesComponent implements OnInit{
+export class TableSocialBonusesComponent implements OnInit {
 
     @Input() bonuses: BonusData;
     @Input() userRole!: 0 | 1 | 2;
+    @Output() dataChange = new EventEmitter<boolean>();
     currentPage = 1;
     itemsPerPage = 8;
     totalItems = 0;
 
-    originalSocialBonuses: [string,number][] = []
-    isEditing: boolean[] = []
+    private bonusesService = inject(BonusesService);
 
+    originalSocialBonuses: number[] = [];
+    isEditing: boolean[] = [];
 
     public pagingConfig: PaginationInstance = {
         itemsPerPage: this.itemsPerPage,
@@ -27,8 +30,8 @@ export class TableSocialBonusesComponent implements OnInit{
 
     ngOnInit(): void {
         this.totalItems = this.bonuses.socialBonuses.length;
-        this.originalSocialBonuses = this.bonuses.socialBonuses.map(el=>[el.goal_description,el.bonus]);
-        this.isEditing = this.bonuses.socialBonuses.map(()=>false);
+        this.originalSocialBonuses = this.bonuses.socialBonuses.map(el => el.bonus);
+        this.isEditing = this.bonuses.socialBonuses.map(() => false);
     }
 
 
@@ -36,8 +39,8 @@ export class TableSocialBonusesComponent implements OnInit{
         return parseInt(this.bonuses.socialBonuses.reduce((sum, ob) => Number(sum) + Number(ob.bonus), 0).toString());
     }
 
-    onTableDataChange(event: any){
-        this.pagingConfig.currentPage  = event;
+    onTableDataChange(event: any) {
+        this.pagingConfig.currentPage = event;
     }
 
     onTableSizeChange(event: any): void {
@@ -45,19 +48,24 @@ export class TableSocialBonusesComponent implements OnInit{
         this.pagingConfig.currentPage = 1;
     }
 
-    // TODO
-    saveSocialBonuses(){
-
+    saveSocialBonuses() {
+        let newBonus: any = {
+            "socialBonuses": this.bonuses.socialBonuses
+        };
+        this.bonusesService.saveNewOrderBonuses(this.bonuses._id, newBonus).subscribe(() => {
+            this.dataChange.emit(true);
+        });
     }
 
-    cancelEdit(bonuse:any, index:number){
-        const originalBonus = this.originalSocialBonuses.find(([goalDescription]) => goalDescription === bonuse.goal_description)
+    cancelEdit(bonuse: any, index: number) {
+        const originalBonus = this.originalSocialBonuses[index]
         bonuse.bonus = originalBonus;
         this.isEditing[index] = false;
     }
 
-    saveEdit(index:number){
+    saveEdit(index: number, newBonus: number) {
         this.isEditing[index] = false;
+        this.originalSocialBonuses[index] = newBonus;
     }
 
 }

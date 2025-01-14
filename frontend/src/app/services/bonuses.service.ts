@@ -53,4 +53,14 @@ export class BonusesService {
         );
     }
 
+    saveNewOrderBonuses(id: string, bonus: any): Observable<string> {
+        return this.http.patch<{ message: string }>(
+            `${environment.apiEndpoint}/api/report/${id}`,
+            bonus,
+            { withCredentials: true }
+        ).pipe(
+            map(response => response.message)
+        );
+    }
+
 }

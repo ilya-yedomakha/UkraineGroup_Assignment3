@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { PaginationInstance } from 'ngx-pagination';
-import { BonusData } from 'src/app/models/BonusData';
+import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {PaginationInstance} from 'ngx-pagination';
+import {BonusData} from 'src/app/models/BonusData';
+import {BonusesService} from "../../../services/bonuses.service";
 
 @Component({
     selector: 'app-table-orders-bonuses',
@@ -11,9 +12,12 @@ export class TableOrdersBonusesComponent implements OnInit {
 
     @Input() bonuses: BonusData;
     @Input() userRole!: 0 | 1 | 2;
+    @Output() dataChange = new EventEmitter<boolean>();
     currentPage = 1;
     itemsPerPage = 8;
     totalItems = 0;
+
+    private bonusesService = inject(BonusesService);
 
     originalOrderBonuses: number[] = []
     isEditing: boolean[] = []
@@ -26,8 +30,8 @@ export class TableOrdersBonusesComponent implements OnInit {
 
     ngOnInit(): void {
         this.totalItems = this.bonuses.ordersBonuses.length;
-        this.originalOrderBonuses = this.bonuses.ordersBonuses.map(el=>el.bonus);
-        this.isEditing = this.bonuses.ordersBonuses.map(()=>false);
+        this.originalOrderBonuses = this.bonuses.ordersBonuses.map(el => el.bonus);
+        this.isEditing = this.bonuses.ordersBonuses.map(() => false);
     }
 
     getOrderBonusesTotal(): number {
@@ -43,19 +47,24 @@ export class TableOrdersBonusesComponent implements OnInit {
         this.pagingConfig.currentPage = 1;
     }
 
-    // TODO
     saveSalesBonuses() {
-
+        let newBonus: any = {
+            "ordersBonuses" : this.bonuses.ordersBonuses
+        };
+        this.bonusesService.saveNewOrderBonuses(this.bonuses._id, newBonus).subscribe(() => {
+            this.dataChange.emit(true);
+        });
     }
 
-    cancelEdit(bonuse:any, index:number){
+    cancelEdit(bonuse: any, index: number) {
         const originalBonus = this.originalOrderBonuses[index]
         bonuse.bonus = originalBonus;
         this.isEditing[index] = false;
     }
 
-    saveEdit(index:number){
+    saveEdit(index: number, newBonus: number) {
         this.isEditing[index] = false;
+        this.originalOrderBonuses[index] = newBonus;
     }
 
 }

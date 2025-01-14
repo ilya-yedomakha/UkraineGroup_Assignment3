@@ -1008,10 +1008,6 @@
         "totalBonus": {
           "type": "number",
           "example": 1234
-        },
-        "isConfirmedByCEO": {
-          "type": "boolean",
-          "example": false
         }
       }
     },

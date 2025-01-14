@@ -89,8 +89,7 @@ const swaggerDocument = {
             ordersBonuses: [],
             socialBonuses: [],
             remarks: "remark",
-            totalBonus: 1234,
-            isConfirmedByCEO: false
+            totalBonus: 1234
         },
         reverseArray: {
             ids: ["678010157d630c79c9312c7d",
