@@ -23,9 +23,9 @@ import {ForbiddenPageComponent} from "./pages/forbiden-page/forbidden-page.compo
 const routes: Routes = [
     {path: 'login', component: LoginPageComponent},
     {path: 'salesmen', component: SalesmenPageComponent},
-    {path: 'bonuses', component:BonusesPageComponent},
-    {path: 'edit-bonuses', component:ChangeBonusesPageComponent},
-    {path: 'cabinet', component:SalesmanCabinetPageComponent},
+    {path: 'bonuses', component: BonusesPageComponent},
+    {path: 'edit-bonuses', component: ChangeBonusesPageComponent},
+    {path: 'cabinet', component: SalesmanCabinetPageComponent},
     {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
     {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
     {path: 'forbidden', component: ForbiddenPageComponent},

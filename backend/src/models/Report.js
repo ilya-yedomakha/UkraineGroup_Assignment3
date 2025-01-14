@@ -1,5 +1,4 @@
 const mongoose = require("mongoose")
-const {Schema} = require("mongoose");
 
 const reportSchema = new mongoose.Schema({
 
@@ -7,18 +6,22 @@ const reportSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+
     employeeId: {
         type: Number,
         required: true
     },
+
     firstname: {
         type: String,
         required: true
     },
+
     lastname: {
         type: String,
         required: true
     },
+
     ordersBonuses: [{
         productName: String,
         clientFullName: String,

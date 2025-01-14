@@ -1,6 +1,5 @@
 const socialPerformanceRecordModel = require("../models/SocialPerformanceRecord")
-const salesmanModel = require("../models/SalesMan");
-
+require("../models/SalesMan");
 const SocialPerformanceRecordService = require("../services/social-performance-record-service")
 
 class socialPerformanceRecordApi {

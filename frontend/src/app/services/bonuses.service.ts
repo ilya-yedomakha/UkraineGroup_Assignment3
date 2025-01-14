@@ -4,6 +4,7 @@ import {map} from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {BonusData} from '../models/BonusData';
+import {Bonuses} from "../models/Bonuses";
 
 @Injectable({
     providedIn: 'root'
@@ -46,10 +47,28 @@ export class BonusesService {
     sendAllConfirmedBonusesToOrangeHRM(changedIds): Observable<string> {
         return this.http.put<{ message: string }>(
             `${environment.apiEndpoint}/api/report/submit/confirmationArrayReverse`,
-            {"ids":changedIds},
-            { withCredentials: true }
+            {"ids": changedIds},
+            {withCredentials: true}
         ).pipe(
             map(response => response.message)
+        );
+    }
+
+    getBonusBySalesmanCodeForCurrentYear(salesmanCode: number): Observable<any> {
+        return this.http.get<any>(
+            `${environment.apiEndpoint}/api/report/salesman/${salesmanCode}/year/current`,
+            {withCredentials: true}
+        ).pipe(map(o => o.data));
+    }
+
+    getBonusesBySalesmanCode(salesmanCode: number): Observable<Bonuses[]> {
+        return this.http.get<{ data: Bonuses[] }>(
+            `${environment.apiEndpoint}/api/report/salesman/${salesmanCode}`,
+            {withCredentials: true}
+        ).pipe(
+            map(response =>
+                response.data.map(item => Bonuses.fromApi(item))
+            )
         );
     }
 
