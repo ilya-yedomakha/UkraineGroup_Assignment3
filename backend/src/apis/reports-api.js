@@ -105,6 +105,9 @@ class reportApi {
             return res.status(200).send({apiStatus: true, message: "Report was found", data: recordUpdated});
 
         } catch (e) {
+            if (e.code === 400) {
+                return res.status(400).send({ apiStatus: false, message: e.message });
+            }
             return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }

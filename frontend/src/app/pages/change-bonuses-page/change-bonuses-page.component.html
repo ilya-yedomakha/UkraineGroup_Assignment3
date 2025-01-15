@@ -4,7 +4,10 @@
             <label class="text-2xl mb-2 font-bold">Salesmen: {{bonusesData.firstname}} {{bonusesData.lastname}}</label>
             <div class="flex-col w-1/4">
                 <div class="mt-4 font-semibold flex justify-between">
-                    <button class="ml-2 bg-green-400 rounded-lg p-2 w-full transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
+                    <button
+                        *ngIf="user.role === 0 || user.role === 1"
+                        (click)="singleConfirm()"
+                        class="ml-2 bg-green-400 rounded-lg p-2 w-full transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
                         Confirm bonuses</button>
                     <button
                         *ngIf="user.role === 0"
@@ -39,9 +42,11 @@
 
     <div class="flex justify-start items-center">
             <label class="text-xl font-semibold mr-1">Remarks:</label>
-            <textarea class="border-2 border-black text-lg p-2 h-16 rounded-md w-full md:w-1/2"></textarea>
+            <textarea [(ngModel)]="bonusesData.remarks"
+                      class="border-2 border-black text-lg p-2 h-16 rounded-md w-full md:w-1/2"></textarea>
                 <button
                 *ngIf="user.role === 0"
+                (click)="saveRemarks()"
                 class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
                   Save</button>
     </div>

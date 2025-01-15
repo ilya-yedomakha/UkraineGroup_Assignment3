@@ -47,6 +47,24 @@ export class ChangeBonusesPageComponent implements OnInit {
         });
     }
 
+    singleConfirm(): void {
+        this.bonusesService.singleConfirm(this.bonusesData._id).subscribe(() => {
+            this.updateData();
+            this.dataChange.emit(true);
+        });
+    }
+
+    saveRemarks(): void {
+        const updatedBonuses = {
+            remarks: this.bonusesData.remarks
+        };
+
+        this.bonusesService.saveNewOrderBonuses(this.bonusesData._id, updatedBonuses).subscribe(() => {
+            this.updateData();
+            this.dataChange.emit(true);
+        });
+    }
+
     updateData(): void {
         const updatedState = {
             ...history.state,

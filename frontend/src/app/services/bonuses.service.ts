@@ -53,11 +53,22 @@ export class BonusesService {
             map(response => response.message)
         );
     }
+
     saveNewOrderBonuses(id: string, bonus: any): Observable<string> {
         return this.http.patch<{ message: string }>(
             `${environment.apiEndpoint}/api/report/${id}`,
             bonus,
-            { withCredentials: true }
+            {withCredentials: true}
+        ).pipe(
+            map(response => response.message)
+        );
+    }
+
+    singleConfirm(id: string): Observable<string> {
+        return this.http.put<{ message: string }>(
+            `${environment.apiEndpoint}/api/report/reverseConfirm/${id}`,
+            {},
+            {withCredentials: true}
         ).pipe(
             map(response => response.message)
         );

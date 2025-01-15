@@ -5,25 +5,49 @@ const socialPerformanceENUM = require("../models/SocialPerformanceEnUM")
 class ReportService {
     static updateReport = async function (oldData, newData) {
         try {
-            if (newData.hasOwnProperty("ordersBonuses"))
+            if (newData.hasOwnProperty("ordersBonuses")) {
+                const hasNegativeBonus = newData.ordersBonuses.some(order => order.bonus < 0);
+                if (hasNegativeBonus) {
+                    const error = new Error("All bonus values in ordersBonuses must be >= 0");
+                    error.code = 400;
+                    throw error;
+                }
                 oldData.ordersBonuses = newData.ordersBonuses;
-            if (newData.hasOwnProperty("socialBonuses"))
+            }
+
+            if (newData.hasOwnProperty("socialBonuses")) {
+                const hasNegativeBonus = newData.socialBonuses.some(social => social.bonus < 0);
+                if (hasNegativeBonus) {
+                    const error = new Error("All bonus values in socialBonuses must be >= 0");
+                    error.code = 400;
+                    throw error;
+                }
                 oldData.socialBonuses = newData.socialBonuses;
-            if (newData.hasOwnProperty("remarks"))
+            }
+
+            if (newData.hasOwnProperty("remarks")) {
                 oldData.remarks = newData.remarks;
-            if (newData.hasOwnProperty("isConfirmedByHR"))
+            }
+
+            if (newData.hasOwnProperty("isConfirmedByHR")) {
                 oldData.isConfirmedByHR = newData.isConfirmedByHR;
+            }
+
             oldData.isConfirmedByCEO = false;
             oldData.isConfirmedBySalesman = false;
             oldData.isSent = false;
+
             const ordersBonusSum = oldData.ordersBonuses?.reduce((sum, order) => sum + (order.bonus || 0), 0) || 0;
             const socialBonusSum = oldData.socialBonuses?.reduce((sum, social) => sum + (social.bonus || 0), 0) || 0;
             oldData.totalBonus = ordersBonusSum + socialBonusSum;
-            return await oldData.save()
+
+            return await oldData.save();
         } catch (e) {
-            throw new Error(e.message)
+            throw e;
         }
     }
+
+
 
     static confirmationReverseWithIdsArrayBbyCEO = async function (reports) {
         try {

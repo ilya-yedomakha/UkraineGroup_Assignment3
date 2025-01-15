@@ -17,6 +17,22 @@ export class TableSocialBonusesComponent implements OnInit {
     itemsPerPage = 8;
     totalItems = 0;
 
+    bonuse = { bonus: 0 };
+
+    handleBonusChange(bonuse: any): void {
+        if (bonuse.bonus === '' || bonuse.bonus === null || isNaN(Number(bonuse.bonus))) {
+            bonuse.bonus = 0;
+        } else {
+            const parsedValue = Number(bonuse.bonus);
+            bonuse.bonus = parsedValue < 0 ? 0 : parsedValue;
+        }
+    }
+    preventNegativeSign(event: KeyboardEvent): void {
+        if (event.key === '-') {
+            event.preventDefault();
+        }
+    }
+
     private bonusesService = inject(BonusesService);
 
     originalSocialBonuses: number[] = [];
