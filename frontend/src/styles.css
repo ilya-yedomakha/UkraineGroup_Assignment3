@@ -24,3 +24,7 @@ code{
   border-radius: 4px;
   padding: 3px;
 }
+
+svg{
+    display: inline-block;
+}

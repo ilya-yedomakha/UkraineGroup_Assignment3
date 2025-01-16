@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnChanges, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {User} from '../../models/User';
@@ -40,6 +40,7 @@ export class MenuBarComponent implements OnInit {
     handleLogout(): void{
         this.authService.logout().subscribe();
         void this.router.navigate(['login']); // after logout go back to the login-page
+        this.user = null;
     }
 
     /**

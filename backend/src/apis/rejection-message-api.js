@@ -61,6 +61,22 @@ class RejectionMessageApi {
         }
     }
 
+    static getByYear = async (req, res) => {
+        try {
+            const data = await RejectionMessageModel.find({year: req.params.year})
+            if (data != null)
+                res.status(200).send({
+                    apiStatus: true,
+                    message: "Rejection message by code " + req.params.code + " was found",
+                    data: data
+                })
+            else
+                res.status(404).send({apiStatus: false, message: "Rejection message not found"})
+        } catch (e) {
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
+        }
+    }
+
     static deleteById = async (req, res) => {
         try {
             const data = await RejectionMessageModel.findByIdAndDelete(req.params.id)

@@ -36,6 +36,13 @@ export class RejectionService {
         ).pipe(map(res => res.data));
     }
 
+    getRejectionsByYear(year: number): Observable<any> {
+        return this.http.get<any>(
+            `${this.baseUrl}/year/${year}`,
+            {withCredentials: true}
+        ).pipe(map(res => res.data));
+    }
+
     deleteRejectionById(id: string): Observable<any> {
         return this.http.delete<any>(
             `${this.baseUrl}/${id}`,

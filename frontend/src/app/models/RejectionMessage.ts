@@ -1,4 +1,4 @@
-export class RejectionMessageRecord {
+export class RejectionMessage {
     public _id: string | null;
 
     constructor(
