@@ -216,6 +216,29 @@
         }
       }
     },
+    "/api/salesman/count/year/current": {
+      "get": {
+        "tags": [
+          "Salesmen"
+        ],
+        "summary": "Get All salesmen",
+        "description": "Get all salesmen",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/social_performance_record/": {
       "get": {
         "tags": [
@@ -424,6 +447,83 @@
         ],
         "summary": "Import sale performance form OpenCRX",
         "description": "Import sale performance form OpenCRX",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sale_performance_record/": {
+      "get": {
+        "tags": [
+          "get all sales order"
+        ],
+        "summary": "get all sales order",
+        "description": "get all sales order",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sale_performance_record/count/year/current": {
+      "get": {
+        "tags": [
+          "get all sales order for current year"
+        ],
+        "summary": "get all sales order for current year",
+        "description": "get all sales order for current year",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sale_performance_record/salesman/{code}": {
+      "get": {
+        "tags": [
+          "get all sales order for specific salesman"
+        ],
+        "summary": "get all sales order for specific salesman",
+        "description": "get all sales order for specific salesman",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -1041,6 +1141,36 @@
         "parameters": [
           {
             "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/rejection/year/{year}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "year",
             "in": "path",
             "required": true,
             "type": "string"
