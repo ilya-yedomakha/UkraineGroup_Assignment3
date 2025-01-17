@@ -45,6 +45,15 @@ class salesmanApi {
         }
     }
 
+    static getAllSalesmenCountForCurrentYear = async (req, res) => {
+        try {
+            const salesman = await salesmanModel.countDocuments({year: new Date().getFullYear()});
+            res.status(200).send({apiStatus: true, message: "All salesmen count fetched", data: salesman})
+        } catch (e) {
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
+        }
+    }
+
     static importSeniorSalesmenFromOrangeHRM = async (req, res) => {
         try {
             const tokenBody = {

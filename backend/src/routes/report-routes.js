@@ -79,4 +79,22 @@ router.delete("/:id",
     // #swagger.tags = ['Reports']
     checkAuthorization([0,1]), ReportApi.deleteReport)
 
+router.get("/count/",
+    checkAuthorization([0,1]), ReportApi.getTotalReportsCount)
+
+router.get("/count/year/current",
+    checkAuthorization([0,1]), ReportApi.getTotalReportsForCurrentYear)
+
+router.get("/count/signed/CEO",
+    checkAuthorization([0,1]), ReportApi.getSignedByCEOReportsCount)
+
+router.get("/count/signed/HR",
+    checkAuthorization([0,1]), ReportApi.getSignedByHRReportsCount)
+
+router.get("/count/signed/CEO/year/current",
+    checkAuthorization([0,1]), ReportApi.getSignedByCEOReportsCountForCurrentYear)
+
+router.get("/count/signed/HR/year/current",
+    checkAuthorization([0,1]), ReportApi.getSignedByHRReportsCountForCurrentYear)
+
 module.exports = router

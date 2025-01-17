@@ -10,6 +10,8 @@ import { ChangeBonusesPageComponent } from './pages/change-bonuses-page/change-b
 import { SalesmanCabinetPageComponent } from './pages/salesman-cabinet-page/salesman-cabinet-page.component';
 import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.component';
 import {ForbiddenPageComponent} from "./pages/forbiden-page/forbidden-page.component";
+import {WelcomeAdminDashboardComponent} from "./pages/welcome-admin-dashboard/welcome-admin-dashboard.component";
+import {UsersPageComponent} from "./pages/users-page/users-page.component";
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -29,7 +31,10 @@ const routes: Routes = [
     {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
     {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
     {path: 'forbidden', component: ForbiddenPageComponent},
+    {path: 'welcome-admin-dashboard', component: WelcomeAdminDashboardComponent},
+    {path: 'users', component:UsersPageComponent},
     {path: '**', component: NotFoundPageComponent}
+
 ];
 
 @NgModule({

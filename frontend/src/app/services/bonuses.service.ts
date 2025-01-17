@@ -92,6 +92,50 @@ export class BonusesService {
         );
     }
 
+    getTotalReportsCount(): Observable<number> {
+        return this.http.get<{ data: number }>(
+            `${environment.apiEndpoint}/api/report/count`,
+            {withCredentials: true}
+        ).pipe(
+            map(response =>
+                response.data
+            )
+        );
+    }
+
+    getTotalReportsForCurrentYear(): Observable<number> {
+        return this.http.get<{ data: number }>(
+            `${environment.apiEndpoint}/api/report/count/year/current`,
+            {withCredentials: true}
+        ).pipe(
+            map(response =>
+                response.data
+            )
+        );
+    }
+
+    getSignedByCEOReportsCountForCurrentYear(): Observable<number> {
+        return this.http.get<{ data: number }>(
+            `${environment.apiEndpoint}/api/report/count/signed/CEO/year/current`,
+            {withCredentials: true}
+        ).pipe(
+            map(response =>
+                response.data
+            )
+        );
+    }
+
+    getSignedByHRReportsCountForCurrentYear(): Observable<number> {
+        return this.http.get<{ data: number }>(
+            `${environment.apiEndpoint}/api/report/count/signed/HR/year/current`,
+            {withCredentials: true}
+        ).pipe(
+            map(response =>
+                response.data
+            )
+        );
+    }
+
     confirmBonusById(id: string): Observable<any> {
         return this.http.put<any>(
             `${environment.apiEndpoint}/api/report/salesman-confirm/${id}`,

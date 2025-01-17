@@ -1,0 +1,53 @@
+<div class="bg-[#FCE8BA] font-sans text-gray-800 border-2 border-black rounded-lg">
+    <div class="policy-container content-center border">
+        <div class="bg-black rounded-t-lg">
+            <div class="grid grid-cols-7 gap-4 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
+                <span class="heading">Username</span>
+                <span class="heading">Firstname</span>
+                <span class="heading">Lastname</span>
+                <span class="heading">Email</span>
+                <span class="heading">Role</span>
+                <span class="heading">Code</span>
+                <span class="heading">Action</span>
+            </div>
+        </div>
+
+
+        <div *ngFor="let user of users | paginate: pagingConfig; index as i"
+             class="grid grid-cols-7 gap-4 items-center py-2 px-2 rounded-lg shadow-md mb-2 mx-2 mx-2hover:shadow-lg transition-shadow border-2 border-black text-base bg-[#D9D9D9]">
+
+            <span class="flex-1 text-center">{{ user.username }}</span>
+
+            <span class="flex-1 text-center">{{ user.firstname }}</span>
+
+            <span class="flex-1 text-center">{{ user.lastname }}</span>
+
+            <span class="flex-1 text-center">{{ user.email }}</span>
+<!--            TODO make it actual role-->
+            <span class="flex-1 text-center">{{ user.role }}</span>
+
+            <span class="flex-1 text-center">{{ user.code }}</span>
+
+            <div class="flex-1 text-center ">
+                <div class="flex justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor"
+                         class="size-7 transition-all duration-300 ease-in-out hover:scale-110 cursor-pointer">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor"
+                         class="size-7 transition-all duration-300 ease-in-out hover:scale-110 cursor-pointer">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-center mt-4">
+            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+        </div>
+    </div>
+</div>

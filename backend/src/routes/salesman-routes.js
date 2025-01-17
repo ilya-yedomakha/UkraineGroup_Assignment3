@@ -2,6 +2,7 @@ const router = require("express").Router()
 const SalesManController = require("../apis/salesman-api")
 const {checkAuthorization} = require('../middlewares/auth-middleware');
 const SocialPerformanceRecordApi = require("../apis/social-performance-record-api");
+const salesmanModel = require("../models/SalesMan");
 
 router.get("/",
     //#swagger.description = 'Get all salesmen'
@@ -44,10 +45,10 @@ schema: { $ref: '#/definitions/socialPerformanceRecordSchema' }
 } */
     checkAuthorization([0,1]), SalesManController.createSocialPerformanceToSalesmanBySalesmanCode)
 
-// router.put("/:id", checkAuthorization([0]),  SalesManController.updateSalesman)
-// router.put("/code/:code", checkAuthorization([0]),  SalesManController.updateSalesmanByCode)
-//
-// router.delete("/:id", checkAuthorization([0]), SalesManController.deleteSalesman)
-// router.delete("/code/:code", checkAuthorization([0]), SalesManController.deleteSalesmanByCode)
+router.get("/count/year/current",
+    //#swagger.description = 'Get all salesmen'
+    //#swagger.summary = 'Get All salesmen'
+    // #swagger.tags = ['Salesmen']
+    checkAuthorization([0,1]), SalesManController.getAllSalesmenCountForCurrentYear)
 
 module.exports = router

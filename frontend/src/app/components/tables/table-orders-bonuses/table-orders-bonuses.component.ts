@@ -2,6 +2,12 @@ import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/c
 import {PaginationInstance} from 'ngx-pagination';
 import {BonusData} from 'src/app/models/BonusData';
 import {BonusesService} from "../../../services/bonuses.service";
+import {
+    MatSnackBar,
+    MatSnackBarHorizontalPosition,
+    MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import {CustomSnackBarComponent} from "../../popouts/custom-snack-bar/custom-snack-bar.component";
 
 @Component({
     selector: 'app-table-orders-bonuses',
@@ -16,6 +22,7 @@ export class TableOrdersBonusesComponent implements OnInit {
     currentPage = 1;
     itemsPerPage = 8;
     totalItems = 0;
+    snackBar = inject(MatSnackBar);
 
     bonuse = { bonus: 0 };
 
@@ -80,6 +87,19 @@ export class TableOrdersBonusesComponent implements OnInit {
     saveEdit(index: number, newBonus: number) {
         this.isEditing[index] = false;
         this.originalOrderBonuses[index] = newBonus;
+        this.showSnackBar();
+    }
+
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+    showSnackBar(): void {
+        const durationInSeconds = 5;
+        this.snackBar.openFromComponent(CustomSnackBarComponent, {
+            duration: durationInSeconds * 1000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition
+        });
     }
 
 }

@@ -2,6 +2,7 @@ const salesmanModel = require("../models/SalesMan")
 const salePerformanceRecordModel = require("../models/SalePerformanceRecord")
 
 const axios = require('axios');
+const salesmanService = require("../services/salesman-service");
 
 let environment;
 if(process.env.NODE_ENV === 'development'){
@@ -134,6 +135,34 @@ class salePerformanceRecordApi {
             res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     };
+
+    static getAllSalePerformance = async (req, res) => {
+        try {
+            const salesman = await salePerformanceRecordModel.find();
+            res.status(200).send({apiStatus: true, message: "All sales data fetched", data: salesman})
+        } catch (e) {
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
+        }
+    };
+
+    static getAllSalePerformanceCountForCurrentYear = async (req, res) => {
+        try {
+            const salesman = await salePerformanceRecordModel.countDocuments({activeYear: new Date().getFullYear()});
+            res.status(200).send({apiStatus: true, message: "All sales data fetched", data: salesman})
+        } catch (e) {
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
+        }
+    };
+
+    static getAllSalePerformancesBySalesmanCode = async (req, res) => {
+        try {
+            const saleOrder = await salePerformanceRecordModel.find({salesmanGovId: req.params.code});
+            res.status(200).send({apiStatus: true, message: "All sales data fetched for salesman: "+ req.params.code, data: saleOrder})
+        } catch (e) {
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
+        }
+    };
+
 }
 
 module.exports = salePerformanceRecordApi
