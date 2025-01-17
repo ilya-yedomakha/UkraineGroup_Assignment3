@@ -240,6 +240,107 @@ class reportApi {
             return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }
+    static getSignedByCEOReportsCount = async (req, res) => {
+        try {
+            const count = await ReportModel.countDocuments({ isConfirmedByCEO: true });
+            res.status(200).send({
+                apiStatus: true,
+                message: "Count of reports signed by CEO was calculated",
+                data: count
+            });
+        } catch (e) {
+            res.status(500).send({
+                apiStatus: false,
+                message: e.message,
+                data: e
+            });
+        }
+    }
+
+    static getSignedByHRReportsCount = async (req, res) => {
+        try {
+            const count = await ReportModel.countDocuments({ isConfirmedByHR: true });
+            res.status(200).send({
+                apiStatus: true,
+                message: "Count of reports signed by HR was calculated",
+                data: count
+            });
+        } catch (e) {
+            res.status(500).send({
+                apiStatus: false,
+                message: e.message,
+                data: e
+            });
+        }
+    }
+
+    static getSignedByHRReportsCountForCurrentYear = async (req, res) => {
+        try {
+            const count = await ReportModel.countDocuments({ isConfirmedByHR: true, year: new Date().getFullYear()});
+            res.status(200).send({
+                apiStatus: true,
+                message: "Count of reports signed by HR for "+ new Date().getFullYear() + " was calculated",
+                data: count
+            });
+        } catch (e) {
+            res.status(500).send({
+                apiStatus: false,
+                message: e.message,
+                data: e
+            });
+        }
+    }
+
+    static getSignedByCEOReportsCountForCurrentYear = async (req, res) => {
+        try {
+            const count = await ReportModel.countDocuments({ isConfirmedByCEO: true, year: new Date().getFullYear()});
+            res.status(200).send({
+                apiStatus: true,
+                message: "Count of reports signed by HR for "+ new Date().getFullYear() + " was calculated",
+                data: count
+            });
+        } catch (e) {
+            res.status(500).send({
+                apiStatus: false,
+                message: e.message,
+                data: e
+            });
+        }
+    }
+
+    static getTotalReportsForCurrentYear = async (req, res) => {
+        try {
+            const count = await ReportModel.countDocuments({year: new Date().getFullYear()});
+            res.status(200).send({
+                apiStatus: true,
+                message: "Total report count for the "+ new Date().getFullYear() + " year was calculated",
+                data: count
+            });
+        } catch (e) {
+            res.status(500).send({
+                apiStatus: false,
+                message: e.message,
+                data: e
+            });
+        }
+    }
+
+    static getTotalReportsCount = async (req, res) => {
+        try {
+            const count = await ReportModel.countDocuments();
+            res.status(200).send({
+                apiStatus: true,
+                message: "Total report count was calculated",
+                data: count
+            });
+        } catch (e) {
+            res.status(500).send({
+                apiStatus: false,
+                message: e.message,
+                data: e
+            });
+        }
+    }
 
 
 }

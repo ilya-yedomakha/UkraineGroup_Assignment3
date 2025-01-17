@@ -26,7 +26,7 @@ import { TableSocialBonusesComponent } from './components/tables/table-social-bo
 import { TableOrdersBonusesComponent } from './components/tables/table-orders-bonuses/table-orders-bonuses.component';
 import { TableSalesmanCabinetComponent } from './components/tables/table-salesman-cabinet/table-salesman-cabinet.component';
 import { SalesmanCabinetPageComponent } from './pages/salesman-cabinet-page/salesman-cabinet-page.component';
-import { BarGraphSalesmanBonusesComponent } from './components/diadrams/bar-graph-salesman-bonuses/bar-graph-salesman-bonuses.component';
+import { BarGraphSalesmanBonusesComponent } from './components/diagrams/bar-graph-salesman-bonuses/bar-graph-salesman-bonuses.component';
 import { NgChartsModule } from 'ng2-charts';
 import {NgxPaginationModule} from "ngx-pagination";
 import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.component';
@@ -38,6 +38,13 @@ import { CalculateConfirmationWindowComponent } from './components/popouts/calcu
 import { TableManageSocialPerformanceComponent } from './components/tables/table-manage-social-performance/table-manage-social-performance.component';
 import { TableViewSalePerformanceComponent } from './components/tables/table-view-sale-performance/table-view-sale-performance.component';
 import { AboutBonusCalculationDropDownComponent } from './components/popouts/about-bonus-calculation-drop-down/about-bonus-calculation-drop-down.component';
+import { WelcomeAdminDashboardComponent } from './pages/welcome-admin-dashboard/welcome-admin-dashboard.component';
+import { CustomSnackBarComponent } from './components/popouts/custom-snack-bar/custom-snack-bar.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { UsersPageComponent } from './pages/users-page/users-page.component';
+import { TableUsersComponent } from './components/tables/table-users/table-users.component';
+import { PieCountConfirmationStatisticsComponent } from './components/diagrams/pie-count-confirmation-statistics/pie-count-confirmation-statistics.component';
+import { BarSalesmenRatingComponent } from './components/diagrams/bar-salesmen-rating/bar-salesmen-rating.component';
 
 @NgModule({
     declarations: [
@@ -65,7 +72,13 @@ import { AboutBonusCalculationDropDownComponent } from './components/popouts/abo
         TableViewSalePerformanceComponent,
         TableManageSocialPerformanceComponent,
         CalculateConfirmationWindowComponent,
-        AboutBonusCalculationDropDownComponent
+        AboutBonusCalculationDropDownComponent,
+        WelcomeAdminDashboardComponent,
+        CustomSnackBarComponent,
+        UsersPageComponent,
+        TableUsersComponent,
+        PieCountConfirmationStatisticsComponent,
+        BarSalesmenRatingComponent
     ],
     imports: [
         BrowserModule,
@@ -82,6 +95,7 @@ import { AboutBonusCalculationDropDownComponent } from './components/popouts/abo
         NgChartsModule,
         NgxPaginationModule,
         ReactiveFormsModule,
+        MatSnackBarModule
     ],
     providers: [],
     bootstrap: [AppComponent]

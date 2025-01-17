@@ -23,6 +23,10 @@ exports.get = async function (db, username){
     return db.collection('users').findOne({username: username});
 }
 
+exports.getAll = async function (db) {
+    return db.collection('users').find({}).toArray();
+};
+
 exports.getByCode = async function (db, code){
     return db.collection('users').findOne({code: code});
 }

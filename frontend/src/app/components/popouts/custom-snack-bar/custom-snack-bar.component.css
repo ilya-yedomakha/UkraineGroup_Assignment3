@@ -1,0 +1,11 @@
+body {
+    background-color: #FCE8BA; /* Match your snack bar's background or desired color */
+}
+
+.app-root {
+    background-color: transparent; /* Ensure no black background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}

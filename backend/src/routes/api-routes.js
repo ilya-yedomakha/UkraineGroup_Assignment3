@@ -39,6 +39,18 @@ router.get('/user',
     //#swagger.summary = 'Get current user data'
     checkAuthorization([0,1,2]), userApi.getSelf);
 
+router.get('/users',
+    // #swagger.tags = ['Authentication']
+    //#swagger.description = 'Get current user data'
+    //#swagger.summary = 'Get current user data'
+    checkAuthorization([0,1]), userApi.getUsers);
+
+router.get('/users/count',
+    // #swagger.tags = ['Authentication']
+    //#swagger.description = 'Get current user data'
+    //#swagger.summary = 'Get current user data'
+    checkAuthorization([0,1]), userApi.getUsersCount);
+
 // const peopleDemoApi = require('../apis/people-demo-api');
 // router.get('/people',
 //     // #swagger.tags = ['Authentication']
