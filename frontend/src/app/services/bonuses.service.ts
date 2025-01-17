@@ -4,7 +4,7 @@ import {map} from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {BonusData} from '../models/BonusData';
-import {Bonuses} from "../models/Bonuses";
+import {Bonuses} from '../models/Bonuses';
 
 @Injectable({
     providedIn: 'root'
@@ -92,4 +92,19 @@ export class BonusesService {
         );
     }
 
+    confirmBonusById(id: string): Observable<any> {
+        return this.http.put<any>(
+            `${environment.apiEndpoint}/api/report/salesman-confirm/${id}`,
+            {},
+            {withCredentials: true}
+        ).pipe(response => response);
+    }
+
+    rejectBonusById(id: string): Observable<any> {
+        return this.http.put<any>(
+            `${environment.apiEndpoint}/api/report/salesman-reject/${id}`,
+            {},
+            {withCredentials: true}
+        ).pipe(response => response);
+    }
 }

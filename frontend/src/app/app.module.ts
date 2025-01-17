@@ -19,7 +19,7 @@ import { ExamplePageComponent } from './pages/example-page/example-page.componen
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import {MatTableModule} from '@angular/material/table';
 import { BonusesPageComponent } from './pages/bonuses-page/bonuses-page.component';
-import { TableSalesmenBonusesComponent} from "./components/tables/table-salesmen-bonuses/table-salesmen-bonuses.component";
+import { TableSalesmenBonusesComponent} from './components/tables/table-salesmen-bonuses/table-salesmen-bonuses.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ChangeBonusesPageComponent } from './pages/change-bonuses-page/change-bonuses-page.component';
 import { TableSocialBonusesComponent } from './components/tables/table-social-bonuses/table-social-bonuses.component';
@@ -28,7 +28,7 @@ import { TableSalesmanCabinetComponent } from './components/tables/table-salesma
 import { SalesmanCabinetPageComponent } from './pages/salesman-cabinet-page/salesman-cabinet-page.component';
 import { BarGraphSalesmanBonusesComponent } from './components/diadrams/bar-graph-salesman-bonuses/bar-graph-salesman-bonuses.component';
 import { NgChartsModule } from 'ng2-charts';
-import {NgxPaginationModule} from "ngx-pagination";
+import {NgxPaginationModule} from 'ngx-pagination';
 import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.component';
 import { TableSalesmenComponent } from './components/tables/table-salesmen/table-salesmen.component';
 import { RejectBonusesCalculationWindowComponent } from './components/popouts/reject-bonuses-calculation-window/reject-bonuses-calculation-window.component';
@@ -38,6 +38,7 @@ import { CalculateConfirmationWindowComponent } from './components/popouts/calcu
 import { TableManageSocialPerformanceComponent } from './components/tables/table-manage-social-performance/table-manage-social-performance.component';
 import { TableViewSalePerformanceComponent } from './components/tables/table-view-sale-performance/table-view-sale-performance.component';
 import { AboutBonusCalculationDropDownComponent } from './components/popouts/about-bonus-calculation-drop-down/about-bonus-calculation-drop-down.component';
+import { ToggleSwitchComponent} from './components/toggle-switch/toggle-switch.component';
 
 @NgModule({
     declarations: [
@@ -65,7 +66,8 @@ import { AboutBonusCalculationDropDownComponent } from './components/popouts/abo
         TableViewSalePerformanceComponent,
         TableManageSocialPerformanceComponent,
         CalculateConfirmationWindowComponent,
-        AboutBonusCalculationDropDownComponent
+        AboutBonusCalculationDropDownComponent,
+        ToggleSwitchComponent
     ],
     imports: [
         BrowserModule,

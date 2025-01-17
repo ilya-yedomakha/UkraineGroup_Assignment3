@@ -61,6 +61,12 @@ router.put("/reverseConfirm/:id",
     // #swagger.tags = ['Reports']
     checkAuthorization([0,1]), ReportApi.confirmationReverseSingleReport)
 
+router.put("/salesman-confirm/:id",
+    checkAuthorization([2]), ReportApi.confirmBonusForSalesman)
+
+router.put("/salesman-reject/:id",
+    checkAuthorization([2]), ReportApi.rejectBonusForSalesman)
+
 router.delete("/",
     //#swagger.description = 'Delete all reports'
     //#swagger.summary = 'Delete all reports'

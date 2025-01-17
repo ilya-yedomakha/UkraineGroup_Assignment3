@@ -24,12 +24,17 @@ export class RejectBonusesCalculationWindowComponent implements OnInit {
     }
 
     toClose(): void {
-        this.close.emit(true);
+        this.close.emit(false);
     }
 
     send(message: string): void {
+        this.bonusesService.rejectBonusById(this.reportId).subscribe();
         this.rejectionService.saveRejection(this.reportId, message).subscribe(value => {
             this.close.emit(true);
+        },
+        error => {
+            this.close.emit(false);
+            console.log(error);
         });
     }
 }

@@ -106,7 +106,7 @@ class reportApi {
 
         } catch (e) {
             if (e.code === 400) {
-                return res.status(400).send({ apiStatus: false, message: e.message });
+                return res.status(400).send({apiStatus: false, message: e.message});
             }
             return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
@@ -145,6 +145,44 @@ class reportApi {
             res.status(500).json({error: 'Internal server error'});
         }
     };
+
+    static confirmBonusForSalesman = async (req, res) => {
+        try {
+            if (req.params.id === undefined) {
+                return res.status(400).send({apiStatus: false, message: "Invalid request parameter"});
+            }
+            const updatedReport = await ReportModel.findByIdAndUpdate(req.params.id,
+                {isConfirmedBySalesman: true},
+                {new: true});
+            if (updatedReport) {
+                res.status(200).send({apiStatus: true, message: "Report was updated", data: updatedReport});
+            } else {
+                return res.status(404).json({error: 'No reports found for the provided IDs'});
+            }
+        } catch (error) {
+            console.error('Error processing report:', error);
+            res.status(500).json({error: 'Internal server error'});
+        }
+    }
+
+    static rejectBonusForSalesman = async (req, res) => {
+        try {
+            if (req.params.id === undefined) {
+                return res.status(400).send({apiStatus: false, message: "Invalid request parameter"});
+            }
+            const updatedReport = await ReportModel.findByIdAndUpdate(req.params.id,
+                {isConfirmedBySalesman: false},
+                {new: true});
+            if (updatedReport) {
+                res.status(200).send({apiStatus: true, message: "Report was updated", data: updatedReport});
+            } else {
+                return res.status(404).json({error: 'No reports found for the provided IDs'});
+            }
+        } catch (error) {
+            console.error('Error processing report:', error);
+            res.status(500).json({error: 'Internal server error'});
+        }
+    }
 
     static confirmationReverseSingleReport = async (req, res) => {
         try {
@@ -208,8 +246,8 @@ class reportApi {
 
             if (!report) {
                 return res.status(404).send({apiStatus: false, message: 'No report found'});
-            } else if (report.year !== currentYear){
-                return res.status(404).send({apiStatus: false, message: 'Year must be '+ currentYear});
+            } else if (report.year !== currentYear) {
+                return res.status(404).send({apiStatus: false, message: 'Year must be ' + currentYear});
             }
 
 

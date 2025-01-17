@@ -53,8 +53,14 @@
                 </span>
             </div>
             <div *ngIf="hasRejectionForBonus(bonus._id)" class="flex justify-end">
-                <div [ngClass]="bonus.isConfirmedByCEO ? 'bg-green-600 text-white' : 'bg-gray-300 text-black'"
-                     class="policy gap-2 items-center py-2 px-2 shadow-md mx-2 hover:shadow-lg transition-shadow border-l-2 border-r-2 border-b-2 border-black w-11/12 rounded-b-lg">
+                <div [ngClass]="{
+                'bg-green-600 text-white': bonus.isConfirmedByCEO,
+                 'bg-gray-300 text-black': !bonus.isConfirmedByCEO,
+                  'truncate overflow-hidden whitespace-nowrap': !isClicked,
+                  'whitespace-normal overflow-visible': isClicked}"
+                     (click)="isClicked = !isClicked"
+                     class="policy cursor-pointer gap-2 items-center py-2 px-2 shadow-md mx-2 hover:shadow-lg transition-shadow border-l-2 border-r-2 border-b-2 border-black w-11/12 rounded-b-lg"
+                     [@fadeToggle]="isClicked ? 'visible' : 'hidden'">
                     <i>{{ rejectionMessage.message }}</i>
                 </div>
             </div>
