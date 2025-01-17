@@ -1,48 +1,68 @@
 <div class="bg-[#FCE8BA] font-sans text-gray-800 border-double border-2 border-black rounded-lg">
-  <div class="policy-container content-center border">
-    <div class="bg-black rounded-t-lg">
-      <div class="grid grid-cols-7 gap-2 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
-        <span class="heading">Firstname</span>
-        <span class="heading">Lastname</span>
-        <span class="heading">Bonuses for sales</span>
-        <span class="heading">Bonuses for social performance</span>
-        <span class="heading">Total bonuses</span>
-        <span class="heading">Salesman confirmation</span>
-        <span class="heading">Action</span>
-      </div>
+    <div class="policy-container content-center border">
+        <div class="bg-black rounded-t-lg">
+            <div class="grid grid-cols-7 gap-2 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
+                <span class="heading">Firstname</span>
+                <span class="heading">Lastname</span>
+                <span class="heading">Bonuses for sales</span>
+                <span class="heading">Bonuses for social performance</span>
+                <span class="heading">Total bonuses</span>
+                <span class="heading">Salesman confirmation</span>
+                <span class="heading">Action</span>
+            </div>
+        </div>
+
+        <div *ngFor="let bonus of bonuses | paginate: pagingConfig">
+            <div [ngClass]="[bonus.isConfirmedByCEO ? 'bg-green-600 text-white' : 'bg-gray-300 text-black',
+            hasRejectionForBonus(bonus._id) ? 'rounded-br-none' : 'rounded-br-lg']"
+                 class="policy grid grid-cols-7 gap-2 items-center py-4 px-2 rounded-lg rounded-br-none shadow-md mt-4 mx-2 hover:shadow-lg transition-shadow border-2 border-black">
+
+                <span class="flex-1 text-center">{{ bonus.firstname }}</span>
+
+                <span class="flex-1 text-center">{{ bonus.lastname }}</span>
+
+                <span class="flex-1 text-center">{{ bonus.getOrderBonusesTotal() }}</span>
+
+                <span class="flex-1 text-center">{{ bonus.getSocialBonusesTotal() }}</span>
+
+                <span class="flex-1 text-center">{{ bonus.getTotalBonuses() }}</span>
+
+                <span class="flex-1 text-center">
+            <svg *ngIf="bonus.isConfirmedBySalesman" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 fill="green"
+                 viewBox="0 0 24 24">
+                <path
+                    d="M20.285 6.709c.391.39.391 1.023 0 1.414l-11 11c-.391.391-1.023.391-1.414 0l-5-5c-.391-.391-.391-1.023 0-1.414s1.023-.391 1.414 0l4.293 4.293 10.293-10.293c.391-.391 1.023-.391 1.414 0z"/>
+            </svg>
+                <svg *ngIf="!bonus.isConfirmedBySalesman" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     fill="red" viewBox="0 0 24 24">
+                    <path
+                        d="M12 10.586l4.95-4.95c.391-.391 1.023-.391 1.414 0s.391 1.023 0 1.414l-4.95 4.95 4.95 4.95c.391.391.391 1.023 0 1.414s-1.023.391-1.414 0l-4.95-4.95-4.95 4.95c-.391.391-1.023.391-1.414 0s-.391-1.023 0-1.414l4.95-4.95-4.95-4.95c-.391-.391-.391-1.023 0-1.414s1.023-.391 1.414 0l4.95 4.95z"/>
+                </svg>
+            </span>
+
+                <span class="flex-1 flex justify-center gap-2 items-center">
+                    <button [disabled]="bonus.isConfirmedByCEO" (click)="toEditSalesmanBonus(bonus)"
+                            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        Edit
+                    </button>
+                    <input type="checkbox"
+                           [checked]="bonus.isConfirmedByCEO"
+                           (change)="onCheckboxChange(bonus._id, $event.target.checked)"
+                           class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"/>
+                </span>
+            </div>
+            <div *ngIf="hasRejectionForBonus(bonus._id)" class="flex justify-end">
+                <div [ngClass]="bonus.isConfirmedByCEO ? 'bg-green-600 text-white' : 'bg-gray-300 text-black'"
+                     class="policy gap-2 items-center py-2 px-2 shadow-md mx-2 hover:shadow-lg transition-shadow border-l-2 border-r-2 border-b-2 border-black w-11/12 rounded-b-lg">
+                    <i>{{ rejectionMessage.message }}</i>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-center mt-4">
+            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+        </div>
     </div>
-
-    <div *ngFor="let bonus of bonuses | paginate: pagingConfig"
-      [ngClass]="bonus.isConfirmedByCEO ? 'bg-green-600 text-white' : 'bg-gray-300 text-black'"
-      class="policy grid grid-cols-7 gap-2 items-cente py-4 px-2 rounded-lg shadow-md mb-4 mx-2 mx-2hover:shadow-lg transition-shadow border-2 border-black">
-
-      <span class="flex-1 text-center">{{ bonus.firstname }}</span>
-
-      <span class="flex-1 text-center">{{ bonus.lastname }}</span>
-
-      <span class="flex-1 text-center">{{ bonus.getOrderBonusesTotal() }}</span>
-
-      <span class="flex-1 text-center">{{ bonus.getSocialBonusesTotal() }}</span>
-
-      <span class="flex-1 text-center">{{ bonus.getTotalBonuses() }}</span>
-
-      <span class="flex-1 text-center">{{ bonus.isConfirmedBySalesman }}</span>
-
-      <span class="flex-1 flex justify-center gap-2 items-center">
-        <button [disabled]="bonus.isConfirmedByCEO" (click)="toEditSalesmanBonus(bonus)"
-                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-300">
-          Edit
-
-        </button>
-        <input type="checkbox"
-        [checked]="bonus.isConfirmedByCEO"
-        (change)="onCheckboxChange(bonus._id, $event.target.checked)"
-        class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
-      </span>
-    </div>
-    <div class="flex justify-center mt-4">
-      <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
-      </pagination-controls>
-    </div>
-  </div>
 </div>

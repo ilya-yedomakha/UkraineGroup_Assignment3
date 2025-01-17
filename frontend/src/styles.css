@@ -29,6 +29,10 @@ code {
     padding: 3px;
 }
 
+svg{
+    display: inline-block;
+}
+
 html, body {
     height: 100%;
 }
