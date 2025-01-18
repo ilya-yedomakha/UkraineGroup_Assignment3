@@ -103,11 +103,6 @@ export class TableSalesmanCabinetComponent implements OnInit {
         if (newState === 'reject') {
             this.isRejectWindowVisible = true;
         }
-        else if (newState === 'none'){
-            this.bonusesService.rejectBonusById(bonus[0]._id).subscribe();
-            this.rejectionService.deleteRejectionsByReport(bonus[0]._id).subscribe(() =>
-                this.stateChanged.emit(true));
-        }
         else if (newState === 'confirm'){
             this.bonusesService.confirmBonusById(bonus[0]._id).subscribe();
             this.rejectionService.deleteRejectionsByReport(bonus[0]._id).subscribe(() =>

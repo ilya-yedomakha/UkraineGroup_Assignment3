@@ -12,6 +12,7 @@ export class RejectBonusesCalculationWindowComponent implements OnInit {
 
     @Output() close = new EventEmitter<boolean>();
     @Input() salesmanCode: number;
+    errorMessage: string = null;
     private rejectionService = inject(RejectionService);
     private bonusesService = inject(BonusesService);
     private reportId: string;
@@ -29,12 +30,12 @@ export class RejectBonusesCalculationWindowComponent implements OnInit {
 
     send(message: string): void {
         this.bonusesService.rejectBonusById(this.reportId).subscribe();
-        this.rejectionService.saveRejection(this.reportId, message).subscribe(value => {
+        this.rejectionService.saveRejection(this.reportId, message).subscribe(() => {
+            this.errorMessage = null;
             this.close.emit(true);
         },
-        error => {
-            this.close.emit(false);
-            console.log(error);
+        () => {
+            this.errorMessage = 'No reason for rejection is written';
         });
     }
 }
