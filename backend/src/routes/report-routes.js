@@ -23,7 +23,7 @@ router.get("/:id",
     // #swagger.tags = ['Reports']
     checkAuthorization([0, 1]), ReportApi.getReportById)
 
-router.patch("/:id",
+router.put("/:id",
     //#swagger.description = 'Update Report'
     //#swagger.summary = 'Update Report'
     // #swagger.tags = ['Reports']
@@ -35,6 +35,19 @@ router.patch("/:id",
    schema: { $ref: '#/definitions/reportSchema' }
  } */
     checkAuthorization([0]), ReportApi.updateReport)
+
+router.put("/hrm/stored/:id",
+    //#swagger.description = 'Update Old Report'
+    //#swagger.summary = 'Update Old Report'
+    // #swagger.tags = ['Reports']
+    /* #swagger.parameters['Report'] = {
+   in: 'body',
+   description: 'Update Old Report',
+   type: 'object',
+   required: true,
+   schema: { $ref: '#/definitions/reportSchema' }
+ } */
+    checkAuthorization([0]), ReportApi.patchStoredInHRMSingleBonusById)
 
 router.put("/report/recalculate/:id",
     //#swagger.description = 'Recalculate report'
