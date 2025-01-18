@@ -24,11 +24,19 @@ export class ChangeBonusesPageComponent implements OnInit {
     private userService: UserService = inject(UserService);
     private bonusesService = inject(BonusesService);
     snackBar = inject(MatSnackBar);
+    dropToInitialLoading: boolean = false;
 
 
     public ngOnInit(): void {
-        this.fetchUser();
-        this.bonusesData = history.state.bonuse;
+        this.user = new User("some","user",2345,"sdf", "fds", "dfsfsfs", 0, true);
+         this.bonusesData = 
+             new BonusData("1", 'some1', 'last1', [
+                 {productName: 'Product A', clientFullName: 'Client One', clientRating: 'A', items: 5, initialBonus: 50, bonus: 100},
+                 {productName: 'Product B', clientFullName: 'Client Two', clientRating: 'B', items: 3, initialBonus: 100, bonus: 50}
+             ], [
+                 {goal_description: 'Some name', target_value: 5, actual_value: 4, initialBonus: 90, bonus: 30},
+                 {goal_description: 'Some name1', target_value: 5, actual_value: 3, initialBonus: 80, bonus: 50}
+             ], 'Great work', 500, true, false, false, false)
     }
 
     getTotalBonuses(bonuses: BonusData): number {
@@ -94,5 +102,12 @@ export class ChangeBonusesPageComponent implements OnInit {
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition
         });
+    }
+
+    dropToInitialBonuses(){
+        this.dropToInitialLoading = true;
+        this.bonusesData.ordersBonuses.forEach(order=> order.bonus = order.initialBonus);
+        this.bonusesData.socialBonuses.forEach(sale=> sale.bonus = sale.initialBonus);
+        this.dropToInitialLoading = false;
     }
 }
