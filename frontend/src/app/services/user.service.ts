@@ -26,4 +26,8 @@ export class UserService {
     getUsers() {
         return this.http.get<any>(environment.apiEndpoint + '/api/users', {withCredentials: true}).pipe(map(o => o.data));
     }
+
+    getUsersCount() {
+        return this.http.get<any>(environment.apiEndpoint + '/api/users/count', {withCredentials: true}).pipe(map(o => o.data));
+    }
 }

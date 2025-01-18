@@ -45,10 +45,10 @@ schema: { $ref: '#/definitions/socialPerformanceRecordSchema' }
 } */
     checkAuthorization([0,1]), SalesManController.createSocialPerformanceToSalesmanBySalesmanCode)
 
-router.get("/count/year/current",
+router.get("/count/total",
     //#swagger.description = 'Get all salesmen'
     //#swagger.summary = 'Get All salesmen'
     // #swagger.tags = ['Salesmen']
-    checkAuthorization([0,1]), SalesManController.getAllSalesmenCountForCurrentYear)
+    checkAuthorization([0,1]), SalesManController.getAllSalesmenCount)
 
 module.exports = router

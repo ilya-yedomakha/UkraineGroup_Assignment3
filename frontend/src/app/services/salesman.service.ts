@@ -21,6 +21,11 @@ export class SalesmanService {
             .pipe(map(o => o.data));
     }
 
+    getSalesmenCount(): Observable<any>{
+        return this.http.get<any>(`${environment.apiEndpoint}/api/salesman/count/total`, { withCredentials: true})
+            .pipe(map(o => o.data));
+    }
+
     importSeniorSalesmenFromOrangeHRM(): Observable<any>{
         return this.http.get<any>(`${environment.apiEndpoint}/api/salesman/import-from-orangeHRM`, {withCredentials: true})
             .pipe(map(o => o.data));

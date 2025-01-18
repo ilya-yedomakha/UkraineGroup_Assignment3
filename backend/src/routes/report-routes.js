@@ -92,7 +92,7 @@ router.delete("/:id",
     // #swagger.tags = ['Reports']
     checkAuthorization([0,1]), ReportApi.deleteReport)
 
-router.get("/count/",
+router.get("/count/total",
     checkAuthorization([0,1]), ReportApi.getTotalReportsCount)
 
 router.get("/count/year/current",

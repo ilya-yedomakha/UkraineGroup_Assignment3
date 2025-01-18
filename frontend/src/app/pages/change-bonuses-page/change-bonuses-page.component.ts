@@ -24,6 +24,7 @@ export class ChangeBonusesPageComponent implements OnInit {
     private userService: UserService = inject(UserService);
     private bonusesService = inject(BonusesService);
     snackBar = inject(MatSnackBar);
+    dropToInitialLoading: boolean = false;
 
 
     public ngOnInit(): void {
@@ -94,5 +95,12 @@ export class ChangeBonusesPageComponent implements OnInit {
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition
         });
+    }
+
+    dropToInitialBonuses(){
+        this.dropToInitialLoading = true;
+        this.bonusesData.ordersBonuses.forEach(order=> order.bonus = order.initialBonus);
+        this.bonusesData.socialBonuses.forEach(sale=> sale.bonus = sale.initialBonus);
+        this.dropToInitialLoading = false;
     }
 }

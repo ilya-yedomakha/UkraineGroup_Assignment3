@@ -24,4 +24,9 @@ export class SalesService {
             )
         );
     }
+
+    getSalesCountForCurrentYear(){
+        return this.http.get<any>(`${environment.apiEndpoint}/api/sale_performance_record/count/year/current`, { withCredentials: true})
+            .pipe(map(o => o.data));
+    }
 }

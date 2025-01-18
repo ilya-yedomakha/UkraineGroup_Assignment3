@@ -216,7 +216,7 @@
         }
       }
     },
-    "/api/salesman/count/year/current": {
+    "/api/salesman/count/total": {
       "get": {
         "tags": [
           "Salesmen"
@@ -469,7 +469,7 @@
     "/api/sale_performance_record/": {
       "get": {
         "tags": [
-          "get all sales order"
+          "Sales Performance"
         ],
         "summary": "get all sales order",
         "description": "get all sales order",
@@ -492,7 +492,7 @@
     "/api/sale_performance_record/count/year/current": {
       "get": {
         "tags": [
-          "get all sales order for current year"
+          "Sales Performance"
         ],
         "summary": "get all sales order for current year",
         "description": "get all sales order for current year",
@@ -515,7 +515,7 @@
     "/api/sale_performance_record/salesman/{code}": {
       "get": {
         "tags": [
-          "get all sales order for specific salesman"
+          "Sales Performance"
         ],
         "summary": "get all sales order for specific salesman",
         "description": "get all sales order for specific salesman",
@@ -1011,7 +1011,7 @@
         }
       }
     },
-    "/api/report/count/": {
+    "/api/report/count/total": {
       "get": {
         "description": "",
         "responses": {
@@ -1291,6 +1291,28 @@
             "type": "string"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/rejection/year/current/count": {
+      "get": {
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"

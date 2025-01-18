@@ -1,41 +1,52 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {BonusesService} from "../../services/bonuses.service";
 import { UserService } from 'src/app/services/user.service';
 import { SalesmanService } from 'src/app/services/salesman.service';
 import { User } from 'src/app/models/User';
+import {RejectionService} from "../../services/rejection.service";
+import {SalesService} from "../../services/sales.service";
 
 @Component({
     selector: 'app-welcome-admin-dashboard',
     templateUrl: './welcome-admin-dashboard.component.html',
     styleUrls: ['./welcome-admin-dashboard.component.css']
 })
-export class WelcomeAdminDashboardComponent {
-    signedReportsByCEOForCurrentYearCount = 23
-    signedReportsByHRForCurrentYearCount = 56
-    reportsForCurrentYearCount: number = 120;
-    reportsCount: number = 450;
-    usersCount: number = 300;
-    salesmenCount: number = 50;
-    salesForCurrentYearCount: number = 12345;
-    rejectionsForCurrentYearCount: number = 25;
+export class WelcomeAdminDashboardComponent implements OnInit{
+    signedReportsByCEOForCurrentYearCount : number;
+    signedReportsByHRForCurrentYearCount :number;
+    reportsForCurrentYearCount :number;
+    reportsCount :number;
+    usersCount :number;
+    salesmenCount :number;
+    salesForCurrentYearCount :number;
+    rejectionsForCurrentYearCount :number;
 
-    signatureByPieLable: string = "Number of reports"
+    signatureByPieLable = "Number of bonuses"
     numberOfSignaturesByCeo: [number, number];
     numberOfSignaturesByHr: [number, number];
-    signatureByCeoPieLables: string[] = ["Number of signed reports by CEO", "Number of unsigned reports by CEO"]
-    signatureByHrPieLables: string[] = ["Number of signed reports by HR", "Number of unsigned reports by HR"]
-    
+    signatureByCeoPieLables: string[] = ["Number of confirmed bonuses by CEO", "Number of unconfirmed bonuses by CEO"]
+    signatureByHrPieLables: string[] = ["Number of confirmed bonuses by HR", "Number of unconfirmed bonuses by HR"]
+
     bonuses = [34,43,23,42,43,53,33]
     salesmenFullname = ["some0", "some1", "some3", "some4", "somet", "some5", "some6"]
 
     private bonusesService = inject(BonusesService);
     private userService: UserService = inject(UserService);
     private salesmanService: SalesmanService = inject(SalesmanService);
+    private salesService: SalesService = inject(SalesService);
+    private rejectionService: RejectionService = inject(RejectionService);
     user:User;
     updatingIsLoading: boolean = false;
 
     ngOnInit(): void {
         this.fetchUser();
+
+        this.fillReportsStatistics();
+        this.fillRejectsStatistics();
+        this.fillSalesmanStatistics();
+        this.fillUsersStatistics();
+        this.fillSalesOrdersStatistics();
+        this.fillUsersStatistics();
 
 
         this.numberOfSignaturesByCeo = [this.signedReportsByCEOForCurrentYearCount,
@@ -47,20 +58,62 @@ export class WelcomeAdminDashboardComponent {
 
 
     updateData(){
-        //TODO об'єднати два subscribe 
+        //TODO об'єднати два subscribe
         this.updatingIsLoading = true;
 
         //this.salesmanService.importSeniorSalesmenFromOrangeHRM().subscribe(()=>{
          //   this.updatingIsLoading = false;
        /// });
 
-    
+
 
     }
 
     fetchUser() {
         this.userService.getOwnUser().subscribe((user): void => {
             this.user = user;
+        });
+    }
+
+    fillReportsStatistics() {
+        this.bonusesService.getSignedByCEOReportsCountForCurrentYear().subscribe((response) => {
+            this.signedReportsByCEOForCurrentYearCount = response;
+        });
+
+        this.bonusesService.getSignedByHRReportsCountForCurrentYear().subscribe((response) => {
+            this.signedReportsByHRForCurrentYearCount = response;
+        });
+
+        this.bonusesService.getTotalReportsForCurrentYear().subscribe((response) => {
+            this.reportsForCurrentYearCount = response;
+        });
+
+        this.bonusesService.getTotalReportsCount().subscribe((response) => {
+            this.reportsCount = response;
+        });
+    }
+
+    fillRejectsStatistics(){
+        this.rejectionService.getRejectionsCountByCurrentYear().subscribe((response) => {
+            this.rejectionsForCurrentYearCount = response;
+        });
+    }
+
+    fillUsersStatistics(){
+        this.userService.getUsersCount().subscribe((response) => {
+            this.usersCount = response;
+        });
+    }
+
+    fillSalesmanStatistics(){
+        this.salesmanService.getSalesmenCount().subscribe((response) => {
+            this.salesmenCount = response;
+        });
+    }
+
+    fillSalesOrdersStatistics(){
+        this.salesService.getSalesCountForCurrentYear().subscribe((response) => {
+            this.salesForCurrentYearCount = response;
         });
     }
 }

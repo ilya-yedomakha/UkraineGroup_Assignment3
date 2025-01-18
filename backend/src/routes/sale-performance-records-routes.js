@@ -12,18 +12,18 @@ router.get("/import-from-openCRX",
 router.get("/",
     //#swagger.description = 'get all sales order'
     //#swagger.summary = 'get all sales order'
-    // #swagger.tags = ['get all sales order']
+    // #swagger.tags = ['Sales Performance']
     checkAuthorization([0,1]), SalePerformanceRecordApi.getAllSalePerformance)
 
 router.get("/count/year/current",
     //#swagger.description = 'get all sales order for current year'
     //#swagger.summary = 'get all sales order for current year'
-    // #swagger.tags = ['get all sales order for current year']
+    // #swagger.tags = ['Sales Performance']
     checkAuthorization([0,1]), SalePerformanceRecordApi.getAllSalePerformanceCountForCurrentYear)
 
 router.get("/salesman/:code",
     //#swagger.description = 'get all sales order for specific salesman'
     //#swagger.summary = 'get all sales order for specific salesman'
-    // #swagger.tags = ['get all sales order for specific salesman']
+    // #swagger.tags = ['Sales Performance']
     checkAuthorization([0,1,2],true), SalePerformanceRecordApi.getAllSalePerformancesBySalesmanCode)
 module.exports = router

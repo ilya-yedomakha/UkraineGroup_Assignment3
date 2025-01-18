@@ -14,6 +14,9 @@ router.get("/salesman/:code",
 router.get("/year/:year",
     checkAuthorization([0, 1]), RejectionMessageApi.getByYear);
 
+router.get("/year/current/count",
+    checkAuthorization([0, 1]), RejectionMessageApi.getByCurrentYearCount);
+
 router.delete("/:id",
     checkAuthorization([2]), RejectionMessageApi.deleteById);
 

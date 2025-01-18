@@ -1,53 +1,66 @@
 <div>
     <div class="m-2 p-1">
         <div class="flex justify-between items-end mb-4">
-            <label class="text-2xl mb-2 font-bold">Salesmen: {{bonusesData.firstname}} {{bonusesData.lastname}}</label>
-            <div class="flex-col w-1/4">
-                <div class="mt-4 font-semibold flex justify-between">
+            <label
+                class="text-2xl mb-2 font-bold">Salesmen: {{ bonusesData.firstname }} {{ bonusesData.lastname }}</label>
+            <div class="flex-col w-1/2">
+                <div class="mt-4 font-semibold flex justify-end">
                     <button
                         *ngIf="user.role === 0 || user.role === 1"
                         (click)="singleConfirm()"
-                        class="ml-2 bg-green-400 rounded-lg p-2 w-full transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
-                        Confirm bonuses</button>
+                        class="ml-2 bg-green-400 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
+                        Confirm bonuses
+                    </button>
                     <button
                         *ngIf="user.role === 0"
                         (click)="saveSocialAndOrderBonuses()"
-                        class="ml-2 bg-green-400 rounded-lg p-2 w-full transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105"
-                    >Save All</button>
+                        class="ml-2 bg-green-400 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105"
+                    >Save All
+                    </button>
+                    <button
+                        *ngIf="user.role === 0"
+                        (click)="dropToInitialBonuses()"
+                        class="ml-2 bg-[#232023] text-stone-200 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out hover:bg-[#302c30] hover:text-stone-50 hover:scale-105"
+                    >Drop to initial bonuses
+                    </button>
                 </div>
             </div>
         </div>
-        </div>
-        <div class="mt-2">
-            <p class="font-bold text-xl mb-1">Orders Evalution </p>
-            <app-table-orders-bonuses  [bonuses]="bonusesData" [userRole]="user.role" (dataChange) = "updateData()"></app-table-orders-bonuses>
-        </div>
-        <div class="mt-4">
-            <p class="font-bold text-xl mb-1">Social Performance Evaluation</p>
-            <app-table-social-bonuses  class="mt-4" [bonuses]="bonusesData" [userRole]="user.role" (dataChange) = "updateData()"></app-table-social-bonuses>
-            <button
+    </div>
+    <div class="mt-2">
+        <p class="font-bold text-xl mb-1">Orders Evalution </p>
+        <app-table-orders-bonuses [bonuses]="bonusesData" [userRole]="user.role"></app-table-orders-bonuses>
+    </div>
+    <div class="mt-4">
+        <p class="font-bold text-xl mb-1">Social Performance Evaluation</p>
+        <app-table-social-bonuses class="mt-4" [bonuses]="bonusesData"
+                                  [userRole]="user.role"></app-table-social-bonuses>
+        <button
             *ngIf="user.role === 1"
             class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105 flex justify-self-end">
-              Confirm social performance </button>
-        </div>
+            Confirm social performance
+        </button>
+    </div>
 
-        <hr class="my-4 mx-1 bg-gray-800 h-2 border-0 rounded ">
+    <hr class="my-4 mx-1 bg-gray-800 h-2 border-0 rounded ">
 
-        <div class="flex justify-end mt-4 items-center">
-            <label class="text-xl mr-2 font-semiboldw">Total bonus:</label>
-            <label class="py-2 px-4 border-2 border-black bg-slate-100 text-base font-semibold min-w-24 rounded-md text-center">
-                {{getTotalBonuses(bonusesData)}}
-            </label>
-        </div>
+    <div class="flex justify-end mt-4 items-center">
+        <label class="text-xl mr-2 font-semiboldw">Total bonus:</label>
+        <label
+            class="py-2 px-4 border-2 border-black bg-slate-100 text-base font-semibold min-w-24 rounded-md text-center">
+            {{ getTotalBonuses(bonusesData) }}
+        </label>
+    </div>
 
     <div class="flex justify-start items-center">
-            <label class="text-xl font-semibold mr-1">Remarks:</label>
-            <textarea [(ngModel)]="bonusesData.remarks"
-                      class="border-2 border-black text-lg p-2 h-16 rounded-md w-full md:w-1/2"></textarea>
-                <button
-                *ngIf="user.role === 0"
-                (click)="saveRemarks()"
-                class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
-                  Save</button>
+        <label class="text-xl font-semibold mr-1">Remarks:</label>
+        <textarea [(ngModel)]="bonusesData.remarks"
+                  class="border-2 border-black text-lg p-2 h-16 rounded-md w-full md:w-1/2"></textarea>
+        <button
+            *ngIf="user.role === 0"
+            (click)="saveRemarks()"
+            class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
+            Save
+        </button>
     </div>
 </div>
