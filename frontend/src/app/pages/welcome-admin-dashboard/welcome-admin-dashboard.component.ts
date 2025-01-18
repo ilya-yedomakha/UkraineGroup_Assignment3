@@ -1,5 +1,8 @@
 import {Component, inject} from '@angular/core';
 import {BonusesService} from "../../services/bonuses.service";
+import { UserService } from 'src/app/services/user.service';
+import { SalesmanService } from 'src/app/services/salesman.service';
+import { User } from 'src/app/models/User';
 
 @Component({
     selector: 'app-welcome-admin-dashboard',
@@ -9,29 +12,48 @@ import {BonusesService} from "../../services/bonuses.service";
 export class WelcomeAdminDashboardComponent {
     signedReportsByCEOForCurrentYearCount
     signedReportsByHRForCurrentYearCount
-    reportsForCurrentYearCount
-    reportsCount
-    usersCount
-    salesmenCount
-    salesForCurrentYearCount
-    rejectionsForCurrentYearCount
-    private bonusesService = inject(BonusesService);
-
-    constructor() {
-    }
-
+    reportsForCurrentYearCount: number = 120;
+    reportsCount: number = 450;
+    usersCount: number = 300;
+    salesmenCount: number = 50;
+    salesForCurrentYearCount: number = 12345;
+    rejectionsForCurrentYearCount: number = 25;
 
     signatureByPieLable: string = "Number of reports"
-
+    numberOfSignaturesByCeo: [number, number];
+    numberOfSignaturesByHr: [number, number];
     signatureByCeoPieLables: string[] = ["Number of signed reports by CEO", "Number of unsigned reports by CEO"]
-    numberOfSignaturesByCeo: [number, number] = [34, 4]
-
     signatureByHrPieLables: string[] = ["Number of signed reports by HR", "Number of unsigned reports by HR"]
-    numberOfSignaturesByHr: [number, number] = [65, 6]
+    
     bonuses = [34,43,23,42,43,53,33]
     salesmenFullname = ["some0", "some1", "some3", "some4", "somet", "some5", "some6"]
 
-    ngOnInit(): void {
+    private bonusesService = inject(BonusesService);
+    private userService: UserService = inject(UserService);
+    private salesmanService: SalesmanService = inject(SalesmanService);
+    user:User;
 
+    ngOnInit(): void {
+        this.fetchUser();
+
+        
+        this.numberOfSignaturesByCeo = [this.signedReportsByCEOForCurrentYearCount,
+             this.reportsForCurrentYearCount - this.signedReportsByCEOForCurrentYearCount]
+
+        this.numberOfSignaturesByHr = [this.signedReportsByHRForCurrentYearCount,
+            this.reportsForCurrentYearCount - this.signedReportsByHRForCurrentYearCount]
+    }
+
+
+    updateData(){
+        
+        this.salesmanService.importSeniorSalesmenFromOrangeHRM().subscribe();
+
+    }
+
+    fetchUser() {
+        this.userService.getOwnUser().subscribe((user): void => {
+            this.user = user;
+        });
     }
 }

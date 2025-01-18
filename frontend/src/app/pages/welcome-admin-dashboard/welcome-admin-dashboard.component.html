@@ -1,16 +1,43 @@
 <div class="container mx-auto p-4">
 
     <h1 class="text-3xl font-bold text-center mb-6">Dashboard</h1>
-
-    <div class="border rounded-lg p-4 shadow-md mb-6">
-        <p class="text-lg">Кількість того-то: <span class="font-semibold">454</span></p>
-        <p class="text-lg">Кількість того-то: <span class="font-semibold">343</span></p>
+    <div *ngIf="user.role === 1" class="flex justify-end mt-2">
+        <button class="bg-[#232023] p-2 rounded-lg text-yellow-100 font-semibold self-center w-auto hover:text-yellow-200 hover:scale-110 hover:shadow-sm"
+        (click)="updateData()"
+        >Update data (OpenCRX, OrangeHRM)</button>
     </div>
+    <div class="border rounded-lg p-4 shadow-md mb-6 grid grid-cols-2 gap-4 text-center">
+        <div class="flex flex-col items-center">
+            <p class="text-lg">Reports for current year:</p>
+            <span class="font-semibold">{{ reportsForCurrentYearCount }}</span>
+        </div>
+        <div class="flex flex-col items-center">
+            <p class="text-lg">Total number of reports:</p>
+            <span class="font-semibold">{{ reportsCount }}</span>
+        </div>
+        <div class="flex flex-col items-center">
+            <p class="text-lg">Number of users:</p>
+            <span class="font-semibold">{{ usersCount }}</span>
+        </div>
+        <div class="flex flex-col items-center">
+            <p class="text-lg">Number of salesmen:</p>
+            <span class="font-semibold">{{ salesmenCount }}</span>
+        </div>
+        <div class="flex flex-col items-center">
+            <p class="text-lg">Sales for current year:</p>
+            <span class="font-semibold">{{ salesForCurrentYearCount }}</span>
+        </div>
+        <div class="flex flex-col items-center">
+            <p class="text-lg">Rejections for current year:</p>
+            <span class="font-semibold">{{ rejectionsForCurrentYearCount }}</span>
+        </div>
+    </div>
+    
 
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="flex flex-col items-center">
-            <h2 class="text-xl font-semibold text-center mb-4">Pie Chart 1</h2>
+            <h2 class="text-xl font-semibold text-center mb-4">Signed/Unsigned reports by CEO</h2>
             <app-pie-count-confirmation-statistics class="w-2/4"
                                                    [signatures]="numberOfSignaturesByCeo"
                                                    [chartLabels]="signatureByCeoPieLables"
@@ -18,7 +45,7 @@
             </app-pie-count-confirmation-statistics>
         </div>
         <div class="flex flex-col items-center">
-            <h2 class="text-xl font-semibold text-center mb-4">Pie Chart 2</h2>
+            <h2 class="text-xl font-semibold text-center mb-4">Signed/Unsigned reports by HR</h2>
             <app-pie-count-confirmation-statistics class="w-2/4"
                                                    [signatures]="numberOfSignaturesByHr"
                                                    [chartLabels]="signatureByHrPieLables"
