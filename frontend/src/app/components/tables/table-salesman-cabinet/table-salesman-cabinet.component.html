@@ -1,48 +1,65 @@
-<div class="bg-[#FCE8BA] font-sans text-gray-800 border-2 border-black rounded-lg">
-  <div class="policy-container content-center border">
-    <div class="bg-[#242424] rounded-t-lg">
-      <div class="grid grid-cols-5 gap-4 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
-        <span class="heading">Year</span>
-        <span class="heading">Bonuses for sales</span>
-        <span class="heading">Bonuses for social performance</span>
-        <span class="heading">Total bonuses</span>
-        <span class="heading">Action</span>
-      </div>
+<div *ngIf="isVisible" class="bg-[#FCE8BA] font-sans text-gray-800 border-2 border-black rounded-lg">
+    <div class="policy-container content-center border">
+        <div class="bg-[#242424] rounded-t-lg">
+            <div class="grid grid-cols-6 gap-4 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
+                <span class="heading">Year</span>
+                <span class="heading">Bonuses for sales</span>
+                <span class="heading">Bonuses for social performance</span>
+                <span class="heading">Total bonuses</span>
+                <span class="heading">Action</span>
+                <span class="heading"></span>
+            </div>
+        </div>
+
+
+        <div *ngFor="let bonus of bonuses | paginate: pagingConfig">
+            <div [ngClass]="hasRejectionForBonus(bonus._id) ? 'rounded-br-none' : 'rounded-br-lg'"
+                 class="grid grid-cols-6 gap-4 items-center py-2 px-2 rounded-lg shadow-md mt-4 mx-2 hover:shadow-lg transition-shadow border-2 border-black text-base bg-[#D9D9D9]">
+
+                <span class="flex-1 text-center">{{ bonus.year }}</span>
+
+                <span class="flex-1 text-center">{{ bonus.year === currentYear ? bonus.bonusesForSales : '-' }}</span>
+
+                <span class="flex-1 text-center">{{ bonus.year === currentYear ? bonus.bonusesForSocial : '-' }}</span>
+
+                <span class="flex-1 text-center">{{ bonus.totalBonuses }}</span>
+
+                <span class="flex-1 text-center" *ngIf="bonus.year === currentYear">
+                  <app-toggle-switch [toggleState]="toggleStateForBonus(bonus.isConfirmedBySalesman)"
+                                     (stateChanged)="confirmationBySalesmanChanged($event)"></app-toggle-switch>
+                </span>
+
+                <span class="flex-1 text-center" *ngIf="bonus.year === currentYear">
+                    <button
+                        class="bg-[#095964] text-white rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105 mr-1"
+                        (click)="showDetails()">
+                        Details
+                    </button>
+              </span>
+            </div>
+            <div *ngIf="hasRejectionForBonus(bonus._id)" class="flex justify-end">
+                <div
+                    class="policy bg-[#D9D9D9] gap-2 items-center py-2 px-2 shadow-md mx-2 hover:shadow-lg transition-shadow border-l-2 border-r-2 border-b-2 border-black w-11/12 rounded-b-lg duration-500 ease-in-out cursor-pointer"
+                    (click)="isClicked = !isClicked"
+                    [ngClass]="{ 'truncate overflow-hidden whitespace-nowrap': !isClicked, 'whitespace-normal overflow-visible': isClicked }"
+                    [@fadeToggle]="isClicked ? 'visible' : 'hidden'">
+                    <i>{{ rejectionMessage.message }}</i>
+                </div>
+            </div>
+
+        </div>
+        <div class="flex justify-center mt-4">
+            <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+        </div>
     </div>
-
-
-    <div *ngFor="let bonuse of bonuses | paginate: pagingConfig"
-      class="grid grid-cols-5 gap-4 items-center py-2 px-2 rounded-lg shadow-md mb-4 mx-2 mx-2hover:shadow-lg transition-shadow border-2 border-black text-base bg-[#D9D9D9]">
-
-      <span class="flex-1 text-center">{{ bonuse.year }}</span>
-
-      <span class="flex-1 text-center">{{bonuse.year === currentYear ? bonuse.bonusesForSales : '-' }}</span>
-
-      <span class="flex-1 text-center">{{ bonuse.year === currentYear ? bonuse.bonusesForSocial : '-' }}</span>
-
-      <span class="flex-1 text-center">{{ bonuse.totalBonuses }}</span>
-
-      <span class="flex-1 text-center " *ngIf="bonuse.year === currentYear">
-        <button
-          class="bg-[#095964] text-white rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105 mr-1"
-          (click)="showDetails()">
-          Details</button>
-          <button
-          class="bg-[#095964] text-white rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105"
-          (click)="isRejectWindowVisible = true">
-          Reject</button>
-      </span>
-    </div>
-    <div class="flex justify-center mt-4">
-      <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
-      </pagination-controls>
-    </div>
-  </div>
 
 </div>
 
-<div *ngIf="isRejectWindowVisible" class="fixed inset-0 flex items-center justify-center backdrop-blur-md mt-[60px] bg-white bg-opacity-30">
-  <app-reject-bonuses-calculation-window [salesmanCode]="salesmanCode" class="w-1/2 h-1/3" (close)="isRejectWindowVisible = false"></app-reject-bonuses-calculation-window>
+<div *ngIf="isRejectWindowVisible"
+     class="fixed inset-0 flex items-center justify-center backdrop-blur-md mt-[60px] bg-white bg-opacity-30">
+    <app-reject-bonuses-calculation-window [salesmanCode]="salesmanCode" class="w-1/2 h-1/3"
+                                           (close)="rejectionWindowClosed($event)"></app-reject-bonuses-calculation-window>
 </div>
 
 

@@ -3,11 +3,23 @@ import { Router } from '@angular/router';
 import { PaginationInstance } from 'ngx-pagination';
 import { BonusData } from 'src/app/models/BonusData';
 import {RejectionMessage} from '../../../models/RejectionMessage';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
     selector: 'app-table-salesmen-bonuses',
     templateUrl: './table-salesmen-bonuses.component.html',
-    styleUrls: ['./table-salesmen-bonuses.component.css']
+    styleUrls: ['./table-salesmen-bonuses.component.css'],
+    animations: [
+        trigger('fadeToggle', [
+            state('hidden', style({opacity: 1, height: '40px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'})),
+            state('visible', style({opacity: 1, height: '*', overflow: 'visible', whiteSpace: 'normal'})),
+            transition('hidden => visible', [animate('300ms ease-in-out')]),
+            transition('visible => hidden', [
+                style({ overflow: 'hidden' }), // Встановлюємо overflow: hidden перед анімацією
+                animate('500ms ease-in-out'),
+            ]),
+        ]),
+    ]
 })
 export class TableSalesmenBonusesComponent  implements OnChanges{
 
@@ -18,6 +30,7 @@ export class TableSalesmenBonusesComponent  implements OnChanges{
     currentPage = 1;
     itemsPerPage = 8;
     totalItems = 0;
+    isClicked = false;
     rejectionMessage: RejectionMessage;
 
     constructor(private router: Router){}

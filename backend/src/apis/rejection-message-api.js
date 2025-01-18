@@ -14,7 +14,7 @@ class RejectionMessageApi {
                     message: "Report by id " + req.params.reportId + " was not found"
                 })
             }
-            const rejectionMessage = RejectionMessageService.saveRejectionMessage(report, req.body.message)
+            const rejectionMessage = await RejectionMessageService.saveRejectionMessage(report, req.body.message)
             res.status(200).send({
                 apiStatus: true,
                 message: "Rejection feedback created",

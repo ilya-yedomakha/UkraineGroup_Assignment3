@@ -9,13 +9,13 @@ class CustomError extends Error {
 
 class RejectionMessageService {
 
-    static saveRejectionMessage(report, message) {
+    static saveRejectionMessage = async (report, message) => {
         try {
             if (!message) {
                 throw new CustomError("Invalid data: 'message' is required", 400);
             }
-            const rejectionMessageFromDB = RejectionMessageModel.findOne({report_id: report._id})
-            if (!rejectionMessageFromDB) {
+            const rejectionMessageFromDB = await RejectionMessageModel.findOne({report_id: report._id})
+            if (rejectionMessageFromDB) {
                 throw new CustomError("Rejection message for this report already exists", 400);
             }
             const rejectionMessageRecord = new RejectionMessageModel({

@@ -19,7 +19,7 @@ import { ExamplePageComponent } from './pages/example-page/example-page.componen
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import {MatTableModule} from '@angular/material/table';
 import { BonusesPageComponent } from './pages/bonuses-page/bonuses-page.component';
-import { TableSalesmenBonusesComponent} from "./components/tables/table-salesmen-bonuses/table-salesmen-bonuses.component";
+import { TableSalesmenBonusesComponent} from './components/tables/table-salesmen-bonuses/table-salesmen-bonuses.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ChangeBonusesPageComponent } from './pages/change-bonuses-page/change-bonuses-page.component';
 import { TableSocialBonusesComponent } from './components/tables/table-social-bonuses/table-social-bonuses.component';
@@ -28,7 +28,7 @@ import { TableSalesmanCabinetComponent } from './components/tables/table-salesma
 import { SalesmanCabinetPageComponent } from './pages/salesman-cabinet-page/salesman-cabinet-page.component';
 import { BarGraphSalesmanBonusesComponent } from './components/diagrams/bar-graph-salesman-bonuses/bar-graph-salesman-bonuses.component';
 import { NgChartsModule } from 'ng2-charts';
-import {NgxPaginationModule} from "ngx-pagination";
+import {NgxPaginationModule} from 'ngx-pagination';
 import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.component';
 import { TableSalesmenComponent } from './components/tables/table-salesmen/table-salesmen.component';
 import { RejectBonusesCalculationWindowComponent } from './components/popouts/reject-bonuses-calculation-window/reject-bonuses-calculation-window.component';
@@ -45,6 +45,7 @@ import { UsersPageComponent } from './pages/users-page/users-page.component';
 import { TableUsersComponent } from './components/tables/table-users/table-users.component';
 import { PieCountConfirmationStatisticsComponent } from './components/diagrams/pie-count-confirmation-statistics/pie-count-confirmation-statistics.component';
 import { BarSalesmenRatingComponent } from './components/diagrams/bar-salesmen-rating/bar-salesmen-rating.component';
+import { ToggleSwitchComponent} from './components/toggle-switch/toggle-switch.component';
 
 @NgModule({
     declarations: [
@@ -78,7 +79,9 @@ import { BarSalesmenRatingComponent } from './components/diagrams/bar-salesmen-r
         UsersPageComponent,
         TableUsersComponent,
         PieCountConfirmationStatisticsComponent,
-        BarSalesmenRatingComponent
+        BarSalesmenRatingComponent,
+        AboutBonusCalculationDropDownComponent,
+        ToggleSwitchComponent
     ],
     imports: [
         BrowserModule,
