@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {User} from '../../models/User';
@@ -12,6 +12,7 @@ import {UserService} from '../../services/user.service';
 export class MenuBarComponent implements OnInit {
 
     user: User;
+    isVisible = true;
 
     /*
     This array holds the definition of the menu's buttons.
@@ -28,7 +29,8 @@ export class MenuBarComponent implements OnInit {
      * @param router
      * @param userService
      */
-    constructor(private authService: AuthService, private router: Router, private userService: UserService) { }
+    constructor(private authService: AuthService, private router: Router, private userService: UserService) {
+    }
 
     ngOnInit(): void {
         this.fetchUser();
@@ -37,18 +39,30 @@ export class MenuBarComponent implements OnInit {
     /**
      * function which handles clicking the logout button
      */
-    handleLogout(): void{
-        this.authService.logout().subscribe();
-        void this.router.navigate(['login']); // after logout go back to the login-page
-        this.user = null;
+    handleLogout(): void {
+        this.authService.logout().subscribe((): void => {
+            this.user = null;
+            void this.router.navigate(['login']);
+            this.reload();
+        });
     }
 
     /**
      * fetches information about logged-in user
      */
-    fetchUser(): void{
+    fetchUser(): void {
         this.userService.getOwnUser().subscribe((user): void => {
             this.user = user;
+        },
+        (): void => {
+            this.user = null;
         });
+    }
+
+    reload(): void {
+        this.isVisible = false;
+        setTimeout((): void => {
+            this.isVisible = true;
+        }, 0);
     }
 }

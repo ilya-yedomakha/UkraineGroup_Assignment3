@@ -24,7 +24,7 @@ router.delete('/login',
     #swagger.description = 'Log out'
     #swagger.summary = 'Log out'
     */
-    checkAuthorization([0]), authApi.logout); //middlewares can be defined in parameters
+    checkAuthorization([0, 1, 2]), authApi.logout); //middlewares can be defined in parameters
 router.get('/login',
     // #swagger.tags = ['Authentication']
     //#swagger.description = 'Check if logged in'

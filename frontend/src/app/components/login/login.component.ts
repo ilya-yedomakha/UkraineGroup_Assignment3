@@ -3,7 +3,6 @@ import {AuthService} from '../../services/auth.service';
 import {Credentials} from '../../models/Credentials';
 import {Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
-import {MatToolbarModule} from '@angular/material/toolbar';
 
 @Component({
     selector: 'app-login',
@@ -52,6 +51,8 @@ export class LoginComponent implements OnInit {
      * redirects to the landing page
      */
     enterApplication(): void{
-        void this.router.navigate(['']);
+        void this.router.navigate(['']).then((): void => {
+            location.reload();
+        });
     }
 }
