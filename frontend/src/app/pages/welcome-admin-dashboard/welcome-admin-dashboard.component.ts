@@ -10,8 +10,8 @@ import { User } from 'src/app/models/User';
     styleUrls: ['./welcome-admin-dashboard.component.css']
 })
 export class WelcomeAdminDashboardComponent {
-    signedReportsByCEOForCurrentYearCount
-    signedReportsByHRForCurrentYearCount
+    signedReportsByCEOForCurrentYearCount = 23
+    signedReportsByHRForCurrentYearCount = 56
     reportsForCurrentYearCount: number = 120;
     reportsCount: number = 450;
     usersCount: number = 300;
@@ -32,11 +32,12 @@ export class WelcomeAdminDashboardComponent {
     private userService: UserService = inject(UserService);
     private salesmanService: SalesmanService = inject(SalesmanService);
     user:User;
+    updatingIsLoading: boolean = false;
 
     ngOnInit(): void {
         this.fetchUser();
 
-        
+
         this.numberOfSignaturesByCeo = [this.signedReportsByCEOForCurrentYearCount,
              this.reportsForCurrentYearCount - this.signedReportsByCEOForCurrentYearCount]
 
@@ -46,8 +47,14 @@ export class WelcomeAdminDashboardComponent {
 
 
     updateData(){
-        
-        this.salesmanService.importSeniorSalesmenFromOrangeHRM().subscribe();
+        //TODO об'єднати два subscribe 
+        this.updatingIsLoading = true;
+
+        //this.salesmanService.importSeniorSalesmenFromOrangeHRM().subscribe(()=>{
+         //   this.updatingIsLoading = false;
+       /// });
+
+    
 
     }
 
