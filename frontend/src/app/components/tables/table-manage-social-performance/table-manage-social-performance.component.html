@@ -4,13 +4,14 @@
 
       <div
       [ngClass]="{
-        'grid-cols-4': userRole === 1,
-        'grid-cols-3': userRole !== 1
+        'grid-cols-5': userRole === 1,
+        'grid-cols-4': userRole !== 1
       }"
       class="grid gap-4 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
         <span class="heading">Name</span>
         <span class="heading">Target Value</span>
         <span class="heading">Actual Value</span>
+        <span class="heading">Year</span>
         <span *ngIf="userRole === 1" class="heading">Action</span>
       </div>
     </div>
@@ -18,8 +19,8 @@
 
       <div
         [ngClass]="{
-        'grid-cols-4': userRole === 1,
-        'grid-cols-3': userRole !== 1
+        'grid-cols-5': userRole === 1,
+        'grid-cols-4': userRole !== 1
       }"
         *ngFor="let socialPerformancesRecord of socialPerformancesRecords | paginate: pagingConfig"
         class="grid gap-2 items-center py-2 px-2 rounded-lg shadow-md mb-4 mx-2 mx-2hover:shadow-lg transition-shadow border-2 border-black text-base bg-[#D9D9D9]"
@@ -27,7 +28,7 @@
 
         <span class="flex-1 text-center">{{socialPerformancesRecord.goal_description}}</span>
 
-        <div *ngIf="userRole === 1; else only_read_content"> 
+        <div *ngIf="userRole === 1; else only_read_content">
         <span class="flex-1 text-center">
           <select
           class="border-2 border-black bg-slate-100 mx-4 text-center w-1/2 py-1 rounded-md"
@@ -37,7 +38,7 @@
           <option *ngFor="let value of [1, 2, 3, 4, 5]" [value]="value">{{ value }}</option>
         </select>
       </span>
-      
+
         <span class="flex-1 text-center">
             <select
             class="border-2 border-black bg-slate-100 mx-4 text-center w-1/2 py-1 rounded-md"
@@ -61,6 +62,7 @@
             </button>
         </span>
       </div>
+          <span class="flex-1 text-center">{{ socialPerformancesRecord.year }}</span>
 
       <ng-template #only_read_content>
         <span class="flex-1 text-center">{{socialPerformancesRecord.target_value}}</span>
