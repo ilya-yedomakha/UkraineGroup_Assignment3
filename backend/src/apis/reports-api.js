@@ -278,107 +278,184 @@ class reportApi {
             return res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     }
-    static getSignedByCEOReportsCount = async (req, res) => {
-        try {
-            const count = await ReportModel.countDocuments({ isConfirmedByCEO: true });
-            res.status(200).send({
-                apiStatus: true,
-                message: "Count of reports signed by CEO was calculated",
-                data: count
-            });
-        } catch (e) {
-            res.status(500).send({
-                apiStatus: false,
-                message: e.message,
-                data: e
-            });
-        }
-    }
 
-    static getSignedByHRReportsCount = async (req, res) => {
-        try {
-            const count = await ReportModel.countDocuments({ isConfirmedByHR: true });
-            res.status(200).send({
-                apiStatus: true,
-                message: "Count of reports signed by HR was calculated",
-                data: count
-            });
-        } catch (e) {
-            res.status(500).send({
-                apiStatus: false,
-                message: e.message,
-                data: e
-            });
-        }
-    }
+    static patchStoredInHRMSingleBonusById = async (req, res) => {
+            try {
+                if (!req.params.id || !req.body || req.params.id === "" || req.body === "") {
+                    return res.status(400).send({ apiStatus: false, message: "Invalid request parameters" });
+                }
 
-    static getSignedByHRReportsCountForCurrentYear = async (req, res) => {
-        try {
-            const count = await ReportModel.countDocuments({ isConfirmedByHR: true, year: new Date().getFullYear()});
-            res.status(200).send({
-                apiStatus: true,
-                message: "Count of reports signed by HR for "+ new Date().getFullYear() + " was calculated",
-                data: count
-            });
-        } catch (e) {
-            res.status(500).send({
-                apiStatus: false,
-                message: e.message,
-                data: e
-            });
-        }
-    }
+                let found = await ReportModel.findById(req.params.id);
+                if (!found) {
+                    return res.status(404).send({ apiStatus: false, message: "Report not found" });
+                }
 
-    static getSignedByCEOReportsCountForCurrentYear = async (req, res) => {
-        try {
-            const count = await ReportModel.countDocuments({ isConfirmedByCEO: true, year: new Date().getFullYear()});
-            res.status(200).send({
-                apiStatus: true,
-                message: "Count of reports signed by HR for "+ new Date().getFullYear() + " was calculated",
-                data: count
-            });
-        } catch (e) {
-            res.status(500).send({
-                apiStatus: false,
-                message: e.message,
-                data: e
-            });
-        }
-    }
+                let recordUpdated = await reportService.updateReport(found, req.body);
 
-    static getTotalReportsForCurrentYear = async (req, res) => {
-        try {
-            const count = await ReportModel.countDocuments({year: new Date().getFullYear()});
-            res.status(200).send({
-                apiStatus: true,
-                message: "Total report count for the "+ new Date().getFullYear() + " year was calculated",
-                data: count
-            });
-        } catch (e) {
-            res.status(500).send({
-                apiStatus: false,
-                message: e.message,
-                data: e
-            });
-        }
-    }
+                const tokenBody = {
+                    client_id: 'api_oauth_id',
+                    client_secret: 'oauth_secret',
+                    grant_type: 'password',
+                    username: environment.orangeHRMUsername,
+                    password: environment.passwordHRM,
+                };
 
-    static getTotalReportsCount = async (req, res) => {
-        try {
-            const count = await ReportModel.countDocuments();
-            res.status(200).send({
-                apiStatus: true,
-                message: "Total report count was calculated",
-                data: count
-            });
-        } catch (e) {
-            res.status(500).send({
-                apiStatus: false,
-                message: e.message,
-                data: e
-            });
-        }
+                const tokenResponse = await axios.post(
+                    'http://localhost:8888/symfony/web/index.php/oauth/issueToken?scope=admin',
+                    qs.stringify(tokenBody),
+                    {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                    }
+                );
+
+                const accessToken = tokenResponse.data.access_token;
+
+                if (!accessToken) {
+                    throw new Error("Access token not found in response");
+                }
+
+                const formData = new FormData();
+                formData.append('year', recordUpdated.year);
+                formData.append('value', recordUpdated.totalBonus);
+
+                const postResponse = await axios.post(
+                    `http://localhost:8888/symfony/web/index.php/api/v1/employee/${recordUpdated.employeeId}/bonussalary`,
+                    formData,
+                    {
+                        headers: {
+                            ...formData.getHeaders(),
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                    }
+                );
+
+                recordUpdated.isSent = true;
+                await recordUpdated.save();
+
+                return res.status(200).send({
+                    apiStatus: true,
+                    message: "Report updated and bonus sent to OrangeHRM",
+                    data: { recordUpdated, orangeHRMResponse: postResponse.data },
+                });
+
+            } catch (e) {
+                if (e.code === 400) {
+                    return res.status(400).send({ apiStatus: false, message: e.message });
+                }
+                return res.status(500).send({ apiStatus: false, message: e.message, data: e });
+            }
+        };
+
+
+static
+getSignedByCEOReportsCount = async (req, res) => {
+    try {
+        const count = await ReportModel.countDocuments({isConfirmedByCEO: true});
+        res.status(200).send({
+            apiStatus: true,
+            message: "Count of reports signed by CEO was calculated",
+            data: count
+        });
+    } catch (e) {
+        res.status(500).send({
+            apiStatus: false,
+            message: e.message,
+            data: e
+        });
     }
+}
+
+static
+getSignedByHRReportsCount = async (req, res) => {
+    try {
+        const count = await ReportModel.countDocuments({isConfirmedByHR: true});
+        res.status(200).send({
+            apiStatus: true,
+            message: "Count of reports signed by HR was calculated",
+            data: count
+        });
+    } catch (e) {
+        res.status(500).send({
+            apiStatus: false,
+            message: e.message,
+            data: e
+        });
+    }
+}
+
+static
+getSignedByHRReportsCountForCurrentYear = async (req, res) => {
+    try {
+        const count = await ReportModel.countDocuments({isConfirmedByHR: true, year: new Date().getFullYear()});
+        res.status(200).send({
+            apiStatus: true,
+            message: "Count of reports signed by HR for " + new Date().getFullYear() + " was calculated",
+            data: count
+        });
+    } catch (e) {
+        res.status(500).send({
+            apiStatus: false,
+            message: e.message,
+            data: e
+        });
+    }
+}
+
+static
+getSignedByCEOReportsCountForCurrentYear = async (req, res) => {
+    try {
+        const count = await ReportModel.countDocuments({isConfirmedByCEO: true, year: new Date().getFullYear()});
+        res.status(200).send({
+            apiStatus: true,
+            message: "Count of reports signed by HR for " + new Date().getFullYear() + " was calculated",
+            data: count
+        });
+    } catch (e) {
+        res.status(500).send({
+            apiStatus: false,
+            message: e.message,
+            data: e
+        });
+    }
+}
+
+static
+getTotalReportsForCurrentYear = async (req, res) => {
+    try {
+        const count = await ReportModel.countDocuments({year: new Date().getFullYear()});
+        res.status(200).send({
+            apiStatus: true,
+            message: "Total report count for the " + new Date().getFullYear() + " year was calculated",
+            data: count
+        });
+    } catch (e) {
+        res.status(500).send({
+            apiStatus: false,
+            message: e.message,
+            data: e
+        });
+    }
+}
+
+static
+getTotalReportsCount = async (req, res) => {
+    try {
+        const count = await ReportModel.countDocuments();
+        res.status(200).send({
+            apiStatus: true,
+            message: "Total report count was calculated",
+            data: count
+        });
+    } catch (e) {
+        res.status(500).send({
+            apiStatus: false,
+            message: e.message,
+            data: e
+        });
+    }
+}
 
 
 }

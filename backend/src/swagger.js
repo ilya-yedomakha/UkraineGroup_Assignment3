@@ -88,8 +88,7 @@ const swaggerDocument = {
         reportSchema: {
             ordersBonuses: [],
             socialBonuses: [],
-            remarks: "remark",
-            totalBonus: 1234
+            remarks: "remark"
         },
         reverseArray: {
             ids: ["678010157d630c79c9312c7d",
