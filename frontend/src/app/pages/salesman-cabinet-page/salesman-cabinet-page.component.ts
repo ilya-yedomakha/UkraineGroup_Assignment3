@@ -78,7 +78,12 @@ export class SalesmanCabinetPageComponent implements OnInit {
 
     fetchSocialRecords(code: number): void {
         this.socialService.getSocialPerformancesRecordBySalesmanCode(code).subscribe((value): void => {
-            this.socialRecords = value.sort((a, b): number => b.year - a.year);
+            this.socialRecords = value.sort((a, b): number => {
+                if (a.year !== b.year) {
+                    return b.year - a.year;
+                }
+                return a.goal_description.localeCompare(b.goal_description);
+            });
         });
     }
 
