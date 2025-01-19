@@ -1,9 +1,9 @@
 body {
-    background-color: #FCE8BA; /* Match your snack bar's background or desired color */
+    background-color: #FCE8BA !important; /* Match your snack bar's background or desired color */
 }
 
 .app-root {
-    background-color: transparent; /* Ensure no black background */
+    background-color: #FCE8BA !important; /* Ensure no black background */
     display: flex;
     justify-content: center;
     align-items: center;

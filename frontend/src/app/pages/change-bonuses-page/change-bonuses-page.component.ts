@@ -57,9 +57,11 @@ export class ChangeBonusesPageComponent implements OnInit {
             ordersBonuses: this.bonusesData.ordersBonuses,
         };
 
+        //TODO(чому назва метода saveSocialAndOrderBonuses а зберігаєтсья saveNewOrderBonuses)
         this.bonusesService.saveNewOrderBonuses(this.bonusesData._id, updatedBonuses).subscribe(() => {
             this.updateData();
             this.dataChange.emit(true);
+            this.showSnackBar("Order and social bonuses have been successfully saved");
         });
     }
 
@@ -67,6 +69,7 @@ export class ChangeBonusesPageComponent implements OnInit {
         this.bonusesService.singleConfirm(this.bonusesData._id).subscribe(() => {
             this.updateData();
             this.dataChange.emit(true);
+            this.showSnackBar("Bonuses have been successfully confirmed");
         });
     }
 
@@ -78,9 +81,10 @@ export class ChangeBonusesPageComponent implements OnInit {
         this.bonusesService.saveNewOrderBonuses(this.bonusesData._id, updatedBonuses).subscribe(() => {
             this.updateData();
             this.dataChange.emit(true);
+            this.showSnackBar("Remarks saved");
         });
 
-        this.showSnackBar();
+        
     }
 
     updateData(): void {
@@ -93,15 +97,16 @@ export class ChangeBonusesPageComponent implements OnInit {
     }
 
     horizontalPosition: MatSnackBarHorizontalPosition = 'start';
-    verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-    showSnackBar(): void {
-        const durationInSeconds = 5;
-        this.snackBar.openFromComponent(CustomSnackBarComponent, {
-            duration: durationInSeconds * 1000,
+    showSnackBar(message:string): void {
+        const durationInSeconds = 5000;
+        this.snackBar.open(message, 'Ok',{
+            duration:durationInSeconds,
+            panelClass: 'main-snackbar',
             horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition
-        });
+            verticalPosition: this.verticalPosition,
+});
     }
 
     dropToInitialBonuses(){
@@ -109,5 +114,6 @@ export class ChangeBonusesPageComponent implements OnInit {
         this.bonusesData.ordersBonuses.forEach(order=> order.bonus = order.initialBonus);
         this.bonusesData.socialBonuses.forEach(sale=> sale.bonus = sale.initialBonus);
         this.dropToInitialLoading = false;
+        this.showSnackBar("Bonuses have been reset to their initial value");
     }
 }

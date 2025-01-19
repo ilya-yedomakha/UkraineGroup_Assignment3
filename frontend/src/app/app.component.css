@@ -4,3 +4,29 @@ main{
   margin-top: 70px;
   padding: 25px;
 }
+
+::ng-deep .main-snackbar {
+  margin-top: 70px !important;
+  background-color: transparent !important;
+  color: black !important; 
+}
+
+::ng-deep .main-snackbar .mdc-snackbar__surface {
+  background-color: #FCE8BA !important;
+  color: green !important;
+  border: 2px solid black !important;
+  border-radius: 12px !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .main-snackbar .mat-mdc-snack-bar-label {
+  color: black !important;
+}
+
+::ng-deep .main-snackbar .mat-mdc-snack-bar-actions button {
+  background-color: green !important;
+  color: white !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  padding: 0.5rem 1rem !important;
+}
