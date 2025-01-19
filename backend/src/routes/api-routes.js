@@ -45,11 +45,50 @@ router.get('/users',
     //#swagger.summary = 'Get current user data'
     checkAuthorization([0,1]), userApi.getUsers);
 
+router.get('/users/:code',
+    // #swagger.tags = ['Authentication']
+    //#swagger.description = 'Get single user by code'
+    //#swagger.summary = 'Get single user by code'
+    checkAuthorization([0,1]), userApi.getUsersByCode);
+
 router.get('/users/count',
     // #swagger.tags = ['Authentication']
     //#swagger.description = 'Get current user data'
     //#swagger.summary = 'Get current user data'
     checkAuthorization([0,1]), userApi.getUsersCount);
+
+router.post('/users',
+    // #swagger.tags = ['Authentication']
+    //#swagger.description = 'Create user'
+    //#swagger.summary = 'Create user'
+    /* #swagger.parameters['Users'] = {
+in: 'body',
+description: 'Create user account',
+type: 'object',
+required: true,
+schema: { $ref: '#/definitions/userCreationSchema' }
+} */
+    checkAuthorization([0,1]), userApi.addUser);
+
+router.put('/users/:code',
+    // #swagger.tags = ['Authentication']
+    //#swagger.description = 'Update user'
+    //#swagger.summary = 'Update user'
+    /* #swagger.parameters['Users'] = {
+in: 'body',
+description: 'Update user account',
+type: 'object',
+required: true,
+schema: { $ref: '#/definitions/userCreationSchema' }
+} */
+    checkAuthorization([0,1]), userApi.updateUser);
+
+router.delete('/users/:code',
+    // #swagger.tags = ['Authentication']
+    //#swagger.description = 'Delete user'
+    //#swagger.summary = 'Delete user'
+    //todo body
+    checkAuthorization([0,1]), userApi.deleteUser);
 
 // const peopleDemoApi = require('../apis/people-demo-api');
 // router.get('/people',

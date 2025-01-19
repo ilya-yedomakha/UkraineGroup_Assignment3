@@ -79,6 +79,15 @@ const swaggerDocument = {
             username: 'admin',
             password: '5$c3inw%'
         },
+        userCreationSchema: {
+            username: 'username',
+            firstname: 'firstname',
+            lastname: 'lastname',
+            email: 'email',
+            password: 'password',
+            role: 2,
+            code: 12345
+        },
         socialPerformanceRecordSchema: {
             goal_description: "Attitude toward Client",
             target_value: 5,
