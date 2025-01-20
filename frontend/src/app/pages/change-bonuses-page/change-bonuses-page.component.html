@@ -8,6 +8,9 @@
                         [disabled]="dropToInitialLoading"
                         *ngIf="user.role === 0 || user.role === 1"
                         (click)="singleConfirm()"
+                        class="ml-2 bg-green-400 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
+                        Confirm bonuses
+                    </button>
                         [ngClass]="{
                             'bg-gray-400 text-gray-200 cursor-not-allowed': dropToInitialLoading,
                             'bg-green-400 hover:bg-green-500 hover:scale-105': !dropToInitialLoading
@@ -55,26 +58,29 @@
             <button
             *ngIf="user.role === 1"
             class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105 flex justify-self-end">
-              Confirm social performance </button>
-        </div>
+            Confirm social performance
+        </button>
+    </div>
 
-        <hr class="my-4 mx-1 bg-gray-800 h-2 border-0 rounded ">
+    <hr class="my-4 mx-1 bg-gray-800 h-2 border-0 rounded ">
 
-        <div class="flex justify-end mt-4 items-center">
-            <label class="text-xl mr-2 font-semiboldw">Total bonus:</label>
-            <label class="py-2 px-4 border-2 border-black bg-slate-100 text-base font-semibold min-w-24 rounded-md text-center">
-                {{getTotalBonuses(bonusesData)}}
-            </label>
-        </div>
+    <div class="flex justify-end mt-4 items-center">
+        <label class="text-xl mr-2 font-semiboldw">Total bonus:</label>
+        <label
+            class="py-2 px-4 border-2 border-black bg-slate-100 text-base font-semibold min-w-24 rounded-md text-center">
+            {{ getTotalBonuses(bonusesData) }}
+        </label>
+    </div>
 
     <div class="flex justify-start items-center">
-            <label class="text-xl font-semibold mr-1">Remarks:</label>
-            <textarea [(ngModel)]="bonusesData.remarks"
-                      class="border-2 border-black text-lg p-2 h-16 rounded-md w-full md:w-1/2"></textarea>
-                <button
-                *ngIf="user.role === 0"
-                (click)="saveRemarks()"
-                class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
-                  Save</button>
+        <label class="text-xl font-semibold mr-1">Remarks:</label>
+        <textarea [(ngModel)]="bonusesData.remarks"
+                  class="border-2 border-black text-lg p-2 h-16 rounded-md w-full md:w-1/2"></textarea>
+        <button
+            *ngIf="user.role === 0"
+            (click)="saveRemarks()"
+            class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
+            Save
+        </button>
     </div>
 </div>

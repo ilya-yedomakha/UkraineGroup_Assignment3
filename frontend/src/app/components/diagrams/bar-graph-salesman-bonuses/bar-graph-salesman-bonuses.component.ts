@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {NgChartsModule} from 'ng2-charts';
 import {ChartConfiguration, ChartOptions, ChartType} from "chart.js";
 import {Bonuses} from 'src/app/models/Bonuses';
@@ -8,7 +8,7 @@ import {Bonuses} from 'src/app/models/Bonuses';
     templateUrl: './bar-graph-salesman-bonuses.component.html',
     styleUrls: ['./bar-graph-salesman-bonuses.component.css']
 })
-export class BarGraphSalesmanBonusesComponent implements OnInit {
+export class BarGraphSalesmanBonusesComponent implements OnChanges {
 
     public chart: any;
 
@@ -16,18 +16,17 @@ export class BarGraphSalesmanBonusesComponent implements OnInit {
 
     public barChartData: ChartConfiguration<'bar'>['data'];
 
-    ngOnInit(): void {
+    ngOnChanges(): void {
         const copyBonuses = [...this.bonuses];
         copyBonuses.sort((a, b) => a.year - b.year);
         this.barChartData = {
 
             labels: copyBonuses.map(bonus => bonus.year),
 
-
             datasets: [
                 {
 
-                    data: copyBonuses.map(bonus => bonus.totalBonuses),
+                    data: copyBonuses.map(bonus => bonus.totalBonuses || 0),
 
                     label: 'Bonuses( ' + copyBonuses[0].year + " - " + copyBonuses[copyBonuses.length - 1].year + ')',
 

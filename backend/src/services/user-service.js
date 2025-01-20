@@ -13,6 +13,12 @@ exports.add = async function (db, user){
     return (await db.collection('users').insertOne(user)).insertedId; //return unique ID
 }
 
+exports.edit = async function (db, user){
+    user.password = hashPassword(user.password);
+
+    return (await db.collection('users').insertOne(user)).insertedId; //return unique ID
+}
+
 /**
  * retrieves user from database by its username
  * @param db source database
@@ -23,12 +29,28 @@ exports.get = async function (db, username){
     return db.collection('users').findOne({username: username});
 }
 
+exports.add = async function (db, user) {
+    user.password = hashPassword(user.password);
+    return (await db.collection('users').insertOne(user)).insertedId;
+};
+
+exports.update = async function (db, code, updates) {
+    if (updates.password) {
+        updates.password = hashPassword(updates.password);
+    }
+    return db.collection('users').updateOne({ code: code }, { $set: updates });
+};
+
+exports.delete = async function (db, code) {
+    return db.collection('users').deleteOne({ code: code });
+};
+
 exports.getAll = async function (db) {
     return db.collection('users').find({}).toArray();
 };
 
 exports.getByCode = async function (db, code){
-    return db.collection('users').findOne({code: code});
+    return db.collection('users').findOne({code: Number(code)});
 }
 
 /**

@@ -1,16 +1,15 @@
-<div class="cursor-pointer mx-auto p-3 m-4 border border-black rounded-md">
+<div class="cursor-pointer mx-auto p-3 m-4 border border-black rounded-md"
+     (click)="isVisible = !isVisible">
     <!-- Trigger Text -->
     <h3
         class="underline text-lg uppercase"
-        (click)="toggleVisibility()"
     >
         How are bonuses calculated?
     </h3>
 
     <!-- Hidden Content -->
     <div class="markdown prose w-full break-words mt-4 transition-all duration-300 ease-in-out"
-         [@fadeToggle]="isVisible ? 'visible' : 'hidden'"
-         (click)="toggleVisibility()">
+         [@fadeToggle]="isVisible ? 'visible' : 'hidden'">
         <h4>1. <strong>Bonuses for Social performance</strong></h4>
         <ul>
             <li>

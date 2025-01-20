@@ -67,11 +67,27 @@ class RejectionMessageApi {
             if (data != null)
                 res.status(200).send({
                     apiStatus: true,
-                    message: "Rejection message by code " + req.params.code + " was found",
+                    message: "Rejection messages for year " + req.params.year + " was found",
                     data: data
                 })
             else
-                res.status(404).send({apiStatus: false, message: "Rejection message not found"})
+                res.status(404).send({apiStatus: false, message: "Rejection messages for the year " + req.params.year + "was not found"})
+        } catch (e) {
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
+        }
+    }
+
+    static getByCurrentYearCount = async (req, res) => {
+        try {
+            const data = await RejectionMessageModel.countDocuments({year: new Date().getFullYear()})
+            if (data != null)
+                res.status(200).send({
+                    apiStatus: true,
+                    message: "Rejection messages count for year " + new Date().getFullYear() + " was calculated",
+                    data: data
+                })
+            else
+                res.status(404).send({apiStatus: false, message: "Rejection messages count for the year " + new Date().getFullYear() + "was not calculated"})
         } catch (e) {
             res.status(500).send({apiStatus: false, message: e.message, data: e})
         }

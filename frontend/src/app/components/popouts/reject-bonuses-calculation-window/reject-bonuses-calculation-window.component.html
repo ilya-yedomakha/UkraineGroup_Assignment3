@@ -11,7 +11,8 @@
     </div>
     <div class="flex flex-col justify-start mt-3 mb-2 px-1">
         <label class="text-base my-2 font-semibold">Reason:</label>
-        <textarea class="w-full h-14 text-base border-2 border-black rounded-md" required #message></textarea>
+        <textarea class="w-full h-14 max-h-48 text-base border-2 rounded-md border-black" required #message></textarea>
+        <strong *ngIf="errorMessage !== null" class="mt-1 text-center text-red-700">{{errorMessage}}</strong>
         <button class="self-end justify-self-end  my-2  bg-green-400 rounded-lg py-2 px-4 w-auto transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105"
         (click)="send(message.value)">
             Send

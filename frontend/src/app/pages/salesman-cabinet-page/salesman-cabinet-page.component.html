@@ -5,24 +5,42 @@
                 class="h-60 w-40 border-2 border-gray-300 object-cover rounded-md" />
             <label class="text-lg mt-1">{{salesman.firstName + " " + salesman.lastName}}</label>
         </div>
-        <div class="col-span-7">
+        <div class="col-span-7 p-1">
             <label class="underline text-gray-800 text-base font-semibold ml-2 my-2">Personal Details</label>
-            <div class="grid grid-cols-2 gap-2 ml-2">
-                <div class="col-span-1 flex flex-col mr-4">
-                    <label class="mb-2">Code: {{salesman.code}}</label>
-                    <label class="mb-2">Full name: {{salesman.firstName + " " + salesman.middleName + " " +
-                        salesman.lastName}}</label>
-                    <label class="mb-2">Gender: {{salesman.gender}}</label>
-                    <label class="mb-2">Date of birth: {{salesman.dob}}</label>
-                    <label class="mb-2">Work number: {{salesman.workNumber}}</label>
-                </div>
-                <div class="col-span-1 flex flex-col">
-                    <label class="mb-2">Work Email: {{salesman.workEmail}}</label>
-                    <label class="mb-2">Unit: {{salesman.unit}}</label>
-                    <label class="mb-2">Job Title: {{salesman.jobTitle}}</label>
-                    <label class="mb-2">Marital status: {{salesman.maritalStatus}}</label>
-                    <label class="mb-2">Nationality: {{salesman.nationality}}</label>
-                </div>
+            <div class="grid grid-cols-4 gap-6 items-center py-2 px-2">
+                    <span class="flex-1 text-right mb-2 font-medium">Code:</span>
+                    <span class="flex-1 text-left mb-2">{{salesman.code}}</span>
+
+                    <span class="flex-1 text-right mb-2 font-medium">Work Email:</span>
+                    <span class="flex-1 text-left mb-2">{{salesman.workEmail}}</span>
+            </div>
+            <div class="grid grid-cols-4 gap-6 items-center py-2 px-2">
+                    <span class="flex-1 text-right mb-2 font-medium">Full name:</span>
+                    <span class="flex-1 text-left mb-2">{{salesman.firstName + " " + salesman.middleName + " " + salesman.lastName}}</span>
+
+                    <span class="flex-1 text-right mb-2 font-medium">Unit:</span>
+                    <span class="flex-1 text-left mb-2">{{salesman.unit}}</span>
+            </div>
+            <div class="grid grid-cols-4 gap-6 items-center py-2 px-2">
+                    <span class="flex-1 text-right mb-2 font-medium">Gender:</span>
+                    <span class="flex-1 text-left mb-2">{{salesman.gender}}</span>
+
+                    <span class="flex-1 text-right mb-2 font-medium">Job Title:</span>
+                    <span class="flex-1 text-left mb-2">{{salesman.jobTitle}}</span>
+            </div>
+            <div class="grid grid-cols-4 gap-6 items-center py-2 px-2">
+                    <span class="flex-1 text-right mb-2 font-medium">Date of birth:</span>
+                    <span class="flex-1 text-left mb-2">{{salesman.dob}}</span>
+
+                    <span class="flex-1 text-right mb-2 font-medium">Marital status:</span>
+                    <span class="flex-1 text-left mb-2">{{salesman.maritalStatus}}</span>
+            </div>
+            <div class="grid grid-cols-4 gap-6 items-center py-2 px-2">
+                    <span class="flex-1 text-right mb-2 font-medium">Work number:</span>
+                    <span class="flex-1 text-left mb-2">{{salesman.workNumber}}</span>
+
+                    <span class="flex-1 text-right mb-2 font-medium">Nationality:</span>
+                    <span class="flex-1 text-left mb-2">{{salesman.nationality}}</span>
             </div>
         </div>
     </div>

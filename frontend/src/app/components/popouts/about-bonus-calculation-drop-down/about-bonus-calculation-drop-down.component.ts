@@ -15,13 +15,6 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
         ])
     ]
 })
-export class AboutBonusCalculationDropDownComponent implements OnInit {
-
+export class AboutBonusCalculationDropDownComponent {
     isVisible = false;
-
-    ngOnInit(): void {}
-
-    toggleVisibility(): void {
-        this.isVisible = !this.isVisible;
-    }
 }

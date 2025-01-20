@@ -130,7 +130,11 @@ class salePerformanceRecordApi {
             await salePerformanceRecordModel.deleteMany({});
             await salePerformanceRecordModel.insertMany(filteredRecords);
 
-            res.status(200).send({apiStatus: true, message:"Sale performances from OpenCRX", data: filteredRecords});
+            if (filteredRecords.length > 0) {
+                res.status(200).send({apiStatus: true, message:"Sale performances from OpenCRX", data: filteredRecords});
+            } else {
+                res.status(404).send({apiStatus: true, message:"There are no suitable sale orders to fetch for the year: "+ currentYear});
+            }
         } catch (e) {
             res.status(500).send({apiStatus: false, message: e.message, data: e});
         }

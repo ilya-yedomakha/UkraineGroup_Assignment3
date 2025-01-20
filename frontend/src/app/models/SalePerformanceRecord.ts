@@ -18,4 +18,25 @@ export class SalePerformanceRecord {
         public productName: string,
     ) {
     }
+
+    static fromApi(data: any): SalePerformanceRecord {
+        return new SalePerformanceRecord(
+            data.salesOrderName,
+            data.activeYear,
+            data.priority,
+            data.salesmanGovId,
+            data.clientFullName,
+            data.clientRating,
+            data.positionLineItemNumber,
+            data.positionName,
+            data.positionNumber,
+            data.positionPricePerUnit,
+            data.items,
+            data.positionPricingStatus,
+            data.positionBaseAmount,
+            data.positionDiscountAmount,
+            data.productNumber,
+            data.productName
+        );
+    }
 }

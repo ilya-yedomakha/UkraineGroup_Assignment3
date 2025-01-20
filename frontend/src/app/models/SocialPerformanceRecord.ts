@@ -1,7 +1,6 @@
 export class SocialPerformanceRecord {
     public _id: number | null;
 
-    // TODO possible error
     constructor(
         public goal_description: string,
         public target_value: number,

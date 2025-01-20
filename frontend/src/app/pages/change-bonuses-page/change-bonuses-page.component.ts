@@ -116,4 +116,11 @@ export class ChangeBonusesPageComponent implements OnInit {
         this.dropToInitialLoading = false;
         this.showSnackBar("Bonuses have been reset to their initial value");
     }
+
+    dropToInitialBonuses(){
+        this.dropToInitialLoading = true;
+        this.bonusesData.ordersBonuses.forEach(order=> order.bonus = order.initialBonus);
+        this.bonusesData.socialBonuses.forEach(sale=> sale.bonus = sale.initialBonus);
+        this.dropToInitialLoading = false;
+    }
 }
