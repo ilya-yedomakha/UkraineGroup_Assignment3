@@ -20,6 +20,7 @@ export class ChangeBonusesPageComponent implements OnInit {
 
     bonusesData: BonusData;
     user: User;
+    buttonConfirmText: string;
     @Output() dataChange = new EventEmitter<boolean>();
     private userService: UserService = inject(UserService);
     private bonusesService = inject(BonusesService);
@@ -28,15 +29,31 @@ export class ChangeBonusesPageComponent implements OnInit {
 
 
     public ngOnInit(): void {
-        this.user = new User("some","user",2345,"sdf", "fds", "dfsfsfs", 0, true);
-         this.bonusesData = 
-             new BonusData("1", 'some1', 'last1', [
-                 {productName: 'Product A', clientFullName: 'Client One', clientRating: 'A', items: 5, initialBonus: 50, bonus: 100},
-                 {productName: 'Product B', clientFullName: 'Client Two', clientRating: 'B', items: 3, initialBonus: 100, bonus: 50}
-             ], [
-                 {goal_description: 'Some name', target_value: 5, actual_value: 4, initialBonus: 90, bonus: 30},
-                 {goal_description: 'Some name1', target_value: 5, actual_value: 3, initialBonus: 80, bonus: 50}
-             ], 'Great work', 500, true, false, false, false)
+        this.userService.getOwnUser().subscribe((user): void => {
+            this.user = user;
+            this.findCurrentConfirmationButtonText();
+        });
+        this.bonusesData = history.state.bonuse;
+
+    }
+
+    findCurrentConfirmationButtonText(){
+        switch (this.user.role) {
+            case 0:
+                if(this.bonusesData.isConfirmedByCEO){
+                    this.buttonConfirmText = "Un-confirm bonuses"
+                }else {
+                    this.buttonConfirmText = "Confirm bonuses"
+                }
+                break;
+            case 1:
+                if(this.bonusesData.isConfirmedByHR){
+                    this.buttonConfirmText = "Un-confirm social data"
+                }else {
+                    this.buttonConfirmText = "Confirm social data"
+                }
+                break;
+        }
     }
 
     getTotalBonuses(bonuses: BonusData): number {
@@ -46,9 +63,7 @@ export class ChangeBonusesPageComponent implements OnInit {
     }
 
     fetchUser(): void {
-        this.userService.getOwnUser().subscribe((user): void => {
-            this.user = user;
-        });
+
     }
 
     saveSocialAndOrderBonuses(): void {
@@ -67,9 +82,11 @@ export class ChangeBonusesPageComponent implements OnInit {
 
     singleConfirm(): void {
         this.bonusesService.singleConfirm(this.bonusesData._id).subscribe(() => {
-            this.updateData();
             this.dataChange.emit(true);
             this.showSnackBar("Bonuses have been successfully confirmed");
+            this.user.role === 0 ? this.bonusesData.isConfirmedByCEO = !this.bonusesData.isConfirmedByCEO : this.bonusesData.isConfirmedByHR = !this.bonusesData.isConfirmedByHR;
+            this.findCurrentConfirmationButtonText()
+            this.updateData();
         });
     }
 
@@ -84,7 +101,7 @@ export class ChangeBonusesPageComponent implements OnInit {
             this.showSnackBar("Remarks saved");
         });
 
-        
+
     }
 
     updateData(): void {
@@ -99,28 +116,21 @@ export class ChangeBonusesPageComponent implements OnInit {
     horizontalPosition: MatSnackBarHorizontalPosition = 'start';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-    showSnackBar(message:string): void {
+    showSnackBar(message: string): void {
         const durationInSeconds = 5000;
-        this.snackBar.open(message, 'Ok',{
-            duration:durationInSeconds,
+        this.snackBar.open(message, 'Ok', {
+            duration: durationInSeconds,
             panelClass: 'main-snackbar',
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
-});
+        });
     }
 
-    dropToInitialBonuses(){
+    dropToInitialBonuses() {
         this.dropToInitialLoading = true;
-        this.bonusesData.ordersBonuses.forEach(order=> order.bonus = order.initialBonus);
-        this.bonusesData.socialBonuses.forEach(sale=> sale.bonus = sale.initialBonus);
+        this.bonusesData.ordersBonuses.forEach(order => order.bonus = order.initialBonus);
+        this.bonusesData.socialBonuses.forEach(sale => sale.bonus = sale.initialBonus);
         this.dropToInitialLoading = false;
         this.showSnackBar("Bonuses have been reset to their initial value");
-    }
-
-    dropToInitialBonuses(){
-        this.dropToInitialLoading = true;
-        this.bonusesData.ordersBonuses.forEach(order=> order.bonus = order.initialBonus);
-        this.bonusesData.socialBonuses.forEach(sale=> sale.bonus = sale.initialBonus);
-        this.dropToInitialLoading = false;
     }
 }

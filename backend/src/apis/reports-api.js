@@ -174,7 +174,7 @@ class reportApi {
                         return res.status(409).send({
                             apiStatus: false,
                             message: 'Can`t change your confirmation if confirmed by CEO',
-                            data: confirmedByHRreports
+                            data: confirmedByCEOreports
                         });
                     }
                     result = await reportService.confirmationReverseWithIdsArrayBbyHR(reports);

@@ -4,6 +4,8 @@ import {Salesman} from '../../models/Salesman';
 import {BonusesService} from '../../services/bonuses.service';
 import {RejectionMessage} from '../../models/RejectionMessage';
 import {RejectionService} from '../../services/rejection.service';
+import {UserService} from "../../services/user.service";
+import {User} from "../../models/User";
 
 @Component({
     selector: 'app-bonuses-page',
@@ -14,11 +16,13 @@ export class BonusesPageComponent implements OnInit {
 
     isCalculationWindowVisible = false;
     year: number = new Date().getFullYear();
+    user: User;
     bonusesData: BonusData[] = [];
     rejectionData: RejectionMessage[] = [];
     salesmen: Salesman[] = [];
     private bonusesService = inject(BonusesService);
     private rejectionService = inject(RejectionService);
+    private userService = inject(UserService);
 
     updatedChanges: { _id: string; originalValue: boolean; currentValue: boolean }[] = [];
 
@@ -29,6 +33,7 @@ export class BonusesPageComponent implements OnInit {
 
     public ngOnInit(): void {
         this.loadBonuses();
+        this.fetchUser();
     }
 
     calculateBonuses(): void {
@@ -55,6 +60,12 @@ export class BonusesPageComponent implements OnInit {
         });
         this.rejectionService.getRejectionsByYear(this.year).subscribe((response) => {
             this.rejectionData = response;
+        });
+    }
+
+    fetchUser(): void {
+        this.userService.getOwnUser().subscribe((user): void => {
+            this.user = user;
         });
     }
 }

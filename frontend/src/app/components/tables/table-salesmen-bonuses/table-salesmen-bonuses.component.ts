@@ -24,6 +24,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 export class TableSalesmenBonusesComponent  implements OnChanges{
 
     @Input() bonuses: BonusData[];
+    @Input() userRole!: 0 | 1 | 2;
     @Input() rejectionData: RejectionMessage[];
     @Output() changesDetected = new EventEmitter<{ _id: string; originalValue: boolean; currentValue: boolean }[]>();
     changes: { _id: string; originalValue: boolean; currentValue: boolean }[] = [];
@@ -56,8 +57,8 @@ export class TableSalesmenBonusesComponent  implements OnChanges{
         if (changes.bonuses) {
             this.changes = this.bonuses.map(bonus => ({
                 _id: bonus._id,
-                originalValue: bonus.isConfirmedByCEO,
-                currentValue: bonus.isConfirmedByCEO,
+                originalValue: this.userRole === 0 ? bonus.isConfirmedByCEO : bonus.isConfirmedByHR,
+                currentValue: this.userRole === 0 ? bonus.isConfirmedByCEO : bonus.isConfirmedByHR,
             }));
         }
     }

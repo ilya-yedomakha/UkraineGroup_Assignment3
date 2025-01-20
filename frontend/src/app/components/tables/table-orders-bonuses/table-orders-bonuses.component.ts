@@ -23,6 +23,8 @@ export class TableOrdersBonusesComponent implements OnInit {
     itemsPerPage = 8;
     totalItems = 0;
     snackBar = inject(MatSnackBar);
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
 
     bonuse = { bonus: 0 };
 
@@ -75,6 +77,7 @@ export class TableOrdersBonusesComponent implements OnInit {
         };
         this.bonusesService.saveNewOrderBonuses(this.bonuses._id, newBonus).subscribe(() => {
             this.dataChange.emit(true);
+            this.showSnackBar("Saved new sales bonuses!");
         });
     }
 
@@ -87,18 +90,16 @@ export class TableOrdersBonusesComponent implements OnInit {
     saveEdit(index: number, newBonus: number) {
         this.isEditing[index] = false;
         this.originalOrderBonuses[index] = newBonus;
-        this.showSnackBar();
+        this.showSnackBar("New sale order bonus value assigned");
     }
 
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'top';
-
-    showSnackBar(): void {
-        const durationInSeconds = 5;
-        this.snackBar.openFromComponent(CustomSnackBarComponent, {
-            duration: durationInSeconds * 1000,
+    showSnackBar(message: string): void {
+        const durationInSeconds = 5000;
+        this.snackBar.open(message, 'Ok', {
+            duration: durationInSeconds,
+            panelClass: 'main-snackbar',
             horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition
+            verticalPosition: this.verticalPosition,
         });
     }
 

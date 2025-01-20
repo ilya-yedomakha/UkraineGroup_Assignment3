@@ -1,65 +1,64 @@
 <div>
     <div class="m-2 p-1">
         <div class="flex justify-between items-end mb-4">
-            <label class="text-2xl mb-2 font-bold">Salesmen: {{bonusesData.firstname}} {{bonusesData.lastname}}</label>
+            <label
+                class="text-2xl mb-2 font-bold">Salesmen: {{ bonusesData.firstname }} {{ bonusesData.lastname }}</label>
             <div class="flex-col w-1/2">
                 <div class="mt-4 font-semibold flex justify-end">
                     <button
+                        [ngClass]="{
+                            'bg-gray-400 text-gray-200 cursor-not-allowed': dropToInitialLoading,
+                            'bg-green-400 hover:bg-green-500 hover:scale-105': !dropToInitialLoading
+                        }"
+                        class="ml-2 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out"
                         [disabled]="dropToInitialLoading"
                         *ngIf="user.role === 0 || user.role === 1"
-                        (click)="singleConfirm()"
-                        class="ml-2 bg-green-400 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
-                        Confirm bonuses
-                    </button>
-                        [ngClass]="{
-                            'bg-gray-400 text-gray-200 cursor-not-allowed': dropToInitialLoading,
-                            'bg-green-400 hover:bg-green-500 hover:scale-105': !dropToInitialLoading
-                        }"
-                        class="ml-2 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out">
-                        Confirm bonuses
+                        (click)="singleConfirm()">
+                        {{ buttonConfirmText }}
                     </button>
 
-                    <button
-                        *ngIf="user.role === 0"
-                        [disabled]="dropToInitialLoading"
-                        (click)="saveSocialAndOrderBonuses()"
-                        [ngClass]="{
+                    <ng-container *ngIf="!bonusesData.isConfirmedByCEO && user.role === 0 || !bonusesData.isConfirmedByHR && user.role === 1">
+                        <button
+                            *ngIf="user.role === 0"
+                            [disabled]="dropToInitialLoading"
+                            (click)="saveSocialAndOrderBonuses()"
+                            [ngClass]="{
                             'bg-gray-400 text-gray-200 cursor-not-allowed': dropToInitialLoading,
                             'bg-green-400 hover:bg-green-500 hover:scale-105': !dropToInitialLoading
                         }"
-                        class="ml-2 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out">
-                    Save All</button>
-                    <button
-                        *ngIf="user.role === 0"
-                        (click)="dropToInitialBonuses()"
-                        [disable]="dropToInitialLoading"
-                        [ngClass]="{
+                            class="ml-2 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out">
+                            Save All
+                        </button>
+                        <button
+                            *ngIf="user.role === 0"
+                            (click)="dropToInitialBonuses()"
+                            [disabled]="dropToInitialLoading"
+                            [ngClass]="{
                             'bg-gray-400 text-gray-200 cursor-not-allowed': dropToInitialLoading,
                             'bg-[#232023] text-stone-200 hover:bg-[#302c30] hover:text-stone-50 hover:scale-105': !dropToInitialLoading
                         }"
-                        class="ml-2 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out"
-                    >Drop to initial bonuses
-                    <svg *ngIf="dropToInitialLoading"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 animate-spin">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                      </svg>
-                </button>
+                            class="ml-2 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out"
+                        >Drop to initial bonuses
+                            <svg *ngIf="dropToInitialLoading"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="size-6 animate-spin">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                            </svg>
+                        </button>
+                    </ng-container>
                 </div>
             </div>
         </div>
-        </div>
-        <div class="mt-2">
-            <p class="font-bold text-xl mb-1">Orders Evalution </p>
-            <app-table-orders-bonuses  [bonuses]="bonusesData" [userRole]="user.role" ></app-table-orders-bonuses>
-        </div>
-        <div class="mt-4">
-            <p class="font-bold text-xl mb-1">Social Performance Evaluation</p>
-            <app-table-social-bonuses  class="mt-4" [bonuses]="bonusesData" [userRole]="user.role"></app-table-social-bonuses>
-            <button
-            *ngIf="user.role === 1"
-            class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105 flex justify-self-end">
-            Confirm social performance
-        </button>
+    </div>
+    <div class="mt-2">
+        <p class="font-bold text-xl mb-1">Orders Evalution </p>
+        <app-table-orders-bonuses [bonuses]="bonusesData" [userRole]="user.role"></app-table-orders-bonuses>
+    </div>
+    <div class="mt-4">
+        <p class="font-bold text-xl mb-1">Social Performance Evaluation</p>
+        <app-table-social-bonuses class="mt-4" [bonuses]="bonusesData"
+                                  [userRole]="user.role"></app-table-social-bonuses>
     </div>
 
     <hr class="my-4 mx-1 bg-gray-800 h-2 border-0 rounded ">

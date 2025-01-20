@@ -2,6 +2,11 @@ import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/c
 import {BonusData} from 'src/app/models/BonusData';
 import {PaginationInstance} from 'ngx-pagination';
 import {BonusesService} from "../../../services/bonuses.service";
+import {
+    MatSnackBar,
+    MatSnackBarHorizontalPosition,
+    MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-table-social-bonuses',
@@ -17,6 +22,10 @@ export class TableSocialBonusesComponent implements OnInit {
     itemsPerPage = 8;
     totalItems = 0;
 
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+    snackBar = inject(MatSnackBar);
     bonuse = { bonus: 0 };
 
     handleBonusChange(bonuse: any): void {
@@ -70,6 +79,7 @@ export class TableSocialBonusesComponent implements OnInit {
         };
         this.bonusesService.saveNewOrderBonuses(this.bonuses._id, newBonus).subscribe(() => {
             this.dataChange.emit(true);
+            this.showSnackBar("Saved new sales bonuses!");
         });
     }
 
@@ -82,6 +92,17 @@ export class TableSocialBonusesComponent implements OnInit {
     saveEdit(index: number, newBonus: number) {
         this.isEditing[index] = false;
         this.originalSocialBonuses[index] = newBonus;
+        this.showSnackBar("New social bonus value assigned");
+    }
+
+    showSnackBar(message: string): void {
+        const durationInSeconds = 5000;
+        this.snackBar.open(message, 'Ok', {
+            duration: durationInSeconds,
+            panelClass: 'main-snackbar',
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+        });
     }
 
 }
