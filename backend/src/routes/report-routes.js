@@ -10,11 +10,11 @@ router.get("/year/:year",
     // #swagger.tags = ['Reports']
     checkAuthorization([0, 1]), ReportApi.getAllReportsByYear)
 
-// todo for specific current selesman only (self)
+// for specific current selesman only (self)
 router.get("/salesman/:code/year/current",
     // #swagger.tags = ['Reports']
     checkAuthorization([0, 1, 2], true), ReportApi.getReportBySalesmanCodeForCurrentYear)
-// todo for specific current salesman only (self)
+//for specific current salesman only (self)
 router.get("/salesman/:code",
     // #swagger.tags = ['Reports']
     checkAuthorization([0, 1, 2], true), ReportApi.getAllReportsBySalesmanCode)

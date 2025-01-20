@@ -31,17 +31,17 @@ router.put("/:id",
    required: true,
    schema: { $ref: '#/definitions/socialPerformanceRecordSchema' }
  } */
-    checkAuthorization([0,1]), SocialPerformanceRecordApi.updateSocialPerformanceRecord)
+    checkAuthorization([1]), SocialPerformanceRecordApi.updateSocialPerformanceRecord)
 
 router.delete("/:id",
     //#swagger.description = 'Delete social performance record'
     //#swagger.summary = 'Delete social performance record'
     // #swagger.tags = ['Social Performance']
-    checkAuthorization([0,1]), SocialPerformanceRecordApi.deleteSocialPerformanceRecord)
+    checkAuthorization([1]), SocialPerformanceRecordApi.deleteSocialPerformanceRecord)
 router.delete("/salesman/:salesmanCode",
     //#swagger.description = 'Delete social performance record by salesman code'
     //#swagger.summary = 'Delete social performance record by salesman code'
     // #swagger.tags = ['Social Performance']
-    checkAuthorization([0,1]), SocialPerformanceRecordApi.deleteSocialPerformanceRecordBySalesmanCode)
+    checkAuthorization([1]), SocialPerformanceRecordApi.deleteSocialPerformanceRecordBySalesmanCode)
 
 module.exports = router

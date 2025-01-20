@@ -25,7 +25,7 @@ router.post("/calculate-bonuses",
     //#swagger.description = 'Calculate all bonuses'
     //#swagger.summary = 'Calculate all bonuses'
     // #swagger.tags = ['Salesmen']
-    checkAuthorization([0,1]), SalesManController.calculateAllBonuses)
+    checkAuthorization([1]), SalesManController.calculateAllBonuses)
 router.post("/send-bonuses-orangeHRM",
     //#swagger.description = 'Send all bonuses to OrangeHRM'
     //#swagger.summary = 'Send all bonuses to OrangeHRM'
@@ -43,7 +43,7 @@ type: 'object',
 required: true,
 schema: { $ref: '#/definitions/socialPerformanceRecordSchema' }
 } */
-    checkAuthorization([0,1]), SalesManController.createSocialPerformanceToSalesmanBySalesmanCode)
+    checkAuthorization([1]), SalesManController.createSocialPerformanceToSalesmanBySalesmanCode)
 
 router.get("/count/total",
     //#swagger.description = 'Get all salesmen'
