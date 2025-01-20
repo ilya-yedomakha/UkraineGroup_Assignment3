@@ -63,7 +63,18 @@ export class TableSalesmenBonusesComponent  implements OnChanges{
     }
 
     toEditSalesmanBonus(bonus: BonusData): void{
-        this.router.navigate(['edit-bonuses'], {
+        //TODO - add change isConfirmedByCEO to false
+        this.router.navigate(['bonuses-details'], {
+            state: {
+                bonuse: bonus
+            }
+        }
+
+        );
+    }
+
+    toViewSalesmanBonus(bonus){
+        this.router.navigate(['bonuses-details'], {
             state: {
                 bonuse: bonus
             }

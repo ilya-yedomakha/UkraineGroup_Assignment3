@@ -64,7 +64,7 @@ export class TableSalesmanCabinetComponent implements OnInit {
     }
 
     showDetails(): void {
-        this.router.navigate(['edit-bonuses'], {
+        this.router.navigate(['bonuses-details'], {
             state: {
                 // TODO - bonuses for one salesman
                 // bonuses
