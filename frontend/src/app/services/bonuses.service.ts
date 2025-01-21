@@ -44,7 +44,12 @@ export class BonusesService {
         );
     }
 
-    sendAllConfirmedBonusesToOrangeHRM(changedIds): Observable<string> {
+    sendAllBonusesToHRM(): Observable<any>{
+        return this.http.post<any>(`${environment.apiEndpoint}/api/salesman/send-bonuses-orangeHRM`, {},{withCredentials: true})
+            .pipe(map(o => o.data));
+    }
+
+    reverseConfirmArrayOfIds(changedIds): Observable<string> {
         return this.http.put<{ message: string }>(
             `${environment.apiEndpoint}/api/report/submit/confirmationArrayReverse`,
             {"ids": changedIds},
@@ -150,5 +155,26 @@ export class BonusesService {
             {},
             {withCredentials: true}
         ).pipe(response => response);
+    }
+
+    recalculateSingleBonus(id: string): Observable<BonusData> {
+        return this.http.put<{data: BonusData}>(
+            `${environment.apiEndpoint}/api/report/recalculate/${id}`,
+            {},
+            {withCredentials: true}
+        ).pipe(
+            map(response => BonusData.fromApi(response.data)
+        ));
+    }
+
+    getBonusesByYearTop10(): Observable<BonusData[]> {
+        return this.http.get<{ data: BonusData[] }>(
+            `${environment.apiEndpoint}/api/report/year/current/top10`,
+            {withCredentials: true}
+        ).pipe(
+            map(response =>
+                response.data.map(item => BonusData.fromApi(item))
+            )
+        );
     }
 }

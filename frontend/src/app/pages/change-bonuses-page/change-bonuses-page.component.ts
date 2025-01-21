@@ -80,6 +80,17 @@ export class ChangeBonusesPageComponent implements OnInit {
         });
     }
 
+    recalculateSingleBonus(): void {
+        this.bonusesService.recalculateSingleBonus(this.bonusesData._id).subscribe((response) => {
+            this.bonusesData = response;
+            console.log(response);
+            console.log(this.bonusesData);
+            this.updateData();
+            this.dataChange.emit(true);
+            this.showSnackBar("Bonuses were recalculated successfully!");
+        })
+    }
+
     singleConfirm(): void {
         this.bonusesService.singleConfirm(this.bonusesData._id).subscribe(() => {
             this.dataChange.emit(true);

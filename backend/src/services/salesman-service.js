@@ -74,7 +74,7 @@ class SalesmanService{
         report.totalBonus = totalBonus
 
         await report.save()
-        return totalBonus
+        return report
     }
     /**
      * Saves data from OrangeHRM in MongoDB

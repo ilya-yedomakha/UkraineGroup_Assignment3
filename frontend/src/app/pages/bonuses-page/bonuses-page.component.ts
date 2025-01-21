@@ -42,7 +42,7 @@ export class BonusesPageComponent implements OnInit {
 
     saveSelected(): void {
         const changedIds = this.updatedChanges.map(change => change._id);
-        this.bonusesService.sendAllConfirmedBonusesToOrangeHRM(changedIds).subscribe(() => {
+        this.bonusesService.reverseConfirmArrayOfIds(changedIds).subscribe(() => {
             this.updatedChanges = [];
             // this.bonusesData = [];
             this.loadBonuses();

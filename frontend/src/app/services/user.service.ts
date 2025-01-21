@@ -28,6 +28,6 @@ export class UserService {
     }
 
     getUsersCount() {
-        return this.http.get<any>(environment.apiEndpoint + '/api/users/count', {withCredentials: true}).pipe(map(o => o.data));
+        return this.http.get<any>(environment.apiEndpoint + '/api/users/total/count/', {withCredentials: true}).pipe(map(o => o.data));
     }
 }

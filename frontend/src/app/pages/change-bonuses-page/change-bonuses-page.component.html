@@ -12,9 +12,21 @@
                         }"
                         class="ml-2 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out"
                         [disabled]="dropToInitialLoading"
-                        *ngIf="user.role === 0 || user.role === 1"
+                        *ngIf="user.role === 0 || (user.role === 1 && !bonusesData.isConfirmedByCEO)"
                         (click)="singleConfirm()">
                         {{ buttonConfirmText }}
+                    </button>
+
+                    <button
+                        [ngClass]="{
+                            'bg-gray-400 text-gray-200 cursor-not-allowed': dropToInitialLoading,
+                            'bg-green-400 hover:bg-green-500 hover:scale-105': !dropToInitialLoading
+                        }"
+                        class="ml-2 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out"
+                        [disabled]="dropToInitialLoading"
+                        *ngIf="user.role === 1 && !bonusesData.isConfirmedByCEO"
+                        (click)="recalculateSingleBonus()">
+                        Recalculate these bonuses
                     </button>
 
                     <ng-container *ngIf="!bonusesData.isConfirmedByCEO && user.role === 0 || !bonusesData.isConfirmedByHR && user.role === 1">
@@ -76,7 +88,7 @@
         <textarea [(ngModel)]="bonusesData.remarks"
                   class="border-2 border-black text-lg p-2 h-16 rounded-md w-full md:w-1/2"></textarea>
         <button
-            *ngIf="user.role === 0"
+            *ngIf="user.role === 0 && !bonusesData.isConfirmedByCEO"
             (click)="saveRemarks()"
             class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
             Save

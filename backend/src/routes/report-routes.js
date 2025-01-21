@@ -9,6 +9,9 @@ router.get("/",
 router.get("/year/:year",
     // #swagger.tags = ['Reports']
     checkAuthorization([0, 1]), ReportApi.getAllReportsByYear)
+router.get("/year/current/top10",
+    // #swagger.tags = ['Reports']
+    checkAuthorization([0, 1]), ReportApi.getAllReportsForCurrentYearTop10)
 
 // for specific current selesman only (self)
 router.get("/salesman/:code/year/current",
@@ -49,7 +52,7 @@ router.put("/hrm/stored/:id",
  } */
     checkAuthorization([0]), ReportApi.patchStoredInHRMSingleBonusById)
 
-router.put("/report/recalculate/:id",
+router.put("/recalculate/:id",
     //#swagger.description = 'Recalculate report'
     //#swagger.summary = 'Recalculate report'
     // #swagger.tags = ['Reports']

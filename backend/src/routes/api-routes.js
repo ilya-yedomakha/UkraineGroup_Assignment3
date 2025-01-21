@@ -51,7 +51,7 @@ router.get('/users/:code',
     //#swagger.summary = 'Get single user by code'
     checkAuthorization([0,1]), userApi.getUsersByCode);
 
-router.get('/users/count',
+router.get('/users/total/count',
     // #swagger.tags = ['Authentication']
     //#swagger.description = 'Get current user data'
     //#swagger.summary = 'Get current user data'

@@ -616,6 +616,28 @@
         }
       }
     },
+    "/api/report/year/current/top10": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/report/salesman/{code}/year/current": {
       "get": {
         "tags": [
@@ -753,6 +775,9 @@
           "404": {
             "description": "Not Found"
           },
+          "409": {
+            "description": "Conflict"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -837,7 +862,7 @@
         }
       }
     },
-    "/api/report/report/recalculate/{id}": {
+    "/api/report/recalculate/{id}": {
       "put": {
         "tags": [
           "Reports"
@@ -864,6 +889,9 @@
           },
           "404": {
             "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
           },
           "500": {
             "description": "Internal Server Error"
@@ -905,6 +933,9 @@
           "404": {
             "description": "Not Found"
           },
+          "409": {
+            "description": "Conflict"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -938,6 +969,9 @@
           },
           "404": {
             "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
           },
           "500": {
             "description": "Internal Server Error"
@@ -1587,7 +1621,7 @@
         }
       }
     },
-    "/api/users/count": {
+    "/api/users/total/count": {
       "get": {
         "tags": [
           "Authentication"

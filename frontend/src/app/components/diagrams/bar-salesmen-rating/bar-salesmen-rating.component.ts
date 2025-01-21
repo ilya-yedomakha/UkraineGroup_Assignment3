@@ -49,7 +49,7 @@ export class BarSalesmenRatingComponent {
 
                     data: top10.map(item => item.bonus),
 
-                    label: 'Top 10 salesmen by number of bonuses',
+                    label: 'Top 10 salesmen for current year by total amount of bonuses',
 
                     borderColor: 'black',
 

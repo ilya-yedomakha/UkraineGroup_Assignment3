@@ -12,7 +12,8 @@ export class SalesService {
 
     private baseUrl = `${environment.apiEndpoint}/api/sale_performance_record`;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {
+    }
 
     getSalePerformRecordsBySalesmanCode(code: number): Observable<SalePerformanceRecord[]> {
         return this.http.get<{ data: SalePerformanceRecord[] }>(
@@ -25,8 +26,13 @@ export class SalesService {
         );
     }
 
-    getSalesCountForCurrentYear(){
-        return this.http.get<any>(`${environment.apiEndpoint}/api/sale_performance_record/count/year/current`, { withCredentials: true})
+    getSalesCountForCurrentYear() {
+        return this.http.get<any>(`${environment.apiEndpoint}/api/sale_performance_record/count/year/current`, {withCredentials: true})
+            .pipe(map(o => o.data));
+    }
+
+    importSalesOrdersFromOpenCRX(): Observable<any> {
+        return this.http.get<any>(`${environment.apiEndpoint}/api/sale_performance_record/import-from-openCRX`, {withCredentials: true})
             .pipe(map(o => o.data));
     }
 }

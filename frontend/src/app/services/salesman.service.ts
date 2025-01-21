@@ -31,15 +31,6 @@ export class SalesmanService {
             .pipe(map(o => o.data));
     }
 
-    calculateAllBonuses(): Observable<any>{
-        return this.http.post<any>(`${environment.apiEndpoint}/api/salesman/calculate-bonuses`, {withCredentials: true})
-            .pipe(map(o => o.data));
-    }
-
-    sendAllBonusesToHRM(): Observable<any>{
-        return this.http.post<any>(`${environment.apiEndpoint}/api/salesman/send-bonuses-orangeHRM`, {withCredentials: true})
-            .pipe(map(o => o.data));
-    }
 
     createSocialPerformanceToSalesmanBySalesmanCode(code: number, socialPerformanceRecord: SocialPerformanceRecord): Observable<any>{
         return this.http.post<any>(

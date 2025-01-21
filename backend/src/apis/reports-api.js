@@ -47,6 +47,22 @@ class reportApi {
         }
     }
 
+    static getAllReportsForCurrentYearTop10 = async (req, res) => {
+        try {
+            const currentYear = new Date().getFullYear();
+            const reports = await ReportModel.find({ year: currentYear })
+                .sort({ totalBonus: -1 })
+                .limit(10);
+            res.status(200).send({
+                apiStatus: true,
+                message: "Top 10 reports fetched by year" + currentYear,
+                data: reports
+            })
+        } catch (e) {
+            res.status(500).send({apiStatus: false, message: e.message, data: e})
+        }
+    }
+
     static getAllReportsBySalesmanCode = async (req, res) => {
         try {
             const data = await ReportModel.find({salesman_code: req.params.code})
@@ -106,8 +122,11 @@ class reportApi {
             if (found == null) {
                 return res.status(404).send({apiStatus: false, message: "Report is not found"});
             }
-            if (!found.isConfirmedByHR){
+            if (!found.isConfirmedByHR) {
                 return res.status(409).send({apiStatus: false, message: "Cant be edited if not confirmed by HR"});
+            }
+            if (found.isConfirmedByCEO) {
+                return res.status(409).send({apiStatus: false, message: "Cant be edited if confirmed by CEO"});
             }
             let recordUpdated = await reportService.updateReport(found, req.body)
             return res.status(200).send({apiStatus: true, message: "Report was found", data: recordUpdated});
@@ -147,11 +166,11 @@ class reportApi {
 
             let confirmedByCEOreports = [];
             let notConfirmedByHRreports = [];
-            for(const report of reports) {
-                if(report.isConfirmedByCEO) {
+            for (const report of reports) {
+                if (report.isConfirmedByCEO) {
                     confirmedByCEOreports.push(report)
                 }
-                if (!report.isConfirmedByHR){
+                if (!report.isConfirmedByHR) {
                     notConfirmedByHRreports.push(report)
                 }
             }
@@ -271,18 +290,38 @@ class reportApi {
 
     static deleteAllReports = async (req, res) => {
         try {
+            const existingReports = await ReportModel.findOne({
+                $or: [{ isConfirmedByHR: true }, { isConfirmedByCEO: true }],
+            });
+
+            if (existingReports) {
+                return res.status(409).send({
+                    apiStatus: false,
+                    message: "Operation cannot be performed: Some reports are confirmed by HR or CEO.",
+                });
+            }
+
             const reports = await ReportModel.deleteMany();
-            res.status(200).send({apiStatus: true, message: "All reports deleted", data: reports});
+            res.status(200).send({
+                apiStatus: true,
+                message: "All reports deleted",
+                data: reports,
+            });
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e});
+            res.status(500).send({ apiStatus: false, message: e.message, data: e });
         }
     };
+
 
     static deleteReport = async (req, res) => {
         try {
             const report = await ReportModel.findByIdAndDelete(req.params.id);
             if (!report) {
                 return res.status(404).send({apiStatus: false, message: "Report not found"});
+            }
+
+            if (report.isConfirmedByCEO ||report.isConfirmedByHR){
+                return res.status(409).send({apiStatus: false, message: "Operation cannot be performed: Bonus is confirmed by HR or CEO."});
             }
 
             return res.status(200).send({
@@ -313,7 +352,7 @@ class reportApi {
 
 
             const salesman = await salesmanModel.findOne({code: report.salesman_code});
-
+            let updReport;
             if (!salesman) {
                 return res.status(404).send({apiStatus: false, message: 'No salesaman found'});
             }
@@ -328,12 +367,12 @@ class reportApi {
                     activeYear: currentYear
                 });
 
-                await salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances, new Date().getUTCFullYear());
+                updReport = await salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances, new Date().getUTCFullYear());
             } catch (e) {
                 return res.status(500).send({apiStatus: false, message: e.message, data: e});
             }
 
-            return res.status(200).send({apiStatus: true, message: 'Bonus recalculated successfully'});
+            return res.status(200).send({apiStatus: true, message: 'Bonus recalculated successfully', data: updReport});
 
         } catch (e) {
             return res.status(500).send({apiStatus: false, message: e.message, data: e});
