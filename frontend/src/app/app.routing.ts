@@ -1,17 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {LoginPageComponent} from './pages/login-page/login-page.component';
-import {LandingPageComponent} from './pages/landing-page/landing-page.component';
-import {AuthGuardService} from './services/auth-guard.service';
-import {ExamplePageComponent} from './pages/example-page/example-page.component';
 import {NotFoundPageComponent} from './pages/not-found-page/not-found-page.component';
-import {BonusesPageComponent} from "./pages/bonuses-page/bonuses-page.component";
+import {BonusesPageComponent} from './pages/bonuses-page/bonuses-page.component';
 import { ChangeBonusesPageComponent } from './pages/change-bonuses-page/change-bonuses-page.component';
 import { SalesmanCabinetPageComponent } from './pages/salesman-cabinet-page/salesman-cabinet-page.component';
 import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.component';
-import {ForbiddenPageComponent} from "./pages/forbiden-page/forbidden-page.component";
-import {WelcomeAdminDashboardComponent} from "./pages/welcome-admin-dashboard/welcome-admin-dashboard.component";
-import {UsersPageComponent} from "./pages/users-page/users-page.component";
+import {ForbiddenPageComponent} from './pages/forbiden-page/forbidden-page.component';
+import {WelcomeAdminDashboardComponent} from './pages/welcome-admin-dashboard/welcome-admin-dashboard.component';
+import {UsersPageComponent} from './pages/users-page/users-page.component';
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -28,11 +25,9 @@ const routes: Routes = [
     {path: 'bonuses', component: BonusesPageComponent},
     {path: 'bonuses-details', component: ChangeBonusesPageComponent},
     {path: 'cabinet', component: SalesmanCabinetPageComponent},
-    {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
-    {path: '', component: LandingPageComponent, canActivate: [AuthGuardService]},
     {path: 'forbidden', component: ForbiddenPageComponent},
     {path: 'welcome-admin-dashboard', component: WelcomeAdminDashboardComponent},
-    {path: 'users', component:UsersPageComponent},
+    {path: 'users', component: UsersPageComponent},
     {path: '**', component: NotFoundPageComponent}
 
 ];
