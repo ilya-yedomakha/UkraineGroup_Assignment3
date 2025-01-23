@@ -37,13 +37,13 @@
                     </button>
               </span>
             </div>
-            <div *ngIf="hasRejectionForBonus(bonus._id)" class="flex justify-end">
+            <div *ngIf="bonus.remarks !== ''" class="flex justify-end">
                 <div
                     class="policy bg-[#D9D9D9] gap-2 items-center py-2 px-2 shadow-md mx-2 hover:shadow-lg transition-shadow border-l-2 border-r-2 border-b-2 border-black w-11/12 rounded-b-lg duration-500 ease-in-out cursor-pointer"
                     (click)="isClicked = !isClicked"
                     [ngClass]="{ 'truncate overflow-hidden whitespace-nowrap': !isClicked, 'whitespace-normal overflow-visible': isClicked }"
                     [@fadeToggle]="isClicked ? 'visible' : 'hidden'">
-                    <i>{{ rejectionMessage.message }}</i>
+                    <i>{{ bonus.remarks }}</i>
                 </div>
             </div>
 

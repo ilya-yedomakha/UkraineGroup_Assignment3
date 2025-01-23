@@ -5,7 +5,8 @@ export class Bonuses{
         public bonusesForSales: number,
         public bonusesForSocial: number,
         public totalBonuses: number,
-        public isConfirmedBySalesman: boolean
+        public isConfirmedBySalesman: boolean,
+        public remarks: string
     ) {  }
 
     static fromApi(data: any): Bonuses {
@@ -17,7 +18,8 @@ export class Bonuses{
             bonusesForSales,
             bonusesForSocial,
             data.totalBonus,
-            data.isConfirmedBySalesman
+            data.isConfirmedBySalesman,
+            data.remarks
         );
     }
 }
