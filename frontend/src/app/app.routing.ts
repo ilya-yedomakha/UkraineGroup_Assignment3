@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {LoginPageComponent} from './pages/login-page/login-page.component';
+import {LandingPageComponent} from './pages/landing-page/landing-page.component';
+import {AuthGuardService} from './services/auth-guard.service';
 import {NotFoundPageComponent} from './pages/not-found-page/not-found-page.component';
 import {BonusesPageComponent} from './pages/bonuses-page/bonuses-page.component';
 import { ChangeBonusesPageComponent } from './pages/change-bonuses-page/change-bonuses-page.component';
@@ -24,7 +26,8 @@ const routes: Routes = [
     {path: 'salesmen', component: SalesmenPageComponent},
     {path: 'bonuses', component: BonusesPageComponent},
     {path: 'bonuses-details', component: ChangeBonusesPageComponent},
-    {path: 'cabinet', component: SalesmanCabinetPageComponent},
+    {path: 'cabinet', component: SalesmanCabinetPageComponent, canActivate: [AuthGuardService]},
+    {path: '', component: LandingPageComponent},
     {path: 'forbidden', component: ForbiddenPageComponent},
     {path: 'welcome-admin-dashboard', component: WelcomeAdminDashboardComponent},
     {path: 'users', component: UsersPageComponent},
