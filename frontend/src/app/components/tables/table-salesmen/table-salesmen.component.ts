@@ -37,10 +37,6 @@ export class TableSalesmenComponent implements OnInit {
         this.pagingConfig.currentPage = 1;
     }
 
-    toAddSocialPerformance(){
-
-    }
-
     toShowSalesmanInfo(){
 
     }

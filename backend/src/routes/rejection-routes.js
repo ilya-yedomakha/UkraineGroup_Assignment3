@@ -9,7 +9,7 @@ router.get("/:id",
     checkAuthorization([2]), RejectionMessageApi.getById);
 
 router.get("/salesman/:code",
-    checkAuthorization([2]), RejectionMessageApi.getForSalesman);
+    checkAuthorization([0, 1, 2]), RejectionMessageApi.getForSalesman);
 
 router.get("/year/:year",
     checkAuthorization([0, 1]), RejectionMessageApi.getByYear);

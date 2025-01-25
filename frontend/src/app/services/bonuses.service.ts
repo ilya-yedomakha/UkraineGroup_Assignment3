@@ -86,6 +86,13 @@ export class BonusesService {
         ).pipe(map(o => o.data));
     }
 
+    getBonusById(id: string): Observable<BonusData> {
+        return this.http.get<{ data: BonusData }>(
+            `${environment.apiEndpoint}/api/report/${id}`,
+            {withCredentials: true}
+        ).pipe(map(o => BonusData.fromApi(o.data)));
+    }
+
     getBonusesBySalesmanCode(salesmanCode: number): Observable<Bonuses[]> {
         return this.http.get<{ data: Bonuses[] }>(
             `${environment.apiEndpoint}/api/report/salesman/${salesmanCode}`,

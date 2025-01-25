@@ -11,6 +11,7 @@ import {RejectionService} from '../../services/rejection.service';
 import {SalesmanService} from '../../services/salesman.service';
 import {SalesService} from '../../services/sales.service';
 import {SocialPerformanceService} from '../../services/social-performance.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'app-salesman-cabinet-page',
@@ -26,6 +27,7 @@ export class SalesmanCabinetPageComponent implements OnInit {
     socialRecords: SocialPerformanceRecord[];
     saleRecords: SalePerformanceRecord[];
     isAddSocialPerformanceWindowVisible = false;
+    code: number;
     private userService: UserService = inject(UserService);
     private salesmanService: SalesmanService = inject(SalesmanService);
     private bonusesService = inject(BonusesService);
@@ -33,22 +35,23 @@ export class SalesmanCabinetPageComponent implements OnInit {
     private socialService = inject(SocialPerformanceService);
     private rejectionService = inject(RejectionService);
 
-    ngOnInit(): void {
-        this.fetchUser();
+    constructor(private activateRoute: ActivatedRoute) {
+        this.code = Number(activateRoute.snapshot.paramMap.get('code'));
     }
 
-    toAddSocialPerformanceRecord() {
-
+    ngOnInit(): void {
+        this.fetchUser();
     }
 
     fetchUser(): void {
         this.userService.getOwnUser().subscribe((user): void => {
             this.user = user;
-            this.fetchSalesman(user.code);
-            this.fetchBonuses(user.code);
-            this.fetchRejections(user.code);
-            this.fetchSaleRecords(user.code);
-            this.fetchSocialRecords(user.code);
+            const codeToUse = this.code === 0 ? user.code : this.code;
+            this.fetchSalesman(codeToUse);
+            this.fetchBonuses(codeToUse);
+            this.fetchRejections(codeToUse);
+            this.fetchSaleRecords(codeToUse);
+            this.fetchSocialRecords(codeToUse);
         });
     }
 
@@ -94,5 +97,11 @@ export class SalesmanCabinetPageComponent implements OnInit {
         this.rejectionService.getRejectionsForSalesman(this.salesman.code).subscribe((value): void => {
             this.rejectionMessages = value;
         });
+    }
+
+    handleSocialPerformanceAddition(isAdded: boolean): void {
+        this.isAddSocialPerformanceWindowVisible = false;
+        if (isAdded) {
+        }
     }
 }

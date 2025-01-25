@@ -45,7 +45,8 @@
         </div>
     </div>
 
-    <app-table-salesman-cabinet [salesmanCode]="salesman.code"
+    <app-table-salesman-cabinet [user]="user"
+                                [salesmanCode]="salesman.code"
                                 [bonuses]="bonuses"
                                 [rejectionMessages]="rejectionMessages"
                                 (stateChanged)="confirmationBySalesmanChanged($event)"></app-table-salesman-cabinet>
@@ -72,6 +73,6 @@
 
 
     <div *ngIf="isAddSocialPerformanceWindowVisible && user.role === 1" class="fixed inset-0 flex items-center justify-center backdrop-blur-md mt-[60px] bg-white bg-opacity-30">
-        <app-add-social-performance-window [salesmenCode]="salesman.code" class="w-1/2 h-1/3" (close)="isAddSocialPerformanceWindowVisible = false"></app-add-social-performance-window>
+        <app-add-social-performance-window [salesmenCode]="salesman.code" class="w-1/2 h-1/3" (close)="handleSocialPerformanceAddition($event)"></app-add-social-performance-window>
       </div>
 </div>

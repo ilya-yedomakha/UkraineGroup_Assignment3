@@ -2,10 +2,12 @@ import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/c
 import {Router} from '@angular/router';
 import {PaginationInstance} from 'ngx-pagination';
 import {Bonuses} from 'src/app/models/Bonuses';
+import {User} from 'src/app/models/User';
 import {RejectionMessage} from '../../../models/RejectionMessage';
 import {RejectionService} from '../../../services/rejection.service';
 import {BonusesService} from '../../../services/bonuses.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {BonusData} from "../../../models/BonusData";
 
 @Component({
     selector: 'app-table-salesman-cabinet',
@@ -25,6 +27,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 })
 export class TableSalesmanCabinetComponent implements OnInit {
 
+    @Input() user: User;
     @Input() bonuses: Bonuses[];
     @Input() salesmanCode: number;
     @Input() rejectionMessages: RejectionMessage[];
@@ -63,14 +66,15 @@ export class TableSalesmanCabinetComponent implements OnInit {
         this.pagingConfig.currentPage = 1;
     }
 
-    showDetails(): void {
-        this.router.navigate(['bonuses-details'], {
-            state: {
-                // TODO - bonuses for one salesman
-                // bonuses
-            }
-        }
-        );
+    showDetails(id: string): void {
+        this.bonusesService.getBonusById(id).subscribe((bonus: BonusData): void => {
+            this.router.navigate(['bonuses-details'], {
+                    state: {
+                        bonuse: bonus
+                    }
+                }
+            );
+        });
     }
 
     hasRejectionForBonus(id: string): boolean {

@@ -24,7 +24,7 @@ router.get("/salesman/:code",
 
 router.get("/:id",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0, 1]), ReportApi.getReportById)
+    checkAuthorization([0, 1, 2]), ReportApi.getReportById)
 
 router.put("/:id",
     //#swagger.description = 'Update Report'

@@ -1,19 +1,24 @@
 <div *ngIf="isVisible" class="bg-[#FCE8BA] font-sans text-gray-800 border-2 border-black rounded-lg">
     <div class="policy-container content-center border">
         <div class="bg-[#242424] rounded-t-lg">
-            <div class="grid grid-cols-6 gap-4 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
+            <div class="grid gap-4 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2"
+                 [ngClass]="user.role===2 ? 'grid-cols-6' : 'grid-cols-5'">
                 <span class="heading">Year</span>
                 <span class="heading">Bonuses for sales</span>
                 <span class="heading">Bonuses for social performance</span>
                 <span class="heading">Total bonuses</span>
-                <span class="heading">Action</span>
+                <span class="heading" *ngIf="user.role===2">Action</span>
                 <span class="heading"></span>
             </div>
         </div>
 
 
         <div *ngFor="let bonus of bonuses | paginate: pagingConfig">
-            <div [ngClass]="hasRejectionForBonus(bonus._id) ? 'rounded-br-none' : 'rounded-br-lg'"
+            <div [ngClass]="{'rounded-br-none': hasRejectionForBonus(bonus._id),
+                             'rounded-br-lg': !hasRejectionForBonus(bonus._id),
+                             'grid-cols-6': user.role === 2,
+                             'grid-cols-5': user.role !== 2,
+                             }"
                  class="grid grid-cols-6 gap-4 items-center py-2 px-2 rounded-lg shadow-md mt-4 mx-2 hover:shadow-lg transition-shadow border-2 border-black text-base bg-[#D9D9D9]">
 
                 <span class="flex-1 text-center">{{ bonus.year }}</span>
@@ -24,15 +29,16 @@
 
                 <span class="flex-1 text-center">{{ bonus.totalBonuses }}</span>
 
-                <span class="flex-1 text-center" *ngIf="bonus.year === currentYear">
-                  <app-toggle-switch [toggleState]="toggleStateForBonus(bonus.isConfirmedBySalesman)"
+                <span class="flex-1 text-center" *ngIf="user.role === 2">
+                  <app-toggle-switch *ngIf="bonus.year === currentYear"
+                                     [toggleState]="toggleStateForBonus(bonus.isConfirmedBySalesman)"
                                      (stateChanged)="confirmationBySalesmanChanged($event)"></app-toggle-switch>
                 </span>
 
-                <span class="flex-1 text-center" *ngIf="bonus.year === currentYear">
+                <span class="flex-1 text-center">
                     <button
                         class="bg-[#095964] text-white rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105 mr-1"
-                        (click)="showDetails()">
+                        (click)="showDetails(bonus._id)">
                         Details
                     </button>
               </span>
@@ -43,6 +49,7 @@
                     (click)="isClicked = !isClicked"
                     [ngClass]="{ 'truncate overflow-hidden whitespace-nowrap': !isClicked, 'whitespace-normal overflow-visible': isClicked }"
                     [@fadeToggle]="isClicked ? 'visible' : 'hidden'">
+                    <strong>Remark from CEO: </strong>
                     <i>{{ bonus.remarks }}</i>
                 </div>
             </div>

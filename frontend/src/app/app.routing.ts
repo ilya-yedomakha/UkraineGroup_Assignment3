@@ -26,6 +26,7 @@ const routes: Routes = [
     {path: 'salesmen', component: SalesmenPageComponent},
     {path: 'bonuses', component: BonusesPageComponent},
     {path: 'bonuses-details', component: ChangeBonusesPageComponent},
+    {path: 'cabinet/:code', component: SalesmanCabinetPageComponent, canActivate: [AuthGuardService]},
     {path: 'cabinet', component: SalesmanCabinetPageComponent, canActivate: [AuthGuardService]},
     {path: '', component: LandingPageComponent},
     {path: 'forbidden', component: ForbiddenPageComponent},
