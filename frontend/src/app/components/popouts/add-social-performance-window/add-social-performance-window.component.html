@@ -48,7 +48,8 @@
     <button
       type="submit"
       [disabled]="creationForm.invalid"
-      class="self-end justify-self-end my-2 bg-green-400 rounded-lg py-2 px-4 w-auto transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
+      [ngClass]="{'bg-gray-500 hover:bg-gray-500 text-white': creationForm.invalid, 'bg-green-400 hover:bg-green-500': !creationForm.invalid}"
+      class="self-end justify-self-end my-2 rounded-lg py-2 px-4 w-auto transition-all duration-300 ease-in-out hover:scale-105">
       Send
     </button>
   </form>

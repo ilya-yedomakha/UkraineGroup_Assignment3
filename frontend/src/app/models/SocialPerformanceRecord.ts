@@ -1,5 +1,5 @@
 export class SocialPerformanceRecord {
-    public _id: number | null;
+    public _id: string | null;
 
     constructor(
         public goal_description: string,

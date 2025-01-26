@@ -12,6 +12,7 @@ export class AddSocialPerformanceWindowComponent implements OnInit {
 
     creationForm!: FormGroup;
     @Input() salesmenCode: number;
+    @Input() socialPerformances: SocialPerformanceRecord[];
     @Output() close = new EventEmitter<boolean>();
     description: string[] = ['Leadership Competence',
         'Openness to Employee',
@@ -31,6 +32,8 @@ export class AddSocialPerformanceWindowComponent implements OnInit {
             targetValue: [1, Validators.required],
             actualValue: [1, Validators.required],
         });
+        const socialPerformanceDescriptions = this.socialPerformances.map(value => value.goal_description);
+        this.description = this.description.filter(description => !socialPerformanceDescriptions.includes(description));
     }
 
     toClose(): void {

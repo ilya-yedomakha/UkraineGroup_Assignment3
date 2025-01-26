@@ -102,6 +102,17 @@ export class SalesmanCabinetPageComponent implements OnInit {
     handleSocialPerformanceAddition(isAdded: boolean): void {
         this.isAddSocialPerformanceWindowVisible = false;
         if (isAdded) {
+            this.fetchSocialRecords(this.code);
         }
+    }
+
+    reFetchSocialRecords(updated: boolean): void {
+        if (updated) {
+            this.fetchSocialRecords(this.code);
+        }
+    }
+
+    isAllSocialPerformanceRecordsCreated(): boolean {
+        return this.socialRecords.filter(value => value.year === new Date().getFullYear()).length < 6;
     }
 }
