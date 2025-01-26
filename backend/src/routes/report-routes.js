@@ -119,15 +119,8 @@ router.get("/count/signed/HR/year/current",
     // #swagger.tags = ['Reports']
     checkAuthorization([0,1]), ReportApi.getSignedByHRReportsCountForCurrentYear)
 
-router.post("/email/send/remark",
+router.post("/confirm/:id/remark",
     // #swagger.tags = ['Reports']
-    /* #swagger.parameters['Report'] = {
-in: 'body',
-description: 'Reverse array',
-type: 'object',
-required: true,
-schema: { $ref: '#/definitions/remarkSendEmailSchema' }
-} */
-    checkAuthorization([1]), ReportApi.sendRemarkOnEmail)
+    checkAuthorization([1]), ReportApi.confirmRemarkSendEmail)
 
 module.exports = router

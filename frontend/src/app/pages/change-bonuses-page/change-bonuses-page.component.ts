@@ -26,6 +26,7 @@ export class ChangeBonusesPageComponent implements OnInit {
     private bonusesService = inject(BonusesService);
     snackBar = inject(MatSnackBar);
     dropToInitialLoading: boolean = false;
+    updatingConfirmRemarkIsLoading: boolean = false;
 
 
     public ngOnInit(): void {
@@ -37,19 +38,19 @@ export class ChangeBonusesPageComponent implements OnInit {
 
     }
 
-    findCurrentConfirmationButtonText(){
+    findCurrentConfirmationButtonText() {
         switch (this.user.role) {
             case 0:
-                if(this.bonusesData.isConfirmedByCEO){
+                if (this.bonusesData.isConfirmedByCEO) {
                     this.buttonConfirmText = "Un-confirm bonuses"
-                }else {
+                } else {
                     this.buttonConfirmText = "Confirm bonuses"
                 }
                 break;
             case 1:
-                if(this.bonusesData.isConfirmedByHR){
+                if (this.bonusesData.isConfirmedByHR) {
                     this.buttonConfirmText = "Un-confirm social data"
-                }else {
+                } else {
                     this.buttonConfirmText = "Confirm social data"
                 }
                 break;
@@ -143,5 +144,15 @@ export class ChangeBonusesPageComponent implements OnInit {
         this.bonusesData.socialBonuses.forEach(sale => sale.bonus = sale.initialBonus);
         this.dropToInitialLoading = false;
         this.showSnackBar("Bonuses have been reset to their initial value");
+    }
+
+    confirmRemark() {
+        this.updatingConfirmRemarkIsLoading = true
+        this.bonusesService.singleRemarkConfirmAndEmailSend(this.bonusesData._id).subscribe(() => {
+            this.updatingConfirmRemarkIsLoading = false;
+            this.dataChange.emit(true);
+            this.showSnackBar("Remark has been successfully confirmed and an email was sent to a corresponding salesman!");
+            this.updateData();
+        });
     }
 }

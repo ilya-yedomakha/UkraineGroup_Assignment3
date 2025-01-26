@@ -34,6 +34,7 @@ class ReportService {
             }
 
             oldData.isConfirmedByCEO = false;
+            oldData.isRemarkConfirmedByHR = false;
             oldData.isConfirmedBySalesman = false;
             oldData.isSent = false;
 

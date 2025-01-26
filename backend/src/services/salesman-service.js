@@ -25,6 +25,7 @@ class SalesmanService{
             report.isConfirmedByCEO = false
             report.isConfirmedBySalesman = false
             report.isConfirmedByHR = false
+            report.isRemarkConfirmedByHR = false
             report.isSent = false
         } else {
             report = new reportModel()

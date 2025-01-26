@@ -23,7 +23,8 @@ export class BonusData {
         public isConfirmedByCEO: boolean,
         public isConfirmedBySalesman: boolean,
         public isConfirmedByHR: boolean,
-        public isSent: boolean
+        public isSent: boolean,
+        public isRemarkConfirmedByHR: boolean
     ) {
     }
 
@@ -51,7 +52,8 @@ export class BonusData {
             data.isConfirmedByCEO,
             data.isConfirmedBySalesman,
             data.isConfirmedByHR,
-            data.isSent
+            data.isSent,
+            data.isRemarkConfirmedByHR
         );
     }
 }

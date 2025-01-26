@@ -71,6 +71,12 @@ const reportSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+
+    isRemarkConfirmedByHR: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 })
 

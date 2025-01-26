@@ -563,48 +563,74 @@ class reportApi {
         }
     }
 
-    static sendRemarkOnEmail = async (req, res) => {
+    static confirmRemarkSendEmail = async (req, res) => {
         try {
             if (environment_ilya) {
-                const {email, message} = req.body;
+                const { id } = req.params;
 
-                if (!email || !message) {
-                    return res.status(400).json({error: 'Email, and message are required.'});
+                const report = await ReportModel.findById(id);
+                if (!report) {
+                    return res.status(404).json({ error: "Report not found." });
                 }
 
-                // Configure the transporter
+                if (!report.isConfirmedByCEO || !report.isConfirmedByHR) {
+                    return res.status(409).send({
+                        apiStatus: false,
+                        message: 'Bonus isn`t confirmed by CEO or HR'
+                    });
+                }
+
+                if (report.remarks === "" || report.remarks === null){
+                    return res.status(409).send({
+                        apiStatus: false,
+                        message: 'Remark for this bonus is missing!'
+                    });
+                }
+
+                const salesman = await salesmanModel.findOne({code: report.salesman_code});
+                if (!salesman) {
+                    return res.status(404).send({apiStatus: false, message: 'No salesaman found'});
+                }
+
                 const transporter = nodemailer.createTransport({
-                    service: 'gmail',
+                    service: "gmail",
                     auth: {
                         user: environment_ilya.user,
-                        pass: environment_ilya.pass
+                        pass: environment_ilya.pass,
                     },
                 });
 
-                // Configure the email options
                 const mailOptions = {
-                    from: 'CEO@gmail.com',
-                    to: email,
-                    subject: "Bonus Rejection",
-                    text: message,
+                    from: "CEO@gmail.com",
+                    to: salesman.workEmail,
+                    subject: "Check your cabinet! Here is your bonus evaluation remark:",
+                    text: report.remarks,
                 };
 
-                // Send the email
-                transporter.sendMail(mailOptions, (error, info) => {
+                transporter.sendMail(mailOptions, async (error, info) => {
                     if (error) {
-                        console.error('Error sending email:', error);
-                        return res.status(500).json({error: 'Failed to send email.'});
+                        return res.status(500).json({ error: "Failed to send email." });
                     } else {
-                        console.log('Email sent: ' + info.response);
-                        return res.status(200).json({apiStatus: true, message: 'Email sent successfully.', data: info.response});
+                        report.isRemarkConfirmedByHR = true;
+                        await report.save();
+
+                        return res.status(200).json({
+                            apiStatus: true,
+                            message: "Email sent successfully and remark status updated.",
+                            data: info.response,
+                        });
                     }
                 });
             } else {
-                return res.status(200).json({apiStatus: true, message: 'Email sent virtually.', data: 'Must have SMTP to send real email'});
+                return res.status(200).json({
+                    apiStatus: true,
+                    message: "Email sent virtually.",
+                    data: "Must have SMTP to send real email",
+                });
             }
         } catch (err) {
-            console.error('Unexpected error:', err);
-            return res.status(500).json({error: 'Internal Server Error.'});
+            console.error("Unexpected error:", err);
+            return res.status(500).json({ error: "Internal Server Error." });
         }
     };
 

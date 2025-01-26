@@ -83,15 +83,27 @@
         </label>
     </div>
 
-    <div class="flex justify-start items-center">
+    <div *ngIf="user.role !== 2 || (bonusesData.isRemarkConfirmedByHR && user.role === 2)" class="flex justify-start items-center">
         <label class="text-xl font-semibold mr-1">Remarks:</label>
-        <textarea [(ngModel)]="bonusesData.remarks"
+        <textarea
+            [disabled]="user.role != 0 || (user.role === 0 && bonusesData.isConfirmedByCEO)"
+            [(ngModel)]="bonusesData.remarks"
                   class="border-2 border-black text-lg p-2 h-16 rounded-md w-full md:w-1/2"></textarea>
         <button
             *ngIf="user.role === 0 && !bonusesData.isConfirmedByCEO"
             (click)="saveRemarks()"
             class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
             Save
+        </button>
+        <button class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105"
+                [disabled] = "updatingConfirmRemarkIsLoading"
+                *ngIf="user.role === 1 && bonusesData.isConfirmedByCEO"
+                (click)="confirmRemark()"
+        >Confirm remark
+            <svg *ngIf="updatingConfirmRemarkIsLoading"
+                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 animate-spin">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
         </button>
     </div>
 </div>

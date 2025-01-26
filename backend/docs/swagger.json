@@ -1183,7 +1183,7 @@
         }
       }
     },
-    "/api/report/email/send/remark": {
+    "/api/report/confirm/{id}/remark": {
       "post": {
         "tags": [
           "Reports"
@@ -1191,27 +1191,24 @@
         "description": "",
         "parameters": [
           {
-            "name": "Report",
-            "in": "body",
-            "description": "Reverse array",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/remarkSendEmailSchema"
-            }
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"

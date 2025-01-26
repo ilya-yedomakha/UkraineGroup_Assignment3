@@ -39,6 +39,10 @@ export class TableManageSocialPerformanceComponent implements OnInit {
         this.pagingConfig.currentPage = 1;
     }
 
+    onTargetValueChange(record: SocialPerformanceRecord, newValue: number) {
+        record.target_value = newValue;
+    }
+
     onActualValueChange(record: SocialPerformanceRecord, newValue: number) {
         record.actual_value = newValue;
     }
