@@ -580,6 +580,9 @@
           "403": {
             "description": "Forbidden"
           },
+          "409": {
+            "description": "Conflict"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -809,6 +812,9 @@
           },
           "404": {
             "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
           },
           "500": {
             "description": "Internal Server Error"
@@ -1047,6 +1053,9 @@
     },
     "/api/report/count/total": {
       "get": {
+        "tags": [
+          "Reports"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -1066,6 +1075,9 @@
     },
     "/api/report/count/year/current": {
       "get": {
+        "tags": [
+          "Reports"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -1085,6 +1097,9 @@
     },
     "/api/report/count/signed/CEO": {
       "get": {
+        "tags": [
+          "Reports"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -1104,6 +1119,9 @@
     },
     "/api/report/count/signed/HR": {
       "get": {
+        "tags": [
+          "Reports"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -1123,6 +1141,9 @@
     },
     "/api/report/count/signed/CEO/year/current": {
       "get": {
+        "tags": [
+          "Reports"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -1142,10 +1163,49 @@
     },
     "/api/report/count/signed/HR/year/current": {
       "get": {
+        "tags": [
+          "Reports"
+        ],
         "description": "",
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/report/email/send/remark": {
+      "post": {
+        "tags": [
+          "Reports"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "Report",
+            "in": "body",
+            "description": "Reverse array",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/remarkSendEmailSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -1432,12 +1492,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       },
@@ -1837,6 +1891,19 @@
               }
             }
           }
+        }
+      }
+    },
+    "remarkSendEmailSchema": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "testemail@gmail.com"
+        },
+        "message": {
+          "type": "string",
+          "example": "You are really great worker"
         }
       }
     }

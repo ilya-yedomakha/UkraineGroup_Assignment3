@@ -2,6 +2,7 @@ const salesmanModel = require("../models/SalesMan")
 const socialPerformanceRecordModel = require("../models/SocialPerformanceRecord")
 const salePerformanceRecordModel = require("../models/SalePerformanceRecord")
 const ReportModel = require("../models/Report")
+const nodemailer = require('nodemailer');
 
 const reportService = require("../services/report-service")
 
@@ -17,6 +18,8 @@ if (process.env.NODE_ENV === 'development') {
 } else {
     environment = require('../../environments/environment.prod.js').default;
 }
+
+let environment_ilya = require('../../environments/environment_ilya.js').default;
 
 class reportApi {
 
@@ -50,8 +53,8 @@ class reportApi {
     static getAllReportsForCurrentYearTop10 = async (req, res) => {
         try {
             const currentYear = new Date().getFullYear();
-            const reports = await ReportModel.find({ year: currentYear })
-                .sort({ totalBonus: -1 })
+            const reports = await ReportModel.find({year: currentYear})
+                .sort({totalBonus: -1})
                 .limit(10);
             res.status(200).send({
                 apiStatus: true,
@@ -291,7 +294,7 @@ class reportApi {
     static deleteAllReports = async (req, res) => {
         try {
             const existingReports = await ReportModel.findOne({
-                $or: [{ isConfirmedByHR: true }, { isConfirmedByCEO: true }],
+                $or: [{isConfirmedByHR: true}, {isConfirmedByCEO: true}],
             });
 
             if (existingReports) {
@@ -308,7 +311,7 @@ class reportApi {
                 data: reports,
             });
         } catch (e) {
-            res.status(500).send({ apiStatus: false, message: e.message, data: e });
+            res.status(500).send({apiStatus: false, message: e.message, data: e});
         }
     };
 
@@ -320,8 +323,11 @@ class reportApi {
                 return res.status(404).send({apiStatus: false, message: "Report not found"});
             }
 
-            if (report.isConfirmedByCEO ||report.isConfirmedByHR){
-                return res.status(409).send({apiStatus: false, message: "Operation cannot be performed: Bonus is confirmed by HR or CEO."});
+            if (report.isConfirmedByCEO || report.isConfirmedByHR) {
+                return res.status(409).send({
+                    apiStatus: false,
+                    message: "Operation cannot be performed: Bonus is confirmed by HR or CEO."
+                });
             }
 
             return res.status(200).send({
@@ -556,6 +562,51 @@ class reportApi {
             });
         }
     }
+
+    static sendRemarkOnEmail = async (req, res) => {
+        try {
+            if (environment_ilya) {
+                const {email, message} = req.body;
+
+                if (!email || !message) {
+                    return res.status(400).json({error: 'Email, and message are required.'});
+                }
+
+                // Configure the transporter
+                const transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: environment_ilya.user,
+                        pass: environment_ilya.pass
+                    },
+                });
+
+                // Configure the email options
+                const mailOptions = {
+                    from: 'CEO@gmail.com',
+                    to: email,
+                    subject: "Bonus Rejection",
+                    text: message,
+                };
+
+                // Send the email
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        console.error('Error sending email:', error);
+                        return res.status(500).json({error: 'Failed to send email.'});
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                        return res.status(200).json({apiStatus: true, message: 'Email sent successfully.', data: info.response});
+                    }
+                });
+            } else {
+                return res.status(200).json({apiStatus: true, message: 'Email sent virtually.', data: 'Must have SMTP to send real email'});
+            }
+        } catch (err) {
+            console.error('Unexpected error:', err);
+            return res.status(500).json({error: 'Internal Server Error.'});
+        }
+    };
 
 
 }

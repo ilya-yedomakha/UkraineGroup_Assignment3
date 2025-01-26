@@ -115,6 +115,10 @@ const swaggerDocument = {
                     confirm: false
                 }
             ]
+        },
+        remarkSendEmailSchema:{
+            email:"testemail@gmail.com",
+            message:"You are really great worker"
         }
 
     }

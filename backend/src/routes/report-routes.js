@@ -96,21 +96,38 @@ router.delete("/:id",
     checkAuthorization([0,1]), ReportApi.deleteReport)
 
 router.get("/count/total",
+    // #swagger.tags = ['Reports']
     checkAuthorization([0,1]), ReportApi.getTotalReportsCount)
 
 router.get("/count/year/current",
+    // #swagger.tags = ['Reports']
     checkAuthorization([0,1]), ReportApi.getTotalReportsForCurrentYear)
 
 router.get("/count/signed/CEO",
+    // #swagger.tags = ['Reports']
     checkAuthorization([0,1]), ReportApi.getSignedByCEOReportsCount)
 
 router.get("/count/signed/HR",
+    // #swagger.tags = ['Reports']
     checkAuthorization([0,1]), ReportApi.getSignedByHRReportsCount)
 
 router.get("/count/signed/CEO/year/current",
+    // #swagger.tags = ['Reports']
     checkAuthorization([0,1]), ReportApi.getSignedByCEOReportsCountForCurrentYear)
 
 router.get("/count/signed/HR/year/current",
+    // #swagger.tags = ['Reports']
     checkAuthorization([0,1]), ReportApi.getSignedByHRReportsCountForCurrentYear)
+
+router.post("/email/send/remark",
+    // #swagger.tags = ['Reports']
+    /* #swagger.parameters['Report'] = {
+in: 'body',
+description: 'Reverse array',
+type: 'object',
+required: true,
+schema: { $ref: '#/definitions/remarkSendEmailSchema' }
+} */
+    checkAuthorization([1]), ReportApi.sendRemarkOnEmail)
 
 module.exports = router
