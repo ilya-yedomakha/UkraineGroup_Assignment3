@@ -1,9 +1,10 @@
-import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject} from '@angular/core';
 import { Router } from '@angular/router';
 import { PaginationInstance } from 'ngx-pagination';
 import { BonusData } from 'src/app/models/BonusData';
 import {RejectionMessage} from '../../../models/RejectionMessage';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {BonusesService} from "../../../services/bonuses.service";
 
 @Component({
     selector: 'app-table-salesmen-bonuses',
@@ -32,7 +33,9 @@ export class TableSalesmenBonusesComponent  implements OnChanges{
     itemsPerPage = 8;
     totalItems = 0;
     isClicked = false;
+    isAllSelected = false;
     rejectionMessage: RejectionMessage;
+    private bonusesService = inject(BonusesService);
 
     constructor(private router: Router){}
 
@@ -61,17 +64,21 @@ export class TableSalesmenBonusesComponent  implements OnChanges{
                 currentValue: this.userRole === 0 ? bonus.isConfirmedByCEO : bonus.isConfirmedByHR,
             }));
         }
+        this.updateGeneralCheckbox();
+    }
+
+    getIsConfirmedActual(id: string): boolean{
+        return this.changes.find(value => value._id === id).currentValue;
     }
 
     toEditSalesmanBonus(bonus: BonusData): void{
-        //TODO - add change isConfirmedByCEO to false
-        this.router.navigate(['bonuses-details'], {
-            state: {
-                bonuse: bonus
-            }
-        }
-
-        );
+        this.bonusesService.reverseConfirmArrayOfIds([bonus._id]).subscribe(() => {
+            this.router.navigate(['bonuses-details'], {
+                state: {
+                    bonuse: bonus
+                }
+            });
+        });
     }
 
     toViewSalesmanBonus(bonus){
@@ -103,7 +110,28 @@ export class TableSalesmenBonusesComponent  implements OnChanges{
                 currentValue: newValue
             });
         }
+        this.updateGeneralCheckbox();
         this.changesDetected.emit(this.changes);
+    }
+
+    onGeneralCheckboxChange(newValue: boolean): void {
+        this.changes.forEach(change => {
+            if(this.userRole === 0 || !this.bonuses.find(bonus => bonus._id === change._id).isConfirmedByCEO) {
+                change.currentValue = newValue;
+            }
+        });
+        this.changesDetected.emit(this.changes);
+    }
+
+    updateGeneralCheckbox(): void{
+        let flag = true;
+        this.changes.map(change => {
+            if (!change.currentValue){
+                flag = false;
+                return;
+            }
+        });
+        this.isAllSelected = flag;
     }
 
     hasRejectionForBonus(bonusId: string): boolean {

@@ -1,5 +1,4 @@
-import {Component, Input} from '@angular/core';
-import {Salesman} from "../../../models/Salesman";
+import {Component, Input, OnInit} from '@angular/core';
 import {PaginationInstance} from "ngx-pagination";
 import {User} from "../../../models/User";
 
@@ -8,7 +7,7 @@ import {User} from "../../../models/User";
   templateUrl: './table-users.component.html',
   styleUrls: ['./table-users.component.css']
 })
-export class TableUsersComponent {
+export class TableUsersComponent implements OnInit {
     @Input() users: User[];
     currentPage = 1;
     itemsPerPage = 8;
@@ -34,5 +33,14 @@ export class TableUsersComponent {
     onTableSizeChange(event: any): void {
         this.pagingConfig.itemsPerPage = event.target.value;
         this.pagingConfig.currentPage = 1;
+    }
+
+    getRoleName(code: number): string {
+        switch (code) {
+            case 0: return 'CEO';
+            case 1: return 'HR';
+            case 2: return 'Salesman';
+        }
+        return '';
     }
 }
