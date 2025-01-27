@@ -194,4 +194,14 @@ export class BonusesService {
             map(response => BonusData.fromApi(response.data)
             ));
     }
+
+    updateOldHRMBonusById(_id: string): Observable<BonusData> {
+        return this.http.put<{ data: BonusData }>(
+            `${environment.apiEndpoint}/api/report/hrm/stored/${_id}`,
+            {},
+            {withCredentials: true}
+        ).pipe(
+            map(response => BonusData.fromApi(response.data)
+            ));
+    }
 }

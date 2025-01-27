@@ -72,12 +72,10 @@ export class TableSalesmenBonusesComponent  implements OnChanges{
     }
 
     toEditSalesmanBonus(bonus: BonusData): void{
-        this.bonusesService.reverseConfirmArrayOfIds([bonus._id]).subscribe(() => {
-            this.router.navigate(['bonuses-details'], {
-                state: {
-                    bonuse: bonus
-                }
-            });
+        this.router.navigate(['bonuses-details'], {
+            state: {
+                bonuse: bonus
+            }
         });
     }
 

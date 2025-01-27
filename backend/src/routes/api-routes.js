@@ -87,7 +87,6 @@ router.delete('/users/:code',
     // #swagger.tags = ['Authentication']
     //#swagger.description = 'Delete user'
     //#swagger.summary = 'Delete user'
-    //todo body
     checkAuthorization([0,1]), userApi.deleteUser);
 
 // const peopleDemoApi = require('../apis/people-demo-api');

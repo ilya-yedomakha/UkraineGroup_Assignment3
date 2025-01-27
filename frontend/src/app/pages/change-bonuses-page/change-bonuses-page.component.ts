@@ -27,6 +27,8 @@ export class ChangeBonusesPageComponent implements OnInit {
     snackBar = inject(MatSnackBar);
     dropToInitialLoading: boolean = false;
     updatingConfirmRemarkIsLoading: boolean = false;
+    HRMSendLoading: boolean = false;
+    currentYear = new Date().getFullYear();
 
 
     public ngOnInit(): void {
@@ -67,10 +69,11 @@ export class ChangeBonusesPageComponent implements OnInit {
 
     }
 
-    saveSocialAndOrderBonuses(): void {
+    saveAll(): void {
         const updatedBonuses = {
             socialBonuses: this.bonusesData.socialBonuses,
             ordersBonuses: this.bonusesData.ordersBonuses,
+            remarks: this.bonusesData.remarks
         };
 
         //TODO(чому назва метода saveSocialAndOrderBonuses а зберігаєтсья saveNewOrderBonuses)
@@ -94,10 +97,11 @@ export class ChangeBonusesPageComponent implements OnInit {
 
     singleConfirm(): void {
         this.bonusesService.singleConfirm(this.bonusesData._id).subscribe((response) => {
+            this.user.role === 0 ? this.bonusesData.isConfirmedByCEO = !this.bonusesData.isConfirmedByCEO : this.bonusesData.isConfirmedByHR = !this.bonusesData.isConfirmedByHR;
             this.dataChange.emit(true);
             this.bonusesData = response;
+            console.log(response)
             this.showSnackBar("Bonuses have been successfully confirmed");
-            this.user.role === 0 ? this.bonusesData.isConfirmedByCEO = !this.bonusesData.isConfirmedByCEO : this.bonusesData.isConfirmedByHR = !this.bonusesData.isConfirmedByHR;
             this.findCurrentConfirmationButtonText()
             this.updateData();
         });
@@ -154,6 +158,15 @@ export class ChangeBonusesPageComponent implements OnInit {
             this.dataChange.emit(true);
             this.showSnackBar("Remark has been successfully confirmed and an email was sent to a corresponding salesman!");
             this.updateData();
+        });
+    }
+
+    updateOldHRMBonusById(){
+        this.HRMSendLoading = true;
+        this.bonusesService.updateOldHRMBonusById(this.bonusesData._id).subscribe(() => {
+            this.bonusesData.isSent = true;
+            this.HRMSendLoading = false;
+            this.showSnackBar("Bonus was sent to HRM!");
         });
     }
 }

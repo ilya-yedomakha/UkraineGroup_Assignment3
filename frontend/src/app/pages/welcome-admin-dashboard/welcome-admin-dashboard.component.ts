@@ -55,7 +55,6 @@ export class WelcomeAdminDashboardComponent implements OnInit {
 
 
     updateData() {
-        //TODO об'єднати два subscribe
         this.updatingIsLoading = true;
 
         this.salesmanService.importSeniorSalesmenFromOrangeHRM().subscribe(() => {

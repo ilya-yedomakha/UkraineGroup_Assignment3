@@ -24,6 +24,7 @@ export class BonusData {
         public isConfirmedBySalesman: boolean,
         public isConfirmedByHR: boolean,
         public isSent: boolean,
+        public year: number,
         public isRemarkConfirmedByHR: boolean
     ) {
     }
@@ -53,6 +54,7 @@ export class BonusData {
             data.isConfirmedBySalesman,
             data.isConfirmedByHR,
             data.isSent,
+            data.year,
             data.isRemarkConfirmedByHR
         );
     }

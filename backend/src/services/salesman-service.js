@@ -93,7 +93,6 @@ class SalesmanService{
                 })
                 if (!salesman) {
                     await salesmanModel.findByIdAndDelete(element._id)
-                    //TODO possible errors
                     await socialPerformanceModel.deleteMany({salesman_code: element.code})
                     await reportModel.deleteMany({salesman_code: element.code})
                 } else {

@@ -13,7 +13,6 @@ router.get("/:id",
     //#swagger.summary = 'Get social performance record by id'
     // #swagger.tags = ['Social Performance']
     checkAuthorization([0,1]), SocialPerformanceRecordApi.getSocialPerformanceRecordById)
-//todo specific current salesman (self)
 router.get("/salesman/:code",
     //#swagger.description = 'Get social performance record by salesman code'
     //#swagger.summary = 'Get social performance record by salesman code'

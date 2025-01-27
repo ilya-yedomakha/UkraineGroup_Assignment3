@@ -387,16 +387,19 @@ class reportApi {
 
     static patchStoredInHRMSingleBonusById = async (req, res) => {
         try {
-            if (!req.params.id || !req.body || req.params.id === "" || req.body === "") {
-                return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
-            }
+            // don't need because updates after edits and confirmations in salesmen' cabinets by HR and CEO
 
+
+            // if (!req.params.id || !req.body || req.params.id === "" || req.body === "") {
+            //     return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
+            // }
+            //
             let found = await ReportModel.findById(req.params.id);
             if (!found) {
                 return res.status(404).send({apiStatus: false, message: "Report not found"});
             }
-
-            let recordUpdated = await reportService.updateReport(found, req.body);
+            //
+            // let recordUpdated = await reportService.updateReport(found, req.body);
 
             const tokenBody = {
                 client_id: 'api_oauth_id',
@@ -423,11 +426,11 @@ class reportApi {
             }
 
             const formData = new FormData();
-            formData.append('year', recordUpdated.year);
-            formData.append('value', recordUpdated.totalBonus);
+            formData.append('year', found.year);
+            formData.append('value', found.totalBonus);
 
             const postResponse = await axios.post(
-                `http://localhost:8888/symfony/web/index.php/api/v1/employee/${recordUpdated.employeeId}/bonussalary`,
+                `http://localhost:8888/symfony/web/index.php/api/v1/employee/${found.employeeId}/bonussalary`,
                 formData,
                 {
                     headers: {
@@ -437,13 +440,13 @@ class reportApi {
                 }
             );
 
-            recordUpdated.isSent = true;
-            await recordUpdated.save();
+            found.isSent = true;
+            await found.save();
 
             return res.status(200).send({
                 apiStatus: true,
                 message: "Report updated and bonus sent to OrangeHRM",
-                data: {recordUpdated, orangeHRMResponse: postResponse.data},
+                data: {found, orangeHRMResponse: postResponse.data},
             });
 
         } catch (e) {

@@ -43,14 +43,7 @@ router.put("/hrm/stored/:id",
     //#swagger.description = 'Update Old Report'
     //#swagger.summary = 'Update Old Report'
     // #swagger.tags = ['Reports']
-    /* #swagger.parameters['Report'] = {
-   in: 'body',
-   description: 'Update Old Report',
-   type: 'object',
-   required: true,
-   schema: { $ref: '#/definitions/reportSchema' }
- } */
-    checkAuthorization([0]), ReportApi.patchStoredInHRMSingleBonusById)
+    checkAuthorization([1]), ReportApi.patchStoredInHRMSingleBonusById)
 
 router.put("/recalculate/:id",
     //#swagger.description = 'Recalculate report'
