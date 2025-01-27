@@ -2,7 +2,7 @@
     <div class="m-2 p-1">
         <div class="flex justify-between items-end mb-4">
             <label
-                class="text-2xl mb-2 font-bold">Salesmen: {{ bonusesData.firstname }} {{ bonusesData.lastname }}</label>
+                class="text-2xl mb-2 font-bold">Salesmen: {{ bonusesData.firstname }} {{ bonusesData.lastname }} {{bonusesData.year}}</label>
             <div class="flex-col w-1/2">
                 <div class="mt-4 font-semibold flex justify-end">
                     <button
@@ -29,7 +29,8 @@
                         Recalculate these bonuses
                     </button>
 
-                    <button class="bg-[#232023] p-2 rounded-lg text-yellow-100 font-semibold self-center w-auto hover:text-yellow-200 hover:scale-110 hover:shadow-sm"
+                    <button class="bg-[#232023] ml-2 p-2 rounded-lg text-yellow-100 font-semibold self-center w-auto hover:text-yellow-200 hover:scale-110 hover:shadow-sm"
+                            *ngIf="user.role !== 2"
                             [disabled] = "HRMSendLoading"
                             (click)="updateOldHRMBonusById()"
                     >Send this new data to OrangeHRM

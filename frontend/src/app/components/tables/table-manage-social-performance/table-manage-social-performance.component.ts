@@ -2,7 +2,7 @@ import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/c
 import {PaginationInstance} from 'ngx-pagination';
 import {SocialPerformanceRecord} from 'src/app/models/SocialPerformanceRecord';
 import {SocialPerformanceService} from "../../../services/social-performance.service";
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {SnackBarService} from "../../../services/snack-bar.service";
 
 @Component({
     selector: 'app-table-manage-social-performance',
@@ -19,10 +19,8 @@ export class TableManageSocialPerformanceComponent implements OnInit {
     totalItems = 0;
     originalTargetValues: { [id: string]: number } = {};
     originalActualValues: { [id: string]: number } = {};
-    snackBar = inject(MatSnackBar);
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'top';
     private socialService = inject(SocialPerformanceService);
+    private snackBar = inject(SnackBarService);
 
     public pagingConfig: PaginationInstance = {
         itemsPerPage: this.itemsPerPage,
@@ -59,6 +57,7 @@ export class TableManageSocialPerformanceComponent implements OnInit {
     toDeleteSocialPerformanceRecord(_id: string): void {
         this.socialService.deleteSocialPerformanceRecord(_id).subscribe((): void => {
             this.updateSocialPerformances.emit(true);
+            this.snackBar.showSnackBar('Social performance records was deleted');
         });
     }
 
@@ -66,22 +65,12 @@ export class TableManageSocialPerformanceComponent implements OnInit {
         this.originalActualValues[socialPerformancesRecord._id] = socialPerformancesRecord.actual_value;
         this.originalTargetValues[socialPerformancesRecord._id] = socialPerformancesRecord.target_value;
         this.socialService.updateSocialPerformanceRecord(socialPerformancesRecord._id, socialPerformancesRecord).subscribe((): void => {
-            this.showSnackBar('Social performance records updated');
+            this.snackBar.showSnackBar('Social performance records updated');
         });
 
     }
 
     onTargetValueChange(record: SocialPerformanceRecord, newValue: number) {
         record.target_value = Number(newValue);
-    }
-
-    showSnackBar(message: string): void {
-        const durationInSeconds = 5000;
-        this.snackBar.open(message, 'Ok', {
-            duration: durationInSeconds,
-            panelClass: 'main-snackbar',
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-        });
     }
 }

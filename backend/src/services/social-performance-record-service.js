@@ -28,6 +28,7 @@ static saveSocialPerformanceRecord = async function(salesmanCode, data) {
         const socialPerformanceRecordFromDB = await socialPerformanceRecordModel.findOne({
             salesman_code: salesmanCode,
             goal_description: socialPerformance.goal_description,
+            year: socialPerformance.year,
         });
 
         if (socialPerformanceRecordFromDB) {

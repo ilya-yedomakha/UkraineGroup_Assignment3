@@ -5,6 +5,7 @@ import {SalesmanService} from 'src/app/services/salesman.service';
 import {User} from 'src/app/models/User';
 import {RejectionService} from "../../services/rejection.service";
 import {SalesService} from "../../services/sales.service";
+import {SnackBarService} from "../../services/snack-bar.service";
 
 @Component({
     selector: 'app-welcome-admin-dashboard',
@@ -21,11 +22,11 @@ export class WelcomeAdminDashboardComponent implements OnInit {
     salesForCurrentYearCount: number;
     rejectionsForCurrentYearCount: number;
 
-    signatureByPieLable = "Number of bonuses"
+    signatureByPieLabel = "Number of bonuses"
     numberOfSignaturesByCeo: [number, number];
     numberOfSignaturesByHr: [number, number];
-    signatureByCeoPieLables: string[] = ["Number of confirmed bonuses by CEO", "Number of unconfirmed bonuses by CEO"]
-    signatureByHrPieLables: string[] = ["Number of confirmed bonuses by HR", "Number of unconfirmed bonuses by HR"]
+    signatureByCeoPieLabels: string[] = ["Number of confirmed bonuses by CEO", "Number of unconfirmed bonuses by CEO"]
+    signatureByHrPieLabels: string[] = ["Number of confirmed bonuses by HR", "Number of unconfirmed bonuses by HR"]
 
     bonuses: number[]
     salesmenFullname: string[]
@@ -35,6 +36,7 @@ export class WelcomeAdminDashboardComponent implements OnInit {
     private salesmanService: SalesmanService = inject(SalesmanService);
     private salesService: SalesService = inject(SalesService);
     private rejectionService: RejectionService = inject(RejectionService);
+    private snackBar = inject(SnackBarService);
     user: User;
     updatingIsLoading: boolean = false;
     updatingSendIsLoading: boolean = false;
@@ -60,6 +62,7 @@ export class WelcomeAdminDashboardComponent implements OnInit {
         this.salesmanService.importSeniorSalesmenFromOrangeHRM().subscribe(() => {
             this.salesService.importSalesOrdersFromOpenCRX().subscribe(() => {
                 this.updatingIsLoading = false;
+                this.snackBar.showSnackBar('Data were updated successfully.');
             });
         });
     }
@@ -69,6 +72,7 @@ export class WelcomeAdminDashboardComponent implements OnInit {
 
         this.bonusesService.sendAllBonusesToHRM().subscribe(() => {
             this.updatingSendIsLoading = false;
+            this.snackBar.showSnackBar('Bonuses were sent to OrangeHRM');
         });
     }
 

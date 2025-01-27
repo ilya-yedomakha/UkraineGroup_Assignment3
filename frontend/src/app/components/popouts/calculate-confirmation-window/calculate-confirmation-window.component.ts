@@ -1,5 +1,6 @@
 import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
 import {BonusesService} from '../../../services/bonuses.service';
+import {SnackBarService} from "../../../services/snack-bar.service";
 
 @Component({
     selector: 'app-calculate-confirmation-window',
@@ -11,6 +12,7 @@ export class CalculateConfirmationWindowComponent implements OnInit{
     @Output() close  = new EventEmitter<boolean>();
     @Output() confirmationSuccess  = new EventEmitter<boolean>();
     private bonusesService = inject(BonusesService);
+    private snackBar = inject(SnackBarService);
 
     ngOnInit(): void {
 
@@ -24,6 +26,7 @@ export class CalculateConfirmationWindowComponent implements OnInit{
         this.bonusesService.calculateAllBonuses().subscribe(() => {
             this.confirmationSuccess.emit(true);
             this.close.emit(true);
+            this.snackBar.showSnackBar('Selected bonuses was saved successfully');
         });
     }
 }

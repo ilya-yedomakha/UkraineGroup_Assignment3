@@ -45,6 +45,7 @@ import { TableUsersComponent } from './components/tables/table-users/table-users
 import { PieCountConfirmationStatisticsComponent } from './components/diagrams/pie-count-confirmation-statistics/pie-count-confirmation-statistics.component';
 import { BarSalesmenRatingComponent } from './components/diagrams/bar-salesmen-rating/bar-salesmen-rating.component';
 import { ToggleSwitchComponent} from './components/toggle-switch/toggle-switch.component';
+import {SnackBarService} from "./services/snack-bar.service";
 
 @NgModule({
     declarations: [
@@ -99,7 +100,7 @@ import { ToggleSwitchComponent} from './components/toggle-switch/toggle-switch.c
         ReactiveFormsModule,
         MatSnackBarModule
     ],
-    providers: [],
+    providers: [SnackBarService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,6 +8,7 @@ import {RejectionService} from '../../../services/rejection.service';
 import {BonusesService} from '../../../services/bonuses.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {BonusData} from "../../../models/BonusData";
+import {SnackBarService} from "../../../services/snack-bar.service";
 
 @Component({
     selector: 'app-table-salesman-cabinet',
@@ -43,6 +44,7 @@ export class TableSalesmanCabinetComponent implements OnInit {
     rejectionMessage: RejectionMessage;
     private rejectionService = inject(RejectionService);
     private bonusesService = inject(BonusesService);
+    private snackBar = inject(SnackBarService);
 
     public pagingConfig: PaginationInstance = {
         itemsPerPage: this.itemsPerPage,
@@ -111,6 +113,7 @@ export class TableSalesmanCabinetComponent implements OnInit {
             this.bonusesService.confirmBonusById(bonus[0]._id).subscribe();
             this.rejectionService.deleteRejectionsByReport(bonus[0]._id).subscribe(() =>
                 this.stateChanged.emit(true));
+            this.snackBar.showSnackBar('Confirmed successfully');
         }
     }
 

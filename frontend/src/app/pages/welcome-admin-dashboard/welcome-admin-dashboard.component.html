@@ -57,16 +57,16 @@
             <h2 class="text-xl font-semibold text-center mb-4">Signed/Unsigned reports by CEO</h2>
             <app-pie-count-confirmation-statistics class="w-2/4"
                                                    [signatures]="numberOfSignaturesByCeo"
-                                                   [chartLabels]="signatureByCeoPieLables"
-                                                   [chartLabel]="signatureByPieLable">
+                                                   [chartLabels]="signatureByCeoPieLabels"
+                                                   [chartLabel]="signatureByPieLabel">
             </app-pie-count-confirmation-statistics>
         </div>
         <div  *ngIf="!HRDataIsLoading" class="flex flex-col items-center">
             <h2 class="text-xl font-semibold text-center mb-4">Signed/Unsigned reports by HR</h2>
             <app-pie-count-confirmation-statistics class="w-2/4"
                                                    [signatures]="numberOfSignaturesByHr"
-                                                   [chartLabels]="signatureByHrPieLables"
-                                                   [chartLabel]="signatureByPieLable">
+                                                   [chartLabels]="signatureByHrPieLabels"
+                                                   [chartLabel]="signatureByPieLabel">
             </app-pie-count-confirmation-statistics>
         </div>
     </div>

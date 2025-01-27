@@ -2,6 +2,7 @@ import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/c
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SalesmanService} from '../../../services/salesman.service';
 import {SocialPerformanceRecord} from '../../../models/SocialPerformanceRecord';
+import {SnackBarService} from "../../../services/snack-bar.service";
 
 @Component({
     selector: 'app-add-social-performance-window',
@@ -22,6 +23,7 @@ export class AddSocialPerformanceWindowComponent implements OnInit {
         'Integrity to Company'];
     valueOptions: number[] = [1, 2, 3, 4, 5];
     private salesmenService = inject(SalesmanService);
+    private snackBar = inject(SnackBarService);
 
     constructor(private fb: FormBuilder) {
     }
@@ -32,7 +34,8 @@ export class AddSocialPerformanceWindowComponent implements OnInit {
             targetValue: [1, Validators.required],
             actualValue: [1, Validators.required],
         });
-        const socialPerformanceDescriptions = this.socialPerformances.map(value => value.goal_description);
+        const socialPerformancesForCurrentYear = this.socialPerformances.filter(value => value.year === new Date().getFullYear());
+        const socialPerformanceDescriptions = socialPerformancesForCurrentYear.map(value => value.goal_description);
         this.description = this.description.filter(description => !socialPerformanceDescriptions.includes(description));
     }
 
@@ -55,9 +58,10 @@ export class AddSocialPerformanceWindowComponent implements OnInit {
                 this.salesmenCode, socialPerformanceRecord
             ).subscribe(() => {
                 this.close.emit(true);
+                this.snackBar.showSnackBar('Social performance record saved successfully.');
             });
         } else {
-            console.log('Form is invalid');
+            this.snackBar.showSnackBar('Form is invalid');
         }
     }
 }

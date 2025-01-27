@@ -6,6 +6,7 @@ import {RejectionMessage} from '../../models/RejectionMessage';
 import {RejectionService} from '../../services/rejection.service';
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/User";
+import {SnackBarService} from "../../services/snack-bar.service";
 
 @Component({
     selector: 'app-bonuses-page',
@@ -23,6 +24,7 @@ export class BonusesPageComponent implements OnInit {
     private bonusesService = inject(BonusesService);
     private rejectionService = inject(RejectionService);
     private userService = inject(UserService);
+    private snackBar = inject(SnackBarService);
 
     updatedChanges: { _id: string; originalValue: boolean; currentValue: boolean }[] = [];
 
@@ -46,6 +48,7 @@ export class BonusesPageComponent implements OnInit {
             this.updatedChanges = [];
             // this.bonusesData = [];
             this.loadBonuses();
+            this.snackBar.showSnackBar('Selected bonuses was saved successfully');
         });
 
     }

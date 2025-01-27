@@ -3,12 +3,7 @@ import {BonusData} from 'src/app/models/BonusData';
 import {User} from 'src/app/models/User';
 import {UserService} from 'src/app/services/user.service';
 import {BonusesService} from "../../services/bonuses.service";
-import {
-    MatSnackBar,
-    MatSnackBarHorizontalPosition,
-    MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
-import {CustomSnackBarComponent} from "../../components/popouts/custom-snack-bar/custom-snack-bar.component";
+import {SnackBarService} from "../../services/snack-bar.service";
 
 
 @Component({
@@ -24,7 +19,7 @@ export class ChangeBonusesPageComponent implements OnInit {
     @Output() dataChange = new EventEmitter<boolean>();
     private userService: UserService = inject(UserService);
     private bonusesService = inject(BonusesService);
-    snackBar = inject(MatSnackBar);
+    private snackBar = inject(SnackBarService);
     dropToInitialLoading: boolean = false;
     updatingConfirmRemarkIsLoading: boolean = false;
     HRMSendLoading: boolean = false;
@@ -80,7 +75,7 @@ export class ChangeBonusesPageComponent implements OnInit {
         this.bonusesService.saveNewOrderBonuses(this.bonusesData._id, updatedBonuses).subscribe(() => {
             this.updateData();
             this.dataChange.emit(true);
-            this.showSnackBar("Order and social bonuses have been successfully saved");
+            this.snackBar.showSnackBar('Order and social bonuses have been successfully saved');
         });
     }
 
@@ -91,7 +86,7 @@ export class ChangeBonusesPageComponent implements OnInit {
             console.log(this.bonusesData);
             this.updateData();
             this.dataChange.emit(true);
-            this.showSnackBar("Bonuses were recalculated successfully!");
+            this.snackBar.showSnackBar('Bonuses were recalculated successfully!');
         })
     }
 
@@ -100,8 +95,13 @@ export class ChangeBonusesPageComponent implements OnInit {
             this.user.role === 0 ? this.bonusesData.isConfirmedByCEO = !this.bonusesData.isConfirmedByCEO : this.bonusesData.isConfirmedByHR = !this.bonusesData.isConfirmedByHR;
             this.dataChange.emit(true);
             this.bonusesData = response;
-            console.log(response)
-            this.showSnackBar("Bonuses have been successfully confirmed");
+            let message: string;
+            if (this.user.role === 0) {
+                message = this.bonusesData.isConfirmedByCEO ? 'confirmed' : 'unconfirmed';
+            } else {
+                message = this.bonusesData.isConfirmedByHR ? 'confirmed' : 'unconfirmed';
+            }
+            this.snackBar.showSnackBar('Bonuses have been successfully ' + message + '!');
             this.findCurrentConfirmationButtonText()
             this.updateData();
         });
@@ -115,7 +115,7 @@ export class ChangeBonusesPageComponent implements OnInit {
         this.bonusesService.saveNewOrderBonuses(this.bonusesData._id, updatedBonuses).subscribe(() => {
             this.updateData();
             this.dataChange.emit(true);
-            this.showSnackBar("Remarks saved");
+            this.snackBar.showSnackBar('Remarks saved');
         });
 
 
@@ -130,25 +130,12 @@ export class ChangeBonusesPageComponent implements OnInit {
         history.replaceState(updatedState, '');
     }
 
-    horizontalPosition: MatSnackBarHorizontalPosition = 'start';
-    verticalPosition: MatSnackBarVerticalPosition = 'top';
-
-    showSnackBar(message: string): void {
-        const durationInSeconds = 5000;
-        this.snackBar.open(message, 'Ok', {
-            duration: durationInSeconds,
-            panelClass: 'main-snackbar',
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-        });
-    }
-
     dropToInitialBonuses() {
         this.dropToInitialLoading = true;
         this.bonusesData.ordersBonuses.forEach(order => order.bonus = order.initialBonus);
         this.bonusesData.socialBonuses.forEach(sale => sale.bonus = sale.initialBonus);
         this.dropToInitialLoading = false;
-        this.showSnackBar("Bonuses have been reset to their initial value");
+        this.snackBar.showSnackBar('Bonuses have been reset to their initial value');
     }
 
     confirmRemark() {
@@ -156,7 +143,7 @@ export class ChangeBonusesPageComponent implements OnInit {
         this.bonusesService.singleRemarkConfirmAndEmailSend(this.bonusesData._id).subscribe(() => {
             this.updatingConfirmRemarkIsLoading = false;
             this.dataChange.emit(true);
-            this.showSnackBar("Remark has been successfully confirmed and an email was sent to a corresponding salesman!");
+            this.snackBar.showSnackBar('Remark has been successfully confirmed and an email was sent to a corresponding salesman!');
             this.updateData();
         });
     }
@@ -166,7 +153,7 @@ export class ChangeBonusesPageComponent implements OnInit {
         this.bonusesService.updateOldHRMBonusById(this.bonusesData._id).subscribe(() => {
             this.bonusesData.isSent = true;
             this.HRMSendLoading = false;
-            this.showSnackBar("Bonus was sent to HRM!");
+            this.snackBar.showSnackBar("Bonus was sent to HRM!");
         });
     }
 }

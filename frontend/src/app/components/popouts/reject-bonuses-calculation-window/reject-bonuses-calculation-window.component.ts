@@ -1,6 +1,7 @@
 import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
 import {RejectionService} from '../../../services/rejection.service';
 import {BonusesService} from '../../../services/bonuses.service';
+import {SnackBarService} from "../../../services/snack-bar.service";
 
 @Component({
     selector: 'app-reject-bonuses-calculation-window',
@@ -15,6 +16,7 @@ export class RejectBonusesCalculationWindowComponent implements OnInit {
     errorMessage: string = null;
     private rejectionService = inject(RejectionService);
     private bonusesService = inject(BonusesService);
+    private snackBar = inject(SnackBarService);
     private reportId: string;
 
     ngOnInit(): void {
@@ -32,6 +34,7 @@ export class RejectBonusesCalculationWindowComponent implements OnInit {
         this.bonusesService.rejectBonusById(this.reportId).subscribe();
         this.rejectionService.saveRejection(this.reportId, message).subscribe(() => {
             this.errorMessage = null;
+            this.snackBar.showSnackBar('Your response was sent');
             this.close.emit(true);
         },
         () => {
