@@ -283,7 +283,7 @@ class reportApi {
                     return res.status(403).json({error: 'Unauthorized role'});
             }
 
-            res.status(200).json({message: 'Report processed successfully', result});
+            res.status(200).json({message: 'Report processed successfully', data: result});
         } catch (error) {
             console.error('Error processing report:', error);
             res.status(500).json({error: 'Internal server error'});

@@ -69,13 +69,13 @@ export class BonusesService {
         );
     }
 
-    singleConfirm(id: string): Observable<string> {
-        return this.http.put<{ message: string }>(
+    singleConfirm(id: string): Observable<BonusData> {
+        return this.http.put<{ data: BonusData}>(
             `${environment.apiEndpoint}/api/report/reverseConfirm/${id}`,
             {},
             {withCredentials: true}
         ).pipe(
-            map(response => response.message)
+            map(response => BonusData.fromApi(response.data))
         );
     }
 

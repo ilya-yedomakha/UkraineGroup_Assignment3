@@ -93,8 +93,9 @@ export class ChangeBonusesPageComponent implements OnInit {
     }
 
     singleConfirm(): void {
-        this.bonusesService.singleConfirm(this.bonusesData._id).subscribe(() => {
+        this.bonusesService.singleConfirm(this.bonusesData._id).subscribe((response) => {
             this.dataChange.emit(true);
+            this.bonusesData = response;
             this.showSnackBar("Bonuses have been successfully confirmed");
             this.user.role === 0 ? this.bonusesData.isConfirmedByCEO = !this.bonusesData.isConfirmedByCEO : this.bonusesData.isConfirmedByHR = !this.bonusesData.isConfirmedByHR;
             this.findCurrentConfirmationButtonText()

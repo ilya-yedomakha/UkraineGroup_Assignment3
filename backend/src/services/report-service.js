@@ -75,7 +75,7 @@ class ReportService {
     static reverseConfirmSingleReportByHR = async function (report) {
         try {
             report.isConfirmedByHR = !report.isConfirmedByHR;
-            await report.save()
+            return await report.save()
         } catch (e) {
             throw new Error(e.message)
         }
@@ -84,7 +84,7 @@ class ReportService {
     static reverseConfirmSingleReportByCEO = async function (report) {
         try {
             report.isConfirmedByCEO = !report.isConfirmedByCEO;
-            await report.save()
+            return await report.save()
         } catch (e) {
             throw new Error(e.message)
         }
