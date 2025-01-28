@@ -1,0 +1,106 @@
+<form [formGroup]="creationForm" (ngSubmit)="onSubmit()" class="bg-[#FCE8BA] border-2 border-black rounded-md m-2 py-2 px-4 flex-col">
+
+    <div class="flex justify-between">
+      <p class="text-xl font-bold self-end">Create User</p>
+      <a
+        class="justify-self-end self-top my-1 mx-1"
+        (click)="toClose()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 hover:stroke-2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="flex flex-col justify-start mt-3 mb-2 px-1">
+      <label for="username" class="text-base my-2 font-semibold">Username:</label>
+      <input
+        id="username"
+        formControlName="username"
+        type="text"
+        class="w-full h-10 text-base border-2 border-black rounded-md" />
+      <div *ngIf="creationForm.get('username')?.invalid && creationForm.get('username')?.touched" class="text-red-500 text-sm">
+        Please enter a username!
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-start mt-3 mb-2 px-1">
+      <label for="firstname" class="text-base my-2 font-semibold">First Name:</label>
+      <input
+        id="firstname"
+        formControlName="firstname"
+        type="text"
+        class="w-full h-10 text-base border-2 border-black rounded-md" />
+      <div *ngIf="creationForm.get('firstname')?.invalid && creationForm.get('firstname')?.touched" class="text-red-500 text-sm">
+        Please enter your first name!
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-start mt-3 mb-2 px-1">
+      <label for="lastname" class="text-base my-2 font-semibold">Last Name:</label>
+      <input
+        id="lastname"
+        formControlName="lastname"
+        type="text"
+        class="w-full h-10 text-base border-2 border-black rounded-md" />
+      <div *ngIf="creationForm.get('lastname')?.invalid && creationForm.get('lastname')?.touched" class="text-red-500 text-sm">
+        Please enter your last name!
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-start mt-3 mb-2 px-1">
+      <label for="email" class="text-base my-2 font-semibold">Email:</label>
+      <input
+        id="email"
+        formControlName="email"
+        type="email"
+        class="w-full h-10 text-base border-2 border-black rounded-md" />
+      <div *ngIf="creationForm.get('email')?.invalid && creationForm.get('email')?.touched" class="text-red-500 text-sm">
+        Please enter a valid email!
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-start mt-3 mb-2 px-1">
+      <label for="code" class="text-base my-2 font-semibold">Code:</label>
+      <input
+        id="code"
+        formControlName="code"
+        type="number"
+        class="w-full h-10 text-base border-2 border-black rounded-md" />
+      <div *ngIf="creationForm.get('code')?.invalid && creationForm.get('code')?.touched" class="text-red-500 text-sm">
+        Please enter a valid code!
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-start mt-3 mb-2 px-1">
+      <label for="role" class="text-base my-2 font-semibold">Role:</label>
+      <select
+        id="role"
+        formControlName="role"
+        class="w-full h-10 text-base border-2 border-black rounded-md">
+        <option *ngFor="let role of roles" [value]="role.value">{{ role.label }}</option>
+      </select>
+      <div *ngIf="creationForm.get('role')?.invalid && creationForm.get('role')?.touched" class="text-red-500 text-sm">
+        Please select a role!
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-start mt-3 mb-2 px-1">
+      <label for="isAdmin" class="text-base my-2 font-semibold">Is Admin?</label>
+      <input
+        id="isAdmin"
+        formControlName="isAdmin"
+        type="checkbox"
+        class="h-5 w-5" />
+      <div *ngIf="creationForm.get('isAdmin')?.invalid && creationForm.get('isAdmin')?.touched" class="text-red-500 text-sm">
+        Please specify admin status!
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="creationForm.invalid"
+      [ngClass]="{'bg-gray-500 hover:bg-gray-500 text-white': creationForm.invalid, 'bg-green-400 hover:bg-green-500': !creationForm.invalid}"
+      class="self-end justify-self-end my-2 rounded-lg py-2 px-4 w-auto transition-all duration-300 ease-in-out hover:scale-105">
+      Create User
+    </button>
+  </form>

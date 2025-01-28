@@ -53,7 +53,7 @@ export class AddSocialPerformanceWindowComponent implements OnInit {
                 new Date().getFullYear(),
                 this.salesmenCode
             );
-            // logic
+            
             this.salesmenService.createSocialPerformanceToSalesmanBySalesmanCode(
                 this.salesmenCode, socialPerformanceRecord
             ).subscribe(() => {
