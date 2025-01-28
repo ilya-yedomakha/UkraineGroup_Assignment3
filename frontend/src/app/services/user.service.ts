@@ -37,4 +37,9 @@ export class UserService {
             user,
             {withCredentials: true});
     }
+
+    deletingUser(code: number) {
+        return this.http.delete<any>(environment.apiEndpoint + `/api/users/${code}`,
+            {withCredentials: true}).pipe(map(o => o.message));
+    }
 }

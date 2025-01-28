@@ -30,7 +30,7 @@ exports.update = async function (db, code, updates) {
 };
 
 exports.delete = async function (db, code) {
-    return db.collection('users').deleteOne({ code: code });
+    return await db.collection('users').deleteOne({ code: Number(code) });
 };
 
 exports.getAll = async function (db) {

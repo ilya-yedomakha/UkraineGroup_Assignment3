@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
 import {PaginationInstance} from "ngx-pagination";
 import {User} from "../../../models/User";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-table-users',
@@ -13,7 +14,7 @@ export class TableUsersComponent implements OnInit {
     itemsPerPage = 8;
     totalItems = 0;
 
-
+    private userService = inject(UserService)
 
     public pagingConfig: PaginationInstance = {
         itemsPerPage: this.itemsPerPage,
@@ -35,12 +36,20 @@ export class TableUsersComponent implements OnInit {
         this.pagingConfig.currentPage = 1;
     }
 
-    getRoleName(code: number): string {
-        switch (code) {
+    getRoleName(role: number): string {
+        switch (role) {
             case 0: return 'CEO';
             case 1: return 'HR';
             case 2: return 'Salesman';
         }
         return '';
+    }
+
+    deletUser(code: number) {
+        console.log(code)
+        this.userService.deletingUser(code).subscribe(()=>
+        {
+            this.users = this.users.filter((user) => user.code !== code);
+        })
     }
 }
