@@ -1,18 +1,6 @@
 const crypto = require('crypto');
 const salt = 'integrationArchitectures';
 
-/**
- * inserts a new user into database & hashes its password
- * @param db target database
- * @param {User} user new user
- * @return {Promise<any>}
- */
-exports.add = async function (db, user){
-    user.password = hashPassword(user.password);
-
-    return (await db.collection('users').insertOne(user)).insertedId; //return unique ID
-}
-
 exports.edit = async function (db, user){
     user.password = hashPassword(user.password);
 

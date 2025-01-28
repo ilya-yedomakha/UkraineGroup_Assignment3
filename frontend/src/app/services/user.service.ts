@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {User} from '../models/User';
 import {HttpClient} from '@angular/common/http';
@@ -13,12 +13,13 @@ import {map} from "rxjs/operators";
 })
 export class UserService {
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
     /**
      * retrieves userdata of currently authenticated user
      */
-    getOwnUser(): Observable<User>{
+    getOwnUser(): Observable<User> {
         // use angular's integrated HTTP-client to make a get request; handle the response as a User object :
         return this.http.get<User>(environment.apiEndpoint + '/api/user', {withCredentials: true});
     }
@@ -29,5 +30,11 @@ export class UserService {
 
     getUsersCount() {
         return this.http.get<any>(environment.apiEndpoint + '/api/users/total/count/', {withCredentials: true}).pipe(map(o => o.data));
+    }
+
+    createUser(user: User) {
+        return this.http.post<User>(environment.apiEndpoint + '/api/users',
+            user,
+            {withCredentials: true});
     }
 }

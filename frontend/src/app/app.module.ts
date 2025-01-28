@@ -46,6 +46,7 @@ import { PieCountConfirmationStatisticsComponent } from './components/diagrams/p
 import { BarSalesmenRatingComponent } from './components/diagrams/bar-salesmen-rating/bar-salesmen-rating.component';
 import { ToggleSwitchComponent} from './components/toggle-switch/toggle-switch.component';
 import {SnackBarService} from "./services/snack-bar.service";
+import {AddUserWindowComponent} from "./components/popouts/add-user-window/add-user-window.component";
 
 @NgModule({
     declarations: [
@@ -98,7 +99,8 @@ import {SnackBarService} from "./services/snack-bar.service";
         NgChartsModule,
         NgxPaginationModule,
         ReactiveFormsModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        AddUserWindowComponent
     ],
     providers: [SnackBarService],
     bootstrap: [AppComponent]

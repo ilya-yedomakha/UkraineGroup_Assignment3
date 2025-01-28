@@ -6,6 +6,10 @@
  */
 const userService = require("../services/user-service")
 const mongoose = require("mongoose");
+const generator = require('generate-password');
+const {default: environment_ilya} = require("../../environments/environment_ilya");
+const salesmanModel = require("../models/SalesMan");
+const nodemailer = require("nodemailer");
 exports.getSelf = async function (req, res) {
     res.send(req.session.user); //retrieve userdata of authenticated user from session and return it
 }
@@ -46,7 +50,7 @@ exports.addUser = async function (req, res) {
     try {
         const user = req.body;
 
-        const requiredFields = ['username', 'firstname', 'lastname', 'email', 'password', 'role', 'code'];
+        const requiredFields = ['username', 'firstname', 'lastname', 'email', 'role', 'code'];
         const missingFields = requiredFields.filter(field => !user[field]);
 
         if (missingFields.length > 0) {
@@ -72,12 +76,62 @@ exports.addUser = async function (req, res) {
             });
         }
 
-        const userId = await userService.add(mongoose.connection, user);
-        res.status(201).send({
-            apiStatus: true,
-            message: "User added successfully",
-            data: {id: userId}
-        });
+        if (!user.hasOwnProperty('password')) {
+
+            if (environment_ilya) {
+                password = generator.generate({
+                    length: 10,
+                    numbers: true
+                })
+                user.password = password;
+                await userService.add(mongoose.connection, user);
+
+                const transporter = nodemailer.createTransport({
+                    service: "gmail",
+                    auth: {
+                        user: environment_ilya.user,
+                        pass: environment_ilya.pass,
+                    },
+                });
+
+                const mailOptions = {
+                    from: "CEO@gmail.com",
+                    to: user.email,
+                    subject: "Your account was created! Here is your password:",
+                    text: password,
+                };
+
+                transporter.sendMail(mailOptions, async (error, info) => {
+                    if (error) {
+                        return res.status(500).json({error: "Failed to send email."});
+                    } else {
+                        return res.status(200).json({
+                            apiStatus: true,
+                            message: "Email with password sent successfully and user was created.",
+                            data: info.response,
+                        });
+                    }
+                });
+            } else {
+                user.password = '1234'
+                const userId = await userService.add(mongoose.connection, user);
+                res.status(201).send({
+                    apiStatus: true,
+                    message: "User added successfully (Email can be sent only if SMTP is available (test password))",
+                    data: {id: userId}
+                });
+            }
+
+
+        } else {
+            const userId = await userService.add(mongoose.connection, user);
+            res.status(201).send({
+                apiStatus: true,
+                message: "User added successfully",
+                data: {id: userId}
+            });
+        }
+
     } catch (error) {
         res.status(500).send({
             apiStatus: false,

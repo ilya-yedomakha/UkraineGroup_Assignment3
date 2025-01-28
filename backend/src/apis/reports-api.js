@@ -568,28 +568,31 @@ class reportApi {
 
     static confirmRemarkSendEmail = async (req, res) => {
         try {
+            const {id} = req.params;
+
+            const report = await ReportModel.findById(id);
+            if (!report) {
+                return res.status(404).json({error: "Report not found."});
+            }
+
+            if (!report.isConfirmedByCEO || !report.isConfirmedByHR) {
+                return res.status(409).send({
+                    apiStatus: false,
+                    message: 'Bonus isn`t confirmed by CEO or HR'
+                });
+            }
+
+            if (report.remarks === "" || report.remarks === null) {
+                return res.status(409).send({
+                    apiStatus: false,
+                    message: 'Remark for this bonus is missing!'
+                });
+            }
+
+            report.isRemarkConfirmedByHR = true;
+            await report.save();
+
             if (environment_ilya) {
-                const { id } = req.params;
-
-                const report = await ReportModel.findById(id);
-                if (!report) {
-                    return res.status(404).json({ error: "Report not found." });
-                }
-
-                if (!report.isConfirmedByCEO || !report.isConfirmedByHR) {
-                    return res.status(409).send({
-                        apiStatus: false,
-                        message: 'Bonus isn`t confirmed by CEO or HR'
-                    });
-                }
-
-                if (report.remarks === "" || report.remarks === null){
-                    return res.status(409).send({
-                        apiStatus: false,
-                        message: 'Remark for this bonus is missing!'
-                    });
-                }
-
                 const salesman = await salesmanModel.findOne({code: report.salesman_code});
                 if (!salesman) {
                     return res.status(404).send({apiStatus: false, message: 'No salesaman found'});
@@ -612,11 +615,8 @@ class reportApi {
 
                 transporter.sendMail(mailOptions, async (error, info) => {
                     if (error) {
-                        return res.status(500).json({ error: "Failed to send email." });
+                        return res.status(500).json({error: "Failed to send email."});
                     } else {
-                        report.isRemarkConfirmedByHR = true;
-                        await report.save();
-
                         return res.status(200).json({
                             apiStatus: true,
                             message: "Email sent successfully and remark status updated.",
@@ -627,13 +627,13 @@ class reportApi {
             } else {
                 return res.status(200).json({
                     apiStatus: true,
-                    message: "Email sent virtually.",
-                    data: "Must have SMTP to send real email",
+                    message: "Email sent virtually & report remark signed.(Must have SMTP to send real email)",
+                    data: report
                 });
             }
         } catch (err) {
             console.error("Unexpected error:", err);
-            return res.status(500).json({ error: "Internal Server Error." });
+            return res.status(500).json({error: "Internal Server Error."});
         }
     };
 
