@@ -47,6 +47,8 @@ import { BarSalesmenRatingComponent } from './components/diagrams/bar-salesmen-r
 import { ToggleSwitchComponent} from './components/toggle-switch/toggle-switch.component';
 import {SnackBarService} from "./services/snack-bar.service";
 import {AddUserWindowComponent} from "./components/popouts/add-user-window/add-user-window.component";
+import { PasswordChangeWindowComponent } from './components/popouts/password-change-window/password-change-window.component';
+import { AdminCabinetPageComponent } from './components/pages/admin-cabinet-page/admin-cabinet-page.component';
 
 @NgModule({
     declarations: [
@@ -82,7 +84,9 @@ import {AddUserWindowComponent} from "./components/popouts/add-user-window/add-u
         PieCountConfirmationStatisticsComponent,
         BarSalesmenRatingComponent,
         AboutBonusCalculationDropDownComponent,
-        ToggleSwitchComponent
+        ToggleSwitchComponent,
+        PasswordChangeWindowComponent,
+        AdminCabinetPageComponent
     ],
     imports: [
         BrowserModule,
