@@ -11,6 +11,7 @@ export class UsersPageComponent implements OnInit {
     users: User[] = [];
     isAddUserWindowVisible: boolean = false;
     user: User;
+    userToUpdate: User = null;
 
 
     private userService = inject(UserService);
@@ -33,10 +34,18 @@ export class UsersPageComponent implements OnInit {
 
     handleUserChanging($event: boolean) {
         this.isAddUserWindowVisible = false
+        this.userToUpdate = null;
         if ($event) {
             this.userService.getUsers().subscribe((response) => {
                 this.users = response;
             });
+        }
+    }
+
+    updateUser($event: number) {
+        this.userToUpdate = this.users.find((user: User) => user.code === $event);
+        if (this.userToUpdate){
+            this.isAddUserWindowVisible = true;
         }
     }
 }

@@ -75,6 +75,7 @@ exports.addUser = async function (req, res) {
                 message: `The following fields already exist: ${conflictingFields.join(', ')}`
             });
         }
+        user.role = Number(user.role);
 
         if (!user.hasOwnProperty('password')) {
 
@@ -180,6 +181,8 @@ exports.updateUser = async function (req, res) {
                 message: `The following fields already exist for another user: ${conflictingFields.join(', ')}`
             });
         }
+
+        user.role = Number(user.role);
 
         const result = await userService.update(mongoose.connection, updates.code, updates);
 

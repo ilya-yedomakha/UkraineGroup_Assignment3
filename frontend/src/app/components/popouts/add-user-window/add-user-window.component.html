@@ -2,7 +2,7 @@
       class="bg-[#FCE8BA] border-2 border-black rounded-md m-2 py-2 px-4 flex-col">
 
     <div class="flex justify-between">
-        <p class="text-xl font-bold self-end">Create User</p>
+        <p class="text-xl font-bold self-end">{{user === null ? 'Create User' : 'Update User'}}</p>
         <a
             class="justify-self-end self-top my-1 mx-1"
             (click)="toClose()">
@@ -97,7 +97,7 @@
         class="p-2 rounded-lg text-yellow-100 font-semibold self-center w-auto hover:text-yellow-200 hover:scale-110 hover:shadow-sm"
         [ngClass]="{'bg-gray-500 hover:bg-gray-500 text-white': creationForm.invalid, 'bg-green-400 hover:bg-green-500': !creationForm.invalid}"
         [disabled]="creationForm.invalid || updatingSendIsLoading"
-    >Create User
+    >{{user === null ? 'Create User' : 'Update User'}}
         <svg *ngIf="updatingSendIsLoading"
              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
              class="size-6 animate-spin">

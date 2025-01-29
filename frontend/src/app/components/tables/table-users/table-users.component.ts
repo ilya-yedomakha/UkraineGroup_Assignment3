@@ -10,6 +10,7 @@ import {UserService} from "../../../services/user.service";
 })
 export class TableUsersComponent implements OnInit {
     @Input() users: User[];
+    @Output() userCodeUpdate = new EventEmitter<number>();
     currentPage = 1;
     itemsPerPage = 8;
     totalItems = 0;
@@ -46,10 +47,13 @@ export class TableUsersComponent implements OnInit {
     }
 
     deletUser(code: number) {
-        console.log(code)
         this.userService.deletingUser(code).subscribe(()=>
         {
             this.users = this.users.filter((user) => user.code !== code);
         })
+    }
+
+    editUser(code: number) {
+        this.userCodeUpdate.emit(code);
     }
 }

@@ -12,14 +12,15 @@
             </div>
         </div>
         <div>
-            <app-table-users [users]="users"></app-table-users>
+            <app-table-users [users]="users" (userCodeUpdate)="updateUser($event)"></app-table-users>
         </div>
     </div>
 
 
     <div *ngIf="isAddUserWindowVisible && user.role === 1"
          class="fixed inset-0 flex items-start justify-center backdrop-blur-md mt-[10px] bg-white bg-opacity-30">
-        <app-add-user-window class="w-1/2 h-1/3" (close)="handleUserChanging($event)"></app-add-user-window>
+        <app-add-user-window class="w-1/2 h-1/3" (close)="handleUserChanging($event)"
+                             [user]="userToUpdate"></app-add-user-window>
     </div>
 </div>
 

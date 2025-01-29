@@ -42,4 +42,10 @@ export class UserService {
         return this.http.delete<any>(environment.apiEndpoint + `/api/users/${code}`,
             {withCredentials: true}).pipe(map(o => o.message));
     }
+
+    updateUser(code: number, userUPD: User){
+        return this.http.put<any>(environment.apiEndpoint + `/api/users/${code}`,
+            userUPD,
+            {withCredentials: true}).pipe(map(o => o.message));
+    }
 }
