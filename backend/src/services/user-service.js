@@ -41,6 +41,24 @@ exports.getByCode = async function (db, code){
     return db.collection('users').findOne({code: Number(code)});
 }
 
+exports.changePassword = async function (db, code, oldPassword, newPassword) {
+    const user = await db.collection('users').findOne({code: Number(code)});
+
+    if (!user) {
+        throw new Error("User not found!");
+    }
+
+    if (!verifyPassword(oldPassword, user.password)) {
+        throw new Error("Old password is incorrect!");
+    }
+
+    const hashedNewPassword = hashPassword(newPassword);
+    await db.collection("users").updateOne({code: Number(code)}, { $set: { password: hashedNewPassword } });
+
+    return { message: "Password updated successfully" };
+};
+
+
 /**
  * verifies provided credentials against a database
  * @param db source database
