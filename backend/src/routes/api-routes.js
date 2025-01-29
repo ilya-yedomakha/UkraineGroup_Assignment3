@@ -83,6 +83,20 @@ schema: { $ref: '#/definitions/userCreationSchema' }
 } */
     checkAuthorization([0,1]), userApi.updateUser);
 
+
+router.put('/users/password/change/',
+    // #swagger.tags = ['Authentication']
+    //#swagger.description = 'Update user password'
+    //#swagger.summary = 'Update user password'
+    /* #swagger.parameters['Users'] = {
+in: 'body',
+description: 'Update user account password',
+type: 'object',
+required: true,
+schema: { $ref: '#/definitions/userPasswordChangeSchema' }
+} */
+    checkAuthorization([0,1,2]), userApi.changePassword);
+
 router.delete('/users/:code',
     // #swagger.tags = ['Authentication']
     //#swagger.description = 'Delete user'

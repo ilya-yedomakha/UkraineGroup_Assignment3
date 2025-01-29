@@ -835,15 +835,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "Report",
-            "in": "body",
-            "description": "Update Old Report",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/reportSchema"
-            }
           }
         ],
         "responses": {
@@ -1210,6 +1201,9 @@
           "404": {
             "description": "Not Found"
           },
+          "409": {
+            "description": "Conflict"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -1533,11 +1527,17 @@
         "summary": "Get current user data",
         "description": "Get current user data",
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "401": {
             "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -1559,11 +1559,23 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
           "401": {
             "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -1584,11 +1596,17 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "401": {
             "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -1616,23 +1634,11 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
           },
           "403": {
             "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       },
@@ -1680,6 +1686,49 @@
         "summary": "Get current user data",
         "description": "Get current user data",
         "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/users/password/change/": {
+      "put": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Update user password",
+        "description": "Update user password",
+        "parameters": [
+          {
+            "name": "Users",
+            "in": "body",
+            "description": "Update user account password",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userPasswordChangeSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
           "401": {
             "description": "Unauthorized"
           },
@@ -1901,6 +1950,19 @@
         "message": {
           "type": "string",
           "example": "You are really great worker"
+        }
+      }
+    },
+    "userPasswordChangeSchema": {
+      "type": "object",
+      "properties": {
+        "oldPassword": {
+          "type": "string",
+          "example": "oldPassword"
+        },
+        "newPassword": {
+          "type": "string",
+          "example": "newPassword"
         }
       }
     }

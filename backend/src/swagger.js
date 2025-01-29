@@ -119,6 +119,10 @@ const swaggerDocument = {
         remarkSendEmailSchema:{
             email:"testemail@gmail.com",
             message:"You are really great worker"
+        },
+        userPasswordChangeSchema:{
+            oldPassword:"oldPassword",
+            newPassword:"newPassword"
         }
 
     }

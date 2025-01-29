@@ -10,6 +10,7 @@ const generator = require('generate-password');
 const {default: environment_ilya} = require("../../environments/environment_ilya");
 const salesmanModel = require("../models/SalesMan");
 const nodemailer = require("nodemailer");
+const authService = require("../services/auth-service");
 exports.getSelf = async function (req, res) {
     res.send(req.session.user); //retrieve userdata of authenticated user from session and return it
 }
@@ -229,6 +230,34 @@ exports.deleteUser = async function (req, res) {
             apiStatus: false,
             message: "An error occurred while deleting the user",
             error: error.message
+        });
+    }
+};
+
+exports.changePassword = async function (req, res) {
+    try {
+        const { oldPassword, newPassword } = req.body;
+        const code = req.session.user.code;
+
+        if (!oldPassword || !newPassword) {
+            return res.status(400).send({
+                apiStatus: false,
+                message: "Old and new password are required",
+            });
+        }
+
+        const response = await userService.changePassword(mongoose.connection, code, oldPassword, newPassword);
+
+        authService.deAuthenticate(req.session);
+
+        res.send({
+            apiStatus: true,
+            message: response.message,
+        });
+    } catch (error) {
+        res.status(400).send({
+            apiStatus: false,
+            message: error.message,
         });
     }
 };
