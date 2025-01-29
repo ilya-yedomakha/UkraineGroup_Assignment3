@@ -2,6 +2,7 @@ import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/c
 import {PaginationInstance} from "ngx-pagination";
 import {User} from "../../../models/User";
 import {UserService} from "../../../services/user.service";
+import {SnackBarService} from "../../../services/snack-bar.service";
 
 @Component({
   selector: 'app-table-users',
@@ -16,6 +17,7 @@ export class TableUsersComponent implements OnInit {
     totalItems = 0;
 
     private userService = inject(UserService)
+    private snackBar = inject(SnackBarService);
 
     public pagingConfig: PaginationInstance = {
         itemsPerPage: this.itemsPerPage,
@@ -46,11 +48,13 @@ export class TableUsersComponent implements OnInit {
         return '';
     }
 
-    deletUser(code: number) {
+    deleteUser(code: number) {
         this.userService.deletingUser(code).subscribe(()=>
         {
             this.users = this.users.filter((user) => user.code !== code);
-        })
+            this.snackBar.showSnackBar('User deleted successfully')
+        },
+            (): void => this.snackBar.showSnackBar('Sorry, something went wrong.'));
     }
 
     editUser(code: number) {

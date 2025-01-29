@@ -2,11 +2,7 @@ import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/c
 import {BonusData} from 'src/app/models/BonusData';
 import {PaginationInstance} from 'ngx-pagination';
 import {BonusesService} from "../../../services/bonuses.service";
-import {
-    MatSnackBar,
-    MatSnackBarHorizontalPosition,
-    MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+import {SnackBarService} from "../../../services/snack-bar.service";
 
 @Component({
     selector: 'app-table-social-bonuses',
@@ -22,10 +18,7 @@ export class TableSocialBonusesComponent implements OnInit {
     itemsPerPage = 8;
     totalItems = 0;
 
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'top';
-
-    snackBar = inject(MatSnackBar);
+    snackBarService = inject(SnackBarService);
     bonuse = { bonus: 0 };
 
     handleBonusChange(bonuse: any): void {
@@ -79,30 +72,19 @@ export class TableSocialBonusesComponent implements OnInit {
         };
         this.bonusesService.saveNewOrderBonuses(this.bonuses._id, newBonus).subscribe(() => {
             this.dataChange.emit(true);
-            this.showSnackBar("Saved new sales bonuses!");
-        });
+            this.snackBarService.showSnackBar("Saved new sales bonuses!");
+        }, (): void => this.snackBarService.showSnackBar("Error while saving new bonuses!"));
     }
 
-    cancelEdit(bonuse: any, index: number) {
-        const originalBonus = this.originalSocialBonuses[index]
-        bonuse.bonus = originalBonus;
+    cancelEdit(bonus: any, index: number) {
+        bonus.bonus = this.originalSocialBonuses[index];
         this.isEditing[index] = false;
     }
 
     saveEdit(index: number, newBonus: number) {
         this.isEditing[index] = false;
         this.originalSocialBonuses[index] = newBonus;
-        this.showSnackBar("New social bonus value assigned");
-    }
-
-    showSnackBar(message: string): void {
-        const durationInSeconds = 5000;
-        this.snackBar.open(message, 'Ok', {
-            duration: durationInSeconds,
-            panelClass: 'main-snackbar',
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-        });
+        this.snackBarService.showSnackBar("New social bonus value assigned");
     }
 
 }

@@ -83,6 +83,8 @@ export class AddUserWindowComponent implements OnChanges{
                 this.updatingSendIsLoading = false;
                 this.close.emit(true);
                 this.snackBar.showSnackBar('User created successfully.');
+            }, () => {
+                this.snackBar.showSnackBar('Something went wrong');
             });
         } else {
             this.snackBar.showSnackBar('Form is invalid');

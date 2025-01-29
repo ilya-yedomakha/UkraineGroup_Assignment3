@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Salesman} from 'src/app/models/Salesman';
 import {SalesmanService} from 'src/app/services/salesman.service';
+import {SnackBarService} from "../../services/snack-bar.service";
 
 @Component({
     selector: 'app-salesmen-page',
@@ -11,12 +12,13 @@ export class SalesmenPageComponent implements OnInit {
 
     salesmen: Salesman[] = [];
     private salesmanService = inject(SalesmanService);
+    private snackBarService = inject(SnackBarService);
 
     ngOnInit(): void {
 
         this.salesmanService.getSalesmen().subscribe((response) => {
             this.salesmen = response;
-        });
+        }, (): void => this.snackBarService.showSnackBar('Error loading salesmen'));
     }
 
 }

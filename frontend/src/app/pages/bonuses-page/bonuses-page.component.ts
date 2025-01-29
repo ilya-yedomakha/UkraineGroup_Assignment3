@@ -49,8 +49,8 @@ export class BonusesPageComponent implements OnInit {
             // this.bonusesData = [];
             this.loadBonuses();
             this.snackBar.showSnackBar('Selected bonuses was saved successfully');
-        });
-
+        },
+            (): void => this.snackBar.showSnackBar('Selected bonuses was not saved'));
     }
 
     updateTable($event: boolean): void {
@@ -60,10 +60,10 @@ export class BonusesPageComponent implements OnInit {
     loadBonuses(): void {
         this.bonusesService.getBonusesByYear(this.year).subscribe((response) => {
             this.bonusesData = response;
-        });
+        }, (): void => this.snackBar.showSnackBar('Error loading bonuses data'));
         this.rejectionService.getRejectionsByYear(this.year).subscribe((response) => {
             this.rejectionData = response;
-        });
+        }, (): void => this.snackBar.showSnackBar('Error loading rejection data'));
     }
 
     fetchUser(): void {

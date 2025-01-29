@@ -9,7 +9,6 @@ const reportService = require("../services/report-service")
 const FormData = require('form-data');
 const axios = require('axios');
 const qs = require('qs');
-const SocialPerformanceRecordService = require("../services/social-performance-record-service");
 const salesmanService = require("../services/salesman-service");
 
 let environment;
@@ -223,11 +222,11 @@ class reportApi {
             if (updatedReport) {
                 res.status(200).send({apiStatus: true, message: "Report was updated", data: updatedReport});
             } else {
-                return res.status(404).json({error: 'No reports found for the provided IDs'});
+                return res.status(404).json({apiStatus: false, message: 'No reports found for the provided IDs'});
             }
         } catch (error) {
             console.error('Error processing report:', error);
-            res.status(500).json({error: 'Internal server error'});
+            res.status(500).json({apiStatus: false, message: 'Internal server error'});
         }
     }
 
@@ -242,11 +241,11 @@ class reportApi {
             if (updatedReport) {
                 res.status(200).send({apiStatus: true, message: "Report was updated", data: updatedReport});
             } else {
-                return res.status(404).json({error: 'No reports found for the provided IDs'});
+                return res.status(404).json({apiStatus: false, message: 'No reports found for the provided IDs'});
             }
         } catch (error) {
             console.error('Error processing report:', error);
-            res.status(500).json({error: 'Internal server error'});
+            res.status(500).json({apiStatus: false, message: 'Internal server error'});
         }
     }
 

@@ -2,12 +2,7 @@ import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/c
 import {PaginationInstance} from 'ngx-pagination';
 import {BonusData} from 'src/app/models/BonusData';
 import {BonusesService} from "../../../services/bonuses.service";
-import {
-    MatSnackBar,
-    MatSnackBarHorizontalPosition,
-    MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
-import {CustomSnackBarComponent} from "../../popouts/custom-snack-bar/custom-snack-bar.component";
+import {SnackBarService} from "../../../services/snack-bar.service";
 
 @Component({
     selector: 'app-table-orders-bonuses',
@@ -22,18 +17,16 @@ export class TableOrdersBonusesComponent implements OnInit {
     currentPage = 1;
     itemsPerPage = 8;
     totalItems = 0;
-    snackBar = inject(MatSnackBar);
-    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-    verticalPosition: MatSnackBarVerticalPosition = 'top';
+    private snackBarService = inject(SnackBarService);
 
-    bonuse = { bonus: 0 };
+    bonus = { bonus: 0 };
 
-    handleBonusChange(bonuse: any): void {
-        if (bonuse.bonus === '' || bonuse.bonus === null || isNaN(Number(bonuse.bonus))) {
-            bonuse.bonus = 0;
+    handleBonusChange(bonus: any): void {
+        if (bonus.bonus === '' || bonus.bonus === null || isNaN(Number(bonus.bonus))) {
+            bonus.bonus = 0;
         } else {
-            const parsedValue = Number(bonuse.bonus);
-            bonuse.bonus = parsedValue < 0 ? 0 : parsedValue;
+            const parsedValue = Number(bonus.bonus);
+            bonus.bonus = parsedValue < 0 ? 0 : parsedValue;
         }
     }
     preventNegativeSign(event: KeyboardEvent): void {
@@ -77,30 +70,20 @@ export class TableOrdersBonusesComponent implements OnInit {
         };
         this.bonusesService.saveNewOrderBonuses(this.bonuses._id, newBonus).subscribe(() => {
             this.dataChange.emit(true);
-            this.showSnackBar("Saved new sales bonuses!");
+            this.snackBarService.showSnackBar("Saved new sales bonuses!");
+        }, (error): void => {
+            this.snackBarService.showSnackBar(error.message);
         });
     }
 
-    cancelEdit(bonuse: any, index: number) {
-        const originalBonus = this.originalOrderBonuses[index]
-        bonuse.bonus = originalBonus;
+    cancelEdit(bonus: any, index: number) {
+        bonus.bonus = this.originalOrderBonuses[index];
         this.isEditing[index] = false;
     }
 
     saveEdit(index: number, newBonus: number) {
         this.isEditing[index] = false;
         this.originalOrderBonuses[index] = newBonus;
-        this.showSnackBar("New sale order bonus value assigned");
+        this.snackBarService.showSnackBar("New sale order bonus value assigned");
     }
-
-    showSnackBar(message: string): void {
-        const durationInSeconds = 5000;
-        this.snackBar.open(message, 'Ok', {
-            duration: durationInSeconds,
-            panelClass: 'main-snackbar',
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-        });
-    }
-
 }

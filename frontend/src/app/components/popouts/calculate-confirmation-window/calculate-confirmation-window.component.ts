@@ -27,6 +27,8 @@ export class CalculateConfirmationWindowComponent implements OnInit{
             this.confirmationSuccess.emit(true);
             this.close.emit(true);
             this.snackBar.showSnackBar('Selected bonuses was saved successfully');
+        }, () => {
+            this.snackBar.showSnackBar('Sorry, something went wrong');
         });
     }
 }

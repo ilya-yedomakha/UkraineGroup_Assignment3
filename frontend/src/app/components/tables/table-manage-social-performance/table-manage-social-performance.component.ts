@@ -58,6 +58,8 @@ export class TableManageSocialPerformanceComponent implements OnInit {
         this.socialService.deleteSocialPerformanceRecord(_id).subscribe((): void => {
             this.updateSocialPerformances.emit(true);
             this.snackBar.showSnackBar('Social performance records was deleted');
+        }, () => {
+            this.snackBar.showSnackBar('Social performance records not found');
         });
     }
 
@@ -66,6 +68,8 @@ export class TableManageSocialPerformanceComponent implements OnInit {
         this.originalTargetValues[socialPerformancesRecord._id] = socialPerformancesRecord.target_value;
         this.socialService.updateSocialPerformanceRecord(socialPerformancesRecord._id, socialPerformancesRecord).subscribe((): void => {
             this.snackBar.showSnackBar('Social performance records updated');
+        }, (): void => {
+            this.snackBar.showSnackBar('Sorry,  something went wrong')
         });
 
     }

@@ -31,7 +31,9 @@ export class RejectBonusesCalculationWindowComponent implements OnInit {
     }
 
     send(message: string): void {
-        this.bonusesService.rejectBonusById(this.reportId).subscribe();
+        this.bonusesService.rejectBonusById(this.reportId).subscribe(() => {} , error => {
+            this.snackBar.showSnackBar(error.message);
+        });
         this.rejectionService.saveRejection(this.reportId, message).subscribe(() => {
             this.errorMessage = null;
             this.snackBar.showSnackBar('Your response was sent');

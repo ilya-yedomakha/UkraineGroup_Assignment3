@@ -76,7 +76,7 @@ export class ChangeBonusesPageComponent implements OnInit {
             this.updateData();
             this.dataChange.emit(true);
             this.snackBar.showSnackBar('Order and social bonuses have been successfully saved');
-        });
+        }, (): void => this.snackBar.showSnackBar('Error occurred while saving your order'));
     }
 
     recalculateSingleBonus(): void {
@@ -87,7 +87,7 @@ export class ChangeBonusesPageComponent implements OnInit {
             this.updateData();
             this.dataChange.emit(true);
             this.snackBar.showSnackBar('Bonuses were recalculated successfully!');
-        })
+        }, (): void => this.snackBar.showSnackBar('Error occurred while recalculating'));
     }
 
     singleConfirm(): void {
@@ -104,7 +104,7 @@ export class ChangeBonusesPageComponent implements OnInit {
             this.snackBar.showSnackBar('Bonuses have been successfully ' + message + '!');
             this.findCurrentConfirmationButtonText()
             this.updateData();
-        });
+        }, (): void => this.snackBar.showSnackBar('Error occurred while confirmation'));
     }
 
     saveRemarks(): void {
@@ -116,9 +116,7 @@ export class ChangeBonusesPageComponent implements OnInit {
             this.updateData();
             this.dataChange.emit(true);
             this.snackBar.showSnackBar('Remarks saved');
-        });
-
-
+        }, (): void => this.snackBar.showSnackBar('Error occurred while saving remarks!'));
     }
 
     updateData(): void {
@@ -145,7 +143,7 @@ export class ChangeBonusesPageComponent implements OnInit {
             this.dataChange.emit(true);
             this.snackBar.showSnackBar('Remark has been successfully confirmed and an email was sent to a corresponding salesman!');
             this.updateData();
-        });
+        }, (): void => this.snackBar.showSnackBar('Error occurred while confirming remark'));
     }
 
     updateOldHRMBonusById(){
@@ -154,6 +152,6 @@ export class ChangeBonusesPageComponent implements OnInit {
             this.bonusesData.isSent = true;
             this.HRMSendLoading = false;
             this.snackBar.showSnackBar("Bonus was sent to HRM!");
-        });
+        }, (): void => this.snackBar.showSnackBar('Error occurred while updating bonus in HRM'));
     }
 }

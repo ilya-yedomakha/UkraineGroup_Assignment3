@@ -63,7 +63,13 @@ export class WelcomeAdminDashboardComponent implements OnInit {
             this.salesService.importSalesOrdersFromOpenCRX().subscribe(() => {
                 this.updatingIsLoading = false;
                 this.snackBar.showSnackBar('Data were updated successfully.');
+            }, (): void => {
+                this.updatingIsLoading = false;
+                this.snackBar.showSnackBar('Error while import data from OpenCRX.')
             });
+        }, (): void => {
+            this.updatingIsLoading = false;
+            this.snackBar.showSnackBar('Error while import data from OrangeHRM.')
         });
     }
 
@@ -73,7 +79,7 @@ export class WelcomeAdminDashboardComponent implements OnInit {
         this.bonusesService.sendAllBonusesToHRM().subscribe(() => {
             this.updatingSendIsLoading = false;
             this.snackBar.showSnackBar('Bonuses were sent to OrangeHRM');
-        });
+        }, (): void => this.snackBar.showSnackBar('Error while sending bonuses to OrangeHRM.'));
     }
 
     fetchUser() {
@@ -92,7 +98,7 @@ export class WelcomeAdminDashboardComponent implements OnInit {
                     this.reportsForCurrentYearCount - this.signedReportsByCEOForCurrentYearCount]
 
                 this.CEODataIsLoading = false;
-            });
+            }, (): void => this.snackBar.showSnackBar('Error while fetching bonuses signed by CEO.'));
 
             this.bonusesService.getSignedByHRReportsCountForCurrentYear().subscribe((response) => {
                 this.signedReportsByHRForCurrentYearCount = response;
@@ -100,46 +106,42 @@ export class WelcomeAdminDashboardComponent implements OnInit {
                     this.reportsForCurrentYearCount - this.signedReportsByHRForCurrentYearCount]
 
                 this.HRDataIsLoading = false;
-            });
-        });
+            }, (): void => this.snackBar.showSnackBar('Error while fetching bonuses signed by HR.'));
+        }, (): void => this.snackBar.showSnackBar('Error while fetching bonuses for current year.'));
 
         this.bonusesService.getTotalReportsCount().subscribe((response) => {
             this.reportsCount = response;
-        });
+        }, (): void => this.snackBar.showSnackBar('Error while getting total reports count.'));
 
         this.bonusesService.getBonusesByYearTop10().subscribe((response) => {
             this.bonuses = response.map(bonus => bonus.totalBonus);
             this.salesmenFullname = response.map(bonus => `${bonus.firstname} ${bonus.lastname}`);
-
-            console.log(this.bonuses)
-            console.log(this.salesmenFullname)
             this.top10IsLoading = false;
-
-        });
+        }, (): void => this.snackBar.showSnackBar('Error while getting top 10 bonuses.'));
 
     }
 
     fillRejectsStatistics() {
         this.rejectionService.getRejectionsCountByCurrentYear().subscribe((response) => {
             this.rejectionsForCurrentYearCount = response;
-        });
+        }, (): void => this.snackBar.showSnackBar('Error while fetching rejections.'));
     }
 
     fillUsersStatistics() {
         this.userService.getUsersCount().subscribe((response) => {
             this.usersCount = response;
-        });
+        }, (): void => this.snackBar.showSnackBar('Error while fetching users count.'));
     }
 
     fillSalesmanStatistics() {
         this.salesmanService.getSalesmenCount().subscribe((response) => {
             this.salesmenCount = response;
-        });
+        }, (): void => this.snackBar.showSnackBar('Error while fetching salesman statistics.'));
     }
 
     fillSalesOrdersStatistics() {
         this.salesService.getSalesCountForCurrentYear().subscribe((response) => {
             this.salesForCurrentYearCount = response;
-        });
+        }, (): void => this.snackBar.showSnackBar('Error while fetching sales count for current year.'));
     }
 }

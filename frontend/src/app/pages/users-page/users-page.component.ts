@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {User} from "../../models/User";
 import {UserService} from "../../services/user.service";
+import {SnackBarService} from "../../services/snack-bar.service";
 
 @Component({
     selector: 'app-users-page',
@@ -15,6 +16,7 @@ export class UsersPageComponent implements OnInit {
 
 
     private userService = inject(UserService);
+    private snackBarService = inject(SnackBarService);
 
     ngOnInit(): void {
 
@@ -38,7 +40,7 @@ export class UsersPageComponent implements OnInit {
         if ($event) {
             this.userService.getUsers().subscribe((response) => {
                 this.users = response;
-            });
+            }, (): void => this.snackBarService.showSnackBar('Error while fetching users.'));
         }
     }
 

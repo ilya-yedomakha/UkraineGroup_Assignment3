@@ -76,6 +76,8 @@ export class TableSalesmanCabinetComponent implements OnInit {
                     }
                 }
             );
+        }, (): void => {
+            this.snackBar.showSnackBar('Bonus report not found');
         });
     }
 
@@ -110,9 +112,12 @@ export class TableSalesmanCabinetComponent implements OnInit {
             this.isRejectWindowVisible = true;
         }
         else if (newState === 'confirm'){
-            this.bonusesService.confirmBonusById(bonus[0]._id).subscribe();
-            this.rejectionService.deleteRejectionsByReport(bonus[0]._id).subscribe(() =>
-                this.stateChanged.emit(true));
+            this.bonusesService.confirmBonusById(bonus[0]._id).subscribe(() => {}, error => {
+                this.snackBar.showSnackBar(error.message);
+            });
+            this.rejectionService.deleteRejectionsByReport(bonus[0]._id).subscribe(
+                () => this.stateChanged.emit(true),
+                () => this.snackBar.showSnackBar('Sorry, something went wrong'));
             this.snackBar.showSnackBar('Confirmed successfully');
         }
     }

@@ -12,6 +12,7 @@ import {SalesmanService} from '../../services/salesman.service';
 import {SalesService} from '../../services/sales.service';
 import {SocialPerformanceService} from '../../services/social-performance.service';
 import {ActivatedRoute} from '@angular/router';
+import {SnackBarService} from "../../services/snack-bar.service";
 
 @Component({
     selector: 'app-salesman-cabinet-page',
@@ -34,6 +35,7 @@ export class SalesmanCabinetPageComponent implements OnInit {
     private salesService = inject(SalesService);
     private socialService = inject(SocialPerformanceService);
     private rejectionService = inject(RejectionService);
+    private snackBarService = inject(SnackBarService);
 
     constructor(private activateRoute: ActivatedRoute) {
         this.code = Number(activateRoute.snapshot.paramMap.get('code'));
@@ -58,25 +60,25 @@ export class SalesmanCabinetPageComponent implements OnInit {
     fetchSalesman(code: number): void {
         this.salesmanService.getSalesmanByCode(code).subscribe((value): void => {
             this.salesman = value;
-        });
+        }, (): void => {this.snackBarService.showSnackBar('Sorry, something went wrong while fetching Salesman');});
     }
 
     fetchBonuses(code: number): void {
         this.bonusesService.getBonusesBySalesmanCode(code).subscribe((value): void => {
             this.bonuses = value.sort((a, b): number => b.year - a.year);
-        });
+        }, (): void => this.snackBarService.showSnackBar('Error loading bonuses data'));
     }
 
     fetchRejections(code: number): void {
         this.rejectionService.getRejectionsForSalesman(code).subscribe((value): void => {
             this.rejectionMessages = value;
-        });
+        }, (): void => this.snackBarService.showSnackBar('Error loading rejection data'));
     }
 
     fetchSaleRecords(code: number): void {
         this.salesService.getSalePerformRecordsBySalesmanCode(code).subscribe((value): void => {
             this.saleRecords = value.sort((a, b): number => b.activeYear - a.activeYear);
-        });
+        }, (): void => this.snackBarService.showSnackBar('Error loading sale records data'));
     }
 
     fetchSocialRecords(code: number): void {
@@ -87,16 +89,16 @@ export class SalesmanCabinetPageComponent implements OnInit {
                 }
                 return a.goal_description.localeCompare(b.goal_description);
             });
-        });
+        }, (): void => this.snackBarService.showSnackBar('Error loading social records data'));
     }
 
     confirmationBySalesmanChanged(newState: boolean): void {
         this.bonusesService.getBonusesBySalesmanCode(this.salesman.code).subscribe((value): void => {
             this.bonuses = value;
-        });
+        }, (): void => this.snackBarService.showSnackBar('Error loading bonuses data'));
         this.rejectionService.getRejectionsForSalesman(this.salesman.code).subscribe((value): void => {
             this.rejectionMessages = value;
-        });
+        }, (): void => this.snackBarService.showSnackBar('Error loading rejection data'));
     }
 
     handleSocialPerformanceAddition(isAdded: boolean): void {

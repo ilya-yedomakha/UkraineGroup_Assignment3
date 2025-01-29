@@ -53,12 +53,14 @@ export class AddSocialPerformanceWindowComponent implements OnInit {
                 new Date().getFullYear(),
                 this.salesmenCode
             );
-            
+
             this.salesmenService.createSocialPerformanceToSalesmanBySalesmanCode(
                 this.salesmenCode, socialPerformanceRecord
             ).subscribe(() => {
                 this.close.emit(true);
                 this.snackBar.showSnackBar('Social performance record saved successfully.');
+            }, () => {
+                this.snackBar.showSnackBar('Sorry, something went wrong');
             });
         } else {
             this.snackBar.showSnackBar('Form is invalid');
