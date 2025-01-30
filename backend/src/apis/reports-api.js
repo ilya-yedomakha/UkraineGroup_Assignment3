@@ -342,12 +342,8 @@ class reportApi {
         try {
             const report = await ReportModel.findOne({_id: req.params.id});
 
-            const currentYear = new Date().getFullYear();
-
             if (!report) {
                 return res.status(404).send({apiStatus: false, message: 'No report found'});
-            } else if (report.year !== currentYear) {
-                return res.status(404).send({apiStatus: false, message: 'Year must be ' + currentYear});
             } else if (report.isConfirmedByCEO) {
                 return res.status(409).send({
                     apiStatus: false,
@@ -365,14 +361,14 @@ class reportApi {
             try {
                 const socialPerformances = await socialPerformanceRecordModel.find({
                     salesman_code: salesman.code,
-                    year: currentYear
+                    year: report.year
                 });
                 const salesPerformances = await salePerformanceRecordModel.find({
                     salesmanGovId: salesman.code,
-                    activeYear: currentYear
+                    activeYear: report.year
                 });
 
-                updReport = await salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances, new Date().getUTCFullYear());
+                updReport = await salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances, report.year);
             } catch (e) {
                 return res.status(500).send({apiStatus: false, message: e.message, data: e});
             }
@@ -386,19 +382,17 @@ class reportApi {
 
     static patchStoredInHRMSingleBonusById = async (req, res) => {
         try {
-            // don't need because updates after edits and confirmations in salesmen' cabinets by HR and CEO
-
-
-            // if (!req.params.id || !req.body || req.params.id === "" || req.body === "") {
-            //     return res.status(400).send({apiStatus: false, message: "Invalid request parameters"});
-            // }
-            //
             let found = await ReportModel.findById(req.params.id);
             if (!found) {
                 return res.status(404).send({apiStatus: false, message: "Report not found"});
             }
-            //
-            // let recordUpdated = await reportService.updateReport(found, req.body);
+
+            if (!found.isConfirmedByCEO) {
+                return res.status(409).send({
+                    apiStatus: false,
+                    message: 'Can`t recalculate if already confirmed by CEO'
+                });
+            }
 
             const tokenBody = {
                 client_id: 'api_oauth_id',

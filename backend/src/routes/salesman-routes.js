@@ -25,7 +25,7 @@ router.post("/calculate-bonuses",
     //#swagger.description = 'Calculate all bonuses'
     //#swagger.summary = 'Calculate all bonuses'
     // #swagger.tags = ['Salesmen']
-    checkAuthorization([1]), SalesManController.calculateAllBonuses)
+    checkAuthorization([1]), SalesManController.calculateAllBonusesForCurrentYear)
 router.post("/send-bonuses-orangeHRM",
     //#swagger.description = 'Send all bonuses to OrangeHRM'
     //#swagger.summary = 'Send all bonuses to OrangeHRM'

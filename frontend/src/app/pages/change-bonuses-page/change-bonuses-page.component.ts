@@ -60,10 +60,6 @@ export class ChangeBonusesPageComponent implements OnInit {
         return ordersBonusesSum + socialBonusesSum;
     }
 
-    fetchUser(): void {
-
-    }
-
     saveAll(): void {
         const updatedBonuses = {
             socialBonuses: this.bonusesData.socialBonuses,
@@ -82,11 +78,10 @@ export class ChangeBonusesPageComponent implements OnInit {
     recalculateSingleBonus(): void {
         this.bonusesService.recalculateSingleBonus(this.bonusesData._id).subscribe((response) => {
             this.bonusesData = response;
-            console.log(response);
-            console.log(this.bonusesData);
             this.updateData();
             this.dataChange.emit(true);
             this.snackBar.showSnackBar('Bonuses were recalculated successfully!');
+            this.findCurrentConfirmationButtonText()
         }, (): void => this.snackBar.showSnackBar('Error occurred while recalculating'));
     }
 

@@ -12,7 +12,7 @@
                         }"
                         class="ml-2 rounded-lg p-2 w-auto transition-all duration-300 ease-in-out "
                         [disabled]="dropToInitialLoading"
-                        *ngIf="user.role === 0 || (user.role === 1 && !bonusesData.isConfirmedByCEO)"
+                        *ngIf="(user.role === 0 && bonusesData.isConfirmedByHR) || (user.role === 1 && !bonusesData.isConfirmedByCEO)"
                         (click)="singleConfirm()">
                         {{ buttonConfirmText }}
                     </button>
@@ -30,7 +30,7 @@
                     </button>
 
                     <button class="bg-[#232023] ml-2 p-2 rounded-lg text-yellow-100 font-semibold self-center w-auto hover:text-yellow-200 hover:scale-110 hover:shadow-sm"
-                            *ngIf="user.role !== 2"
+                            *ngIf="user.role === 1 && bonusesData.isConfirmedByCEO && bonusesData.isConfirmedByHR"
                             [disabled] = "HRMSendLoading"
                             (click)="updateOldHRMBonusById()"
                     >Send this new data to OrangeHRM
@@ -42,7 +42,7 @@
 
                     <ng-container *ngIf="!bonusesData.isConfirmedByCEO && user.role === 0 || !bonusesData.isConfirmedByHR && user.role === 1">
                         <button
-                            *ngIf="user.role === 0"
+                            *ngIf="user.role === 0 && bonusesData.isConfirmedByHR"
                             [disabled]="dropToInitialLoading"
                             (click)="saveAll()"
                             [ngClass]="{
@@ -53,7 +53,7 @@
                             Save All
                         </button>
                         <button
-                            *ngIf="user.role === 0"
+                            *ngIf="user.role === 0 && bonusesData.isConfirmedByHR"
                             (click)="dropToInitialBonuses()"
                             [disabled]="dropToInitialLoading"
                             [ngClass]="{
@@ -101,7 +101,7 @@
             [(ngModel)]="bonusesData.remarks"
                   class="border-2 border-black text-lg p-2 h-16 rounded-md w-full md:w-1/2"></textarea>
         <button
-            *ngIf="user.role === 0 && !bonusesData.isConfirmedByCEO"
+            *ngIf="user.role === 0 && !bonusesData.isConfirmedByCEO && bonusesData.isConfirmedByHR"
             (click)="saveRemarks()"
             class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105">
             Save
