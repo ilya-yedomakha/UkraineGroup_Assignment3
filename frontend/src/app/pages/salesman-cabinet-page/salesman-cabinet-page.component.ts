@@ -27,7 +27,9 @@ export class SalesmanCabinetPageComponent implements OnInit {
     rejectionMessages: RejectionMessage[];
     socialRecords: SocialPerformanceRecord[];
     saleRecords: SalePerformanceRecord[];
-    isAddSocialPerformanceWindowVisible = false;
+    isAddSocialPerformanceWindowVisible: boolean = false;
+    isPasswordChangeWindowIsVisible: boolean = false;
+    
     code: number;
     private userService: UserService = inject(UserService);
     private salesmanService: SalesmanService = inject(SalesmanService);
