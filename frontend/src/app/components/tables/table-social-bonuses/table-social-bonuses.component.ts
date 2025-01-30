@@ -19,7 +19,7 @@ export class TableSocialBonusesComponent implements OnInit {
     totalItems = 0;
 
     snackBarService = inject(SnackBarService);
-    bonuse = { bonus: 0 };
+    bonuse = {bonus: 0};
 
     handleBonusChange(bonuse: any): void {
         if (bonuse.bonus === '' || bonuse.bonus === null || isNaN(Number(bonuse.bonus))) {
@@ -29,6 +29,7 @@ export class TableSocialBonusesComponent implements OnInit {
             bonuse.bonus = parsedValue < 0 ? 0 : parsedValue;
         }
     }
+
     preventNegativeSign(event: KeyboardEvent): void {
         if (event.key === '-') {
             event.preventDefault();
@@ -70,10 +71,13 @@ export class TableSocialBonusesComponent implements OnInit {
         let newBonus: any = {
             "socialBonuses": this.bonuses.socialBonuses
         };
-        this.bonusesService.saveNewOrderBonuses(this.bonuses._id, newBonus).subscribe(() => {
-            this.dataChange.emit(true);
-            this.snackBarService.showSnackBar("Saved new sales bonuses!");
-        }, (): void => this.snackBarService.showSnackBar("Error while saving new bonuses!"));
+        this.bonusesService.saveNewOrderBonuses(this.bonuses._id, newBonus).subscribe({
+            next: () => {
+                this.dataChange.emit(true);
+                this.snackBarService.showSnackBar("Saved new sales bonuses!");
+            },
+            error: (err): void => this.snackBarService.showSnackBar("Error: " + err.error?.message)
+        });
     }
 
     cancelEdit(bonus: any, index: number) {

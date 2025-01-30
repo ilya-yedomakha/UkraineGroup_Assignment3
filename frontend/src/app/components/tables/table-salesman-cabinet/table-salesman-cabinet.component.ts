@@ -16,11 +16,17 @@ import {SnackBarService} from "../../../services/snack-bar.service";
     styleUrls: ['./table-salesman-cabinet.component.css'],
     animations: [
         trigger('fadeToggle', [
-            state('hidden', style({opacity: 1, height: '40px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'})),
+            state('hidden', style({
+                opacity: 1,
+                height: '40px',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis'
+            })),
             state('visible', style({opacity: 1, height: '*', overflow: 'visible', whiteSpace: 'normal'})),
             transition('hidden => visible', [animate('300ms ease-in-out')]),
             transition('visible => hidden', [
-                style({ overflow: 'hidden' }), // Встановлюємо overflow: hidden перед анімацією
+                style({overflow: 'hidden'}), // Встановлюємо overflow: hidden перед анімацією
                 animate('500ms ease-in-out'),
             ]),
         ]),
@@ -69,15 +75,19 @@ export class TableSalesmanCabinetComponent implements OnInit {
     }
 
     showDetails(id: string): void {
-        this.bonusesService.getBonusById(id).subscribe((bonus: BonusData): void => {
-            this.router.navigate(['bonuses-details'], {
-                    state: {
-                        bonuse: bonus
+        this.bonusesService.getBonusById(id).subscribe({
+            next: (bonus: BonusData): void => {
+                this.router.navigate(['bonuses-details'], {
+                        state: {
+                            bonuse: bonus
+                        }
                     }
-                }
-            );
-        }, (): void => {
-            this.snackBar.showSnackBar('Bonus report not found');
+                );
+            },
+            error: (err): void => {
+                const errorMessage = err.error?.message;
+                this.snackBar.showSnackBar('Error: ' + errorMessage);
+            }
         });
     }
 
@@ -110,15 +120,18 @@ export class TableSalesmanCabinetComponent implements OnInit {
         this.hasRejectionForBonus(bonus[0]._id);
         if (newState === 'reject') {
             this.isRejectWindowVisible = true;
-        }
-        else if (newState === 'confirm'){
-            this.bonusesService.confirmBonusById(bonus[0]._id).subscribe(() => {}, error => {
-                this.snackBar.showSnackBar(error.message);
+        } else if (newState === 'confirm') {
+            this.bonusesService.confirmBonusById(bonus[0]._id).subscribe(() => {
+            }, error => {
+                this.snackBar.showSnackBar(error.error?.message);
             });
-            this.rejectionService.deleteRejectionsByReport(bonus[0]._id).subscribe(
-                () => this.stateChanged.emit(true),
-                () => this.snackBar.showSnackBar('Sorry, something went wrong'));
-            this.snackBar.showSnackBar('Confirmed successfully');
+            this.rejectionService.deleteRejectionsByReport(bonus[0]._id).subscribe({
+                next: () => {
+                    this.stateChanged.emit(true);
+                    this.snackBar.showSnackBar('Confirmed successfully');
+                },
+                error: (err) => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+            });
         }
     }
 
@@ -126,7 +139,7 @@ export class TableSalesmanCabinetComponent implements OnInit {
         this.isRejectWindowVisible = false;
         if (done) {
             this.stateChanged.emit(true);
-        } else{
+        } else {
             this.reload();
         }
     }

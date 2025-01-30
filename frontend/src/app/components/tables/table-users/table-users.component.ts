@@ -5,9 +5,9 @@ import {UserService} from "../../../services/user.service";
 import {SnackBarService} from "../../../services/snack-bar.service";
 
 @Component({
-  selector: 'app-table-users',
-  templateUrl: './table-users.component.html',
-  styleUrls: ['./table-users.component.css']
+    selector: 'app-table-users',
+    templateUrl: './table-users.component.html',
+    styleUrls: ['./table-users.component.css']
 })
 export class TableUsersComponent implements OnInit {
     @Input() users: User[];
@@ -30,8 +30,8 @@ export class TableUsersComponent implements OnInit {
     }
 
 
-    onTableDataChange(event: any){
-        this.pagingConfig.currentPage  = event;
+    onTableDataChange(event: any) {
+        this.pagingConfig.currentPage = event;
     }
 
     onTableSizeChange(event: any): void {
@@ -41,20 +41,24 @@ export class TableUsersComponent implements OnInit {
 
     getRoleName(role: number): string {
         switch (role) {
-            case 0: return 'CEO';
-            case 1: return 'HR';
-            case 2: return 'Salesman';
+            case 0:
+                return 'CEO';
+            case 1:
+                return 'HR';
+            case 2:
+                return 'Salesman';
         }
         return '';
     }
 
     deleteUser(code: number) {
-        this.userService.deletingUser(code).subscribe(()=>
-        {
-            this.users = this.users.filter((user) => user.code !== code);
-            this.snackBar.showSnackBar('User deleted successfully')
-        },
-            (): void => this.snackBar.showSnackBar('Sorry, something went wrong.'));
+        this.userService.deletingUser(code).subscribe({
+            next: () => {
+                this.users = this.users.filter((user) => user.code !== code);
+                this.snackBar.showSnackBar('User deleted successfully');
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     editUser(code: number) {

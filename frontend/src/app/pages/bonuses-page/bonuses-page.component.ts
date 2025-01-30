@@ -44,13 +44,15 @@ export class BonusesPageComponent implements OnInit {
 
     saveSelected(): void {
         const changedIds = this.updatedChanges.map(change => change._id);
-        this.bonusesService.reverseConfirmArrayOfIds(changedIds).subscribe(() => {
-            this.updatedChanges = [];
-            // this.bonusesData = [];
-            this.loadBonuses();
-            this.snackBar.showSnackBar('Selected bonuses was saved successfully');
-        },
-            (): void => this.snackBar.showSnackBar('Selected bonuses was not saved'));
+        this.bonusesService.reverseConfirmArrayOfIds(changedIds).subscribe({
+            next: () => {
+                this.updatedChanges = [];
+                // this.bonusesData = [];
+                this.loadBonuses();
+                this.snackBar.showSnackBar('Selected bonuses was saved successfully');
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     updateTable($event: boolean): void {
@@ -58,12 +60,18 @@ export class BonusesPageComponent implements OnInit {
     }
 
     loadBonuses(): void {
-        this.bonusesService.getBonusesByYear(this.year).subscribe((response) => {
-            this.bonusesData = response;
-        }, (): void => this.snackBar.showSnackBar('Error loading bonuses data'));
-        this.rejectionService.getRejectionsByYear(this.year).subscribe((response) => {
-            this.rejectionData = response;
-        }, (): void => this.snackBar.showSnackBar('Error loading rejection data'));
+        this.bonusesService.getBonusesByYear(this.year).subscribe({
+            next: (response): void => {
+                this.bonusesData = response;
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
+        this.rejectionService.getRejectionsByYear(this.year).subscribe({
+            next: (response): void => {
+                this.rejectionData = response;
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     fetchUser(): void {

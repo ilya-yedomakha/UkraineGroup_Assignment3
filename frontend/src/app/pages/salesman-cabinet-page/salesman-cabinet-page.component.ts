@@ -29,7 +29,7 @@ export class SalesmanCabinetPageComponent implements OnInit {
     saleRecords: SalePerformanceRecord[];
     isAddSocialPerformanceWindowVisible: boolean = false;
     isPasswordChangeWindowIsVisible: boolean = false;
-    
+
     code: number;
     private userService: UserService = inject(UserService);
     private salesmanService: SalesmanService = inject(SalesmanService);
@@ -60,47 +60,62 @@ export class SalesmanCabinetPageComponent implements OnInit {
     }
 
     fetchSalesman(code: number): void {
-        this.salesmanService.getSalesmanByCode(code).subscribe((value): void => {
-            this.salesman = value;
-        }, (): void => {this.snackBarService.showSnackBar('Sorry, something went wrong while fetching Salesman');});
+        this.salesmanService.getSalesmanByCode(code).subscribe({
+            next: (value): void => {
+                this.salesman = value;
+            },
+            error: (err): void => this.snackBarService.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     fetchBonuses(code: number): void {
-        this.bonusesService.getBonusesBySalesmanCode(code).subscribe((value): void => {
-            this.bonuses = value.sort((a, b): number => b.year - a.year);
-        }, (): void => this.snackBarService.showSnackBar('Error loading bonuses data'));
+        this.bonusesService.getBonusesBySalesmanCode(code).subscribe({
+            next: (value): void => {
+                this.bonuses = value.sort((a, b): number => b.year - a.year);
+            },
+            error: (err): void => this.snackBarService.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     fetchRejections(code: number): void {
-        this.rejectionService.getRejectionsForSalesman(code).subscribe((value): void => {
-            this.rejectionMessages = value;
-        }, (): void => this.snackBarService.showSnackBar('Error loading rejection data'));
+        this.rejectionService.getRejectionsForSalesman(code).subscribe({
+            next: (value): void => this.rejectionMessages = value,
+            error: (err): void => this.snackBarService.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     fetchSaleRecords(code: number): void {
-        this.salesService.getSalePerformRecordsBySalesmanCode(code).subscribe((value): void => {
-            this.saleRecords = value.sort((a, b): number => b.activeYear - a.activeYear);
-        }, (): void => this.snackBarService.showSnackBar('Error loading sale records data'));
+        this.salesService.getSalePerformRecordsBySalesmanCode(code).subscribe({
+            next: (value): void => {
+                this.saleRecords = value.sort((a, b): number => b.activeYear - a.activeYear);
+            },
+            error: (err): void => this.snackBarService.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     fetchSocialRecords(code: number): void {
-        this.socialService.getSocialPerformancesRecordBySalesmanCode(code).subscribe((value): void => {
-            this.socialRecords = value.sort((a, b): number => {
-                if (a.year !== b.year) {
-                    return b.year - a.year;
-                }
-                return a.goal_description.localeCompare(b.goal_description);
-            });
-        }, (): void => this.snackBarService.showSnackBar('Error loading social records data'));
+        this.socialService.getSocialPerformancesRecordBySalesmanCode(code).subscribe({
+            next: (value): void => {
+                this.socialRecords = value.sort((a, b): number => {
+                    if (a.year !== b.year) {
+                        return b.year - a.year;
+                    }
+                    return a.goal_description.localeCompare(b.goal_description);
+                });
+            },
+            error: (err): void => this.snackBarService.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     confirmationBySalesmanChanged(newState: boolean): void {
-        this.bonusesService.getBonusesBySalesmanCode(this.salesman.code).subscribe((value): void => {
-            this.bonuses = value;
-        }, (): void => this.snackBarService.showSnackBar('Error loading bonuses data'));
-        this.rejectionService.getRejectionsForSalesman(this.salesman.code).subscribe((value): void => {
-            this.rejectionMessages = value;
-        }, (): void => this.snackBarService.showSnackBar('Error loading rejection data'));
+        this.bonusesService.getBonusesBySalesmanCode(this.salesman.code).subscribe({
+            next: (value) => this.bonuses = value,
+            error: (err): void => this.snackBarService.showSnackBar('Error: ' + err.error?.message),
+        });
+        this.rejectionService.getRejectionsForSalesman(this.salesman.code).subscribe({
+            next: (value) => this.rejectionMessages = value,
+            error: (err): void => this.snackBarService.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     handleSocialPerformanceAddition(isAdded: boolean): void {

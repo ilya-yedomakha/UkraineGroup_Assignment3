@@ -7,10 +7,10 @@ import {SnackBarService} from "../../../services/snack-bar.service";
     templateUrl: './calculate-confirmation-window.component.html',
     styleUrls: ['./calculate-confirmation-window.component.css']
 })
-export class CalculateConfirmationWindowComponent implements OnInit{
+export class CalculateConfirmationWindowComponent implements OnInit {
 
-    @Output() close  = new EventEmitter<boolean>();
-    @Output() confirmationSuccess  = new EventEmitter<boolean>();
+    @Output() close = new EventEmitter<boolean>();
+    @Output() confirmationSuccess = new EventEmitter<boolean>();
     private bonusesService = inject(BonusesService);
     private snackBar = inject(SnackBarService);
 
@@ -18,17 +18,21 @@ export class CalculateConfirmationWindowComponent implements OnInit{
 
     }
 
-    toClose(): void{
+    toClose(): void {
         this.close.emit(false);
     }
 
-    onConfirm(): void{
-        this.bonusesService.calculateAllBonuses().subscribe(() => {
-            this.confirmationSuccess.emit(true);
-            this.close.emit(true);
-            this.snackBar.showSnackBar('Selected bonuses was saved successfully');
-        }, () => {
-            this.snackBar.showSnackBar('Sorry, something went wrong');
+    onConfirm(): void {
+        this.bonusesService.calculateAllBonuses().subscribe({
+            next: () => {
+                this.confirmationSuccess.emit(true);
+                this.close.emit(true);
+                this.snackBar.showSnackBar('Selected bonuses was saved successfully');
+            },
+            error: (err) => {
+                const errorMessage = err.error?.message;
+                this.snackBar.showSnackBar('Error: ' + errorMessage);
+            }
         });
     }
 }

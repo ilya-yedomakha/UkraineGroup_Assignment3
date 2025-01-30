@@ -31,16 +31,19 @@ export class RejectBonusesCalculationWindowComponent implements OnInit {
     }
 
     send(message: string): void {
-        this.bonusesService.rejectBonusById(this.reportId).subscribe(() => {} , error => {
-            this.snackBar.showSnackBar(error.message);
+        this.bonusesService.rejectBonusById(this.reportId).subscribe(() => {
+        }, error => {
+            this.snackBar.showSnackBar('Error: ' + error.error?.message);
         });
-        this.rejectionService.saveRejection(this.reportId, message).subscribe(() => {
-            this.errorMessage = null;
-            this.snackBar.showSnackBar('Your response was sent');
-            this.close.emit(true);
-        },
-        () => {
-            this.errorMessage = 'No reason for rejection is written';
+        this.rejectionService.saveRejection(this.reportId, message).subscribe({
+            next: () => {
+                this.errorMessage = null;
+                this.snackBar.showSnackBar('Your response was sent');
+                this.close.emit(true);
+            },
+            error: () => {
+                this.errorMessage = 'No reason for rejection is written';
+            }
         });
     }
 }

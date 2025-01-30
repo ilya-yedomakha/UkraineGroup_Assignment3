@@ -19,7 +19,7 @@ export class TableOrdersBonusesComponent implements OnInit {
     totalItems = 0;
     private snackBarService = inject(SnackBarService);
 
-    bonus = { bonus: 0 };
+    bonus = {bonus: 0};
 
     handleBonusChange(bonus: any): void {
         if (bonus.bonus === '' || bonus.bonus === null || isNaN(Number(bonus.bonus))) {
@@ -29,11 +29,13 @@ export class TableOrdersBonusesComponent implements OnInit {
             bonus.bonus = parsedValue < 0 ? 0 : parsedValue;
         }
     }
+
     preventNegativeSign(event: KeyboardEvent): void {
         if (event.key === '-') {
             event.preventDefault();
         }
     }
+
     private bonusesService = inject(BonusesService);
 
     originalOrderBonuses: number[] = []
@@ -66,13 +68,17 @@ export class TableOrdersBonusesComponent implements OnInit {
 
     saveSalesBonuses() {
         let newBonus: any = {
-            "ordersBonuses" : this.bonuses.ordersBonuses
+            "ordersBonuses": this.bonuses.ordersBonuses
         };
-        this.bonusesService.saveNewOrderBonuses(this.bonuses._id, newBonus).subscribe(() => {
-            this.dataChange.emit(true);
-            this.snackBarService.showSnackBar("Saved new sales bonuses!");
-        }, (error): void => {
-            this.snackBarService.showSnackBar(error.message);
+        this.bonusesService.saveNewOrderBonuses(this.bonuses._id, newBonus).subscribe({
+            next: () => {
+                this.dataChange.emit(true);
+                this.snackBarService.showSnackBar("Saved new sales bonuses!");
+            },
+            error: (err): void => {
+                const errorMessage = err.error?.message;
+                this.snackBarService.showSnackBar('Error: ' + errorMessage);
+            }
         });
     }
 

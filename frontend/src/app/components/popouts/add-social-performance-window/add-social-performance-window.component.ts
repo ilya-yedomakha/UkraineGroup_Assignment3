@@ -56,11 +56,15 @@ export class AddSocialPerformanceWindowComponent implements OnInit {
 
             this.salesmenService.createSocialPerformanceToSalesmanBySalesmanCode(
                 this.salesmenCode, socialPerformanceRecord
-            ).subscribe(() => {
-                this.close.emit(true);
-                this.snackBar.showSnackBar('Social performance record saved successfully.');
-            }, () => {
-                this.snackBar.showSnackBar('Sorry, something went wrong');
+            ).subscribe({
+                next: () => {
+                    this.close.emit(true);
+                    this.snackBar.showSnackBar('Social performance record saved successfully.');
+                },
+                error: (err) => {
+                    const errorMessage = err.error?.message;
+                    this.snackBar.showSnackBar('Error creating social performance record: ' + errorMessage);
+                }
             });
         } else {
             this.snackBar.showSnackBar('Form is invalid');

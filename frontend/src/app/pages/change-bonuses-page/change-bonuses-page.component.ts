@@ -68,38 +68,47 @@ export class ChangeBonusesPageComponent implements OnInit {
         };
 
         //TODO(чому назва метода saveSocialAndOrderBonuses а зберігаєтсья saveNewOrderBonuses)
-        this.bonusesService.saveNewOrderBonuses(this.bonusesData._id, updatedBonuses).subscribe(() => {
-            this.updateData();
-            this.dataChange.emit(true);
-            this.snackBar.showSnackBar('Order and social bonuses have been successfully saved');
-        }, (): void => this.snackBar.showSnackBar('Error occurred while saving your order'));
+        this.bonusesService.saveNewOrderBonuses(this.bonusesData._id, updatedBonuses).subscribe({
+            next: (): void => {
+                this.updateData();
+                this.dataChange.emit(true);
+                this.snackBar.showSnackBar('Order and social bonuses have been successfully saved');
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     recalculateSingleBonus(): void {
-        this.bonusesService.recalculateSingleBonus(this.bonusesData._id).subscribe((response) => {
-            this.bonusesData = response;
-            this.updateData();
-            this.dataChange.emit(true);
-            this.snackBar.showSnackBar('Bonuses were recalculated successfully!');
-            this.findCurrentConfirmationButtonText()
-        }, (): void => this.snackBar.showSnackBar('Error occurred while recalculating'));
+        this.bonusesService.recalculateSingleBonus(this.bonusesData._id).subscribe({
+            next: (response): void => {
+                this.bonusesData = response;
+                this.updateData();
+                this.dataChange.emit(true);
+                this.snackBar.showSnackBar('Bonuses were recalculated successfully!');
+                this.findCurrentConfirmationButtonText()
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     singleConfirm(): void {
-        this.bonusesService.singleConfirm(this.bonusesData._id).subscribe((response) => {
-            this.user.role === 0 ? this.bonusesData.isConfirmedByCEO = !this.bonusesData.isConfirmedByCEO : this.bonusesData.isConfirmedByHR = !this.bonusesData.isConfirmedByHR;
-            this.dataChange.emit(true);
-            this.bonusesData = response;
-            let message: string;
-            if (this.user.role === 0) {
-                message = this.bonusesData.isConfirmedByCEO ? 'confirmed' : 'unconfirmed';
-            } else {
-                message = this.bonusesData.isConfirmedByHR ? 'confirmed' : 'unconfirmed';
-            }
-            this.snackBar.showSnackBar('Bonuses have been successfully ' + message + '!');
-            this.findCurrentConfirmationButtonText()
-            this.updateData();
-        }, (): void => this.snackBar.showSnackBar('Error occurred while confirmation'));
+        this.bonusesService.singleConfirm(this.bonusesData._id).subscribe({
+            next: (response): void => {
+                this.user.role === 0 ? this.bonusesData.isConfirmedByCEO = !this.bonusesData.isConfirmedByCEO : this.bonusesData.isConfirmedByHR = !this.bonusesData.isConfirmedByHR;
+                this.dataChange.emit(true);
+                this.bonusesData = response;
+                let message: string;
+                if (this.user.role === 0) {
+                    message = this.bonusesData.isConfirmedByCEO ? 'confirmed' : 'unconfirmed';
+                } else {
+                    message = this.bonusesData.isConfirmedByHR ? 'confirmed' : 'unconfirmed';
+                }
+                this.snackBar.showSnackBar('Bonuses have been successfully ' + message + '!');
+                this.findCurrentConfirmationButtonText()
+                this.updateData();
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     saveRemarks(): void {
@@ -107,11 +116,14 @@ export class ChangeBonusesPageComponent implements OnInit {
             remarks: this.bonusesData.remarks
         };
 
-        this.bonusesService.saveNewOrderBonuses(this.bonusesData._id, updatedBonuses).subscribe(() => {
-            this.updateData();
-            this.dataChange.emit(true);
-            this.snackBar.showSnackBar('Remarks saved');
-        }, (): void => this.snackBar.showSnackBar('Error occurred while saving remarks!'));
+        this.bonusesService.saveNewOrderBonuses(this.bonusesData._id, updatedBonuses).subscribe({
+            next: (): void => {
+                this.updateData();
+                this.dataChange.emit(true);
+                this.snackBar.showSnackBar('Remarks saved');
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     updateData(): void {
@@ -133,20 +145,26 @@ export class ChangeBonusesPageComponent implements OnInit {
 
     confirmRemark() {
         this.updatingConfirmRemarkIsLoading = true
-        this.bonusesService.singleRemarkConfirmAndEmailSend(this.bonusesData._id).subscribe(() => {
-            this.updatingConfirmRemarkIsLoading = false;
-            this.dataChange.emit(true);
-            this.snackBar.showSnackBar('Remark has been successfully confirmed and an email was sent to a corresponding salesman!');
-            this.updateData();
-        }, (): void => this.snackBar.showSnackBar('Error occurred while confirming remark'));
+        this.bonusesService.singleRemarkConfirmAndEmailSend(this.bonusesData._id).subscribe({
+            next: (): void => {
+                this.updatingConfirmRemarkIsLoading = false;
+                this.dataChange.emit(true);
+                this.snackBar.showSnackBar('Remark has been successfully confirmed and an email was sent to a corresponding salesman!');
+                this.updateData();
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
-    updateOldHRMBonusById(){
+    updateOldHRMBonusById() {
         this.HRMSendLoading = true;
-        this.bonusesService.updateOldHRMBonusById(this.bonusesData._id).subscribe(() => {
-            this.bonusesData.isSent = true;
-            this.HRMSendLoading = false;
-            this.snackBar.showSnackBar("Bonus was sent to HRM!");
-        }, (): void => this.snackBar.showSnackBar('Error occurred while updating bonus in HRM'));
+        this.bonusesService.updateOldHRMBonusById(this.bonusesData._id).subscribe({
+            next: (): void => {
+                this.bonusesData.isSent = true;
+                this.HRMSendLoading = false;
+                this.snackBar.showSnackBar("Bonus was sent to HRM!");
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 }

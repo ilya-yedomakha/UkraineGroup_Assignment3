@@ -38,15 +38,16 @@ export class UsersPageComponent implements OnInit {
         this.isAddUserWindowVisible = false
         this.userToUpdate = null;
         if ($event) {
-            this.userService.getUsers().subscribe((response) => {
-                this.users = response;
-            }, (): void => this.snackBarService.showSnackBar('Error while fetching users.'));
+            this.userService.getUsers().subscribe({
+                next: (response) => this.users = response,
+                error: (err): void => this.snackBarService.showSnackBar('Error: ' + err.error?.message),
+            });
         }
     }
 
     updateUser($event: number) {
         this.userToUpdate = this.users.find((user: User) => user.code === $event);
-        if (this.userToUpdate){
+        if (this.userToUpdate) {
             this.isAddUserWindowVisible = true;
         }
     }

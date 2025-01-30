@@ -55,21 +55,29 @@ export class TableManageSocialPerformanceComponent implements OnInit {
     }
 
     toDeleteSocialPerformanceRecord(_id: string): void {
-        this.socialService.deleteSocialPerformanceRecord(_id).subscribe((): void => {
-            this.updateSocialPerformances.emit(true);
-            this.snackBar.showSnackBar('Social performance records was deleted');
-        }, () => {
-            this.snackBar.showSnackBar('Social performance records not found');
+        this.socialService.deleteSocialPerformanceRecord(_id).subscribe({
+            next: (): void => {
+                this.updateSocialPerformances.emit(true);
+                this.snackBar.showSnackBar('Social performance records was deleted');
+            },
+            error: (err) => {
+                const errorMessage = err.error?.message;
+                this.snackBar.showSnackBar('Error: ' + errorMessage);
+            }
         });
     }
 
     toUpdateSocialPerformanceRecord(socialPerformancesRecord: SocialPerformanceRecord): void {
         this.originalActualValues[socialPerformancesRecord._id] = socialPerformancesRecord.actual_value;
         this.originalTargetValues[socialPerformancesRecord._id] = socialPerformancesRecord.target_value;
-        this.socialService.updateSocialPerformanceRecord(socialPerformancesRecord._id, socialPerformancesRecord).subscribe((): void => {
-            this.snackBar.showSnackBar('Social performance records updated');
-        }, (): void => {
-            this.snackBar.showSnackBar('Sorry,  something went wrong')
+        this.socialService.updateSocialPerformanceRecord(socialPerformancesRecord._id, socialPerformancesRecord).subscribe({
+            next: (): void => {
+                this.snackBar.showSnackBar('Social performance records updated');
+            },
+            error: (err): void => {
+                const errorMessage = err.error?.message;
+                this.snackBar.showSnackBar('Error: ' + errorMessage);
+            }
         });
 
     }

@@ -18,7 +18,7 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
     templateUrl: './add-user-window.component.html',
     styleUrls: ['./add-user-window.component.css']
 })
-export class AddUserWindowComponent implements OnChanges{
+export class AddUserWindowComponent implements OnChanges {
     creationForm!: FormGroup;
     @Input() user: User = null;
     @Output() close = new EventEmitter<boolean>();
@@ -71,7 +71,7 @@ export class AddUserWindowComponent implements OnChanges{
                 this.creationForm.value.email,
                 this.creationForm.value.role
             );
-            if (this.user != null){
+            if (this.user != null) {
                 this.userService.updateUser(user.code, user).subscribe(() => {
                     this.updatingSendIsLoading = false;
                     this.close.emit(true);
@@ -79,12 +79,16 @@ export class AddUserWindowComponent implements OnChanges{
                     return;
                 })
             }
-            this.userService.createUser(user).subscribe(() => {
-                this.updatingSendIsLoading = false;
-                this.close.emit(true);
-                this.snackBar.showSnackBar('User created successfully.');
-            }, () => {
-                this.snackBar.showSnackBar('Something went wrong');
+            this.userService.createUser(user).subscribe({
+                next: () => {
+                    this.updatingSendIsLoading = false;
+                    this.close.emit(true);
+                    this.snackBar.showSnackBar('User created successfully.');
+                },
+                error: (error) => {
+                    const errorMessage = error.error?.message;
+                    this.snackBar.showSnackBar('Error: ' + errorMessage);
+                }
             });
         } else {
             this.snackBar.showSnackBar('Form is invalid');

@@ -59,27 +59,39 @@ export class WelcomeAdminDashboardComponent implements OnInit {
     updateData() {
         this.updatingIsLoading = true;
 
-        this.salesmanService.importSeniorSalesmenFromOrangeHRM().subscribe(() => {
-            this.salesService.importSalesOrdersFromOpenCRX().subscribe(() => {
+        this.salesmanService.importSeniorSalesmenFromOrangeHRM().subscribe({
+            next: () => {
+                this.salesService.importSalesOrdersFromOpenCRX().subscribe({
+                    next: () => {
+                        this.updatingIsLoading = false;
+                        this.snackBar.showSnackBar('Data were updated successfully.');
+                    },
+                    error: (err): void => {
+                        this.updatingIsLoading = false;
+                        this.snackBar.showSnackBar('Error: ' + err.error?.message);
+                    }
+                });
+            },
+            error: (err): void => {
                 this.updatingIsLoading = false;
-                this.snackBar.showSnackBar('Data were updated successfully.');
-            }, (): void => {
-                this.updatingIsLoading = false;
-                this.snackBar.showSnackBar('Error while import data from OpenCRX.')
-            });
-        }, (): void => {
-            this.updatingIsLoading = false;
-            this.snackBar.showSnackBar('Error while import data from OrangeHRM.')
+                this.snackBar.showSnackBar('Error: ' + err.error?.message);
+            }
         });
     }
 
     sendAllBonusesToHRM() {
         this.updatingSendIsLoading = true;
 
-        this.bonusesService.sendAllBonusesToHRM().subscribe(() => {
-            this.updatingSendIsLoading = false;
-            this.snackBar.showSnackBar('Bonuses were sent to OrangeHRM');
-        }, (): void => this.snackBar.showSnackBar('Error while sending bonuses to OrangeHRM.'));
+        this.bonusesService.sendAllBonusesToHRM().subscribe({
+            next: () => {
+                this.updatingSendIsLoading = false;
+                this.snackBar.showSnackBar('Bonuses were sent to OrangeHRM');
+            },
+            error: (err): void => {
+                this.updatingSendIsLoading = false;
+                this.snackBar.showSnackBar('Error: ' + err.error?.message);
+            },
+        });
     }
 
     fetchUser() {
@@ -89,59 +101,75 @@ export class WelcomeAdminDashboardComponent implements OnInit {
     }
 
     fillReportsStatistics() {
-        this.bonusesService.getTotalReportsForCurrentYear().subscribe((response) => {
-            this.reportsForCurrentYearCount = response;
+        this.bonusesService.getTotalReportsForCurrentYear().subscribe({
+            next: (response) => {
+                this.reportsForCurrentYearCount = response;
 
-            this.bonusesService.getSignedByCEOReportsCountForCurrentYear().subscribe((response) => {
-                this.signedReportsByCEOForCurrentYearCount = response;
-                this.numberOfSignaturesByCeo = [this.signedReportsByCEOForCurrentYearCount,
-                    this.reportsForCurrentYearCount - this.signedReportsByCEOForCurrentYearCount]
+                this.bonusesService.getSignedByCEOReportsCountForCurrentYear().subscribe({
+                    next: (response) => {
+                        this.signedReportsByCEOForCurrentYearCount = response;
+                        this.numberOfSignaturesByCeo = [this.signedReportsByCEOForCurrentYearCount,
+                            this.reportsForCurrentYearCount - this.signedReportsByCEOForCurrentYearCount]
 
-                this.CEODataIsLoading = false;
-            }, (): void => this.snackBar.showSnackBar('Error while fetching bonuses signed by CEO.'));
+                        this.CEODataIsLoading = false;
+                    },
+                    error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+                });
 
-            this.bonusesService.getSignedByHRReportsCountForCurrentYear().subscribe((response) => {
-                this.signedReportsByHRForCurrentYearCount = response;
-                this.numberOfSignaturesByHr = [this.signedReportsByHRForCurrentYearCount,
-                    this.reportsForCurrentYearCount - this.signedReportsByHRForCurrentYearCount]
+                this.bonusesService.getSignedByHRReportsCountForCurrentYear().subscribe({
+                    next: (response) => {
+                        this.signedReportsByHRForCurrentYearCount = response;
+                        this.numberOfSignaturesByHr = [this.signedReportsByHRForCurrentYearCount,
+                            this.reportsForCurrentYearCount - this.signedReportsByHRForCurrentYearCount]
 
-                this.HRDataIsLoading = false;
-            }, (): void => this.snackBar.showSnackBar('Error while fetching bonuses signed by HR.'));
-        }, (): void => this.snackBar.showSnackBar('Error while fetching bonuses for current year.'));
+                        this.HRDataIsLoading = false;
+                    },
+                    error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+                });
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
 
-        this.bonusesService.getTotalReportsCount().subscribe((response) => {
-            this.reportsCount = response;
-        }, (): void => this.snackBar.showSnackBar('Error while getting total reports count.'));
+        this.bonusesService.getTotalReportsCount().subscribe({
+            next: (response) => this.reportsCount = response,
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
 
-        this.bonusesService.getBonusesByYearTop10().subscribe((response) => {
-            this.bonuses = response.map(bonus => bonus.totalBonus);
-            this.salesmenFullname = response.map(bonus => `${bonus.firstname} ${bonus.lastname}`);
-            this.top10IsLoading = false;
-        }, (): void => this.snackBar.showSnackBar('Error while getting top 10 bonuses.'));
-
+        this.bonusesService.getBonusesByYearTop10().subscribe({
+            next: (response) => {
+                this.bonuses = response.map(bonus => bonus.totalBonus);
+                this.salesmenFullname = response.map(bonus => `${bonus.firstname} ${bonus.lastname}`);
+                this.top10IsLoading = false;
+            },
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     fillRejectsStatistics() {
-        this.rejectionService.getRejectionsCountByCurrentYear().subscribe((response) => {
-            this.rejectionsForCurrentYearCount = response;
-        }, (): void => this.snackBar.showSnackBar('Error while fetching rejections.'));
+        this.rejectionService.getRejectionsCountByCurrentYear().subscribe({
+            next: (response) => this.rejectionsForCurrentYearCount = response,
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     fillUsersStatistics() {
-        this.userService.getUsersCount().subscribe((response) => {
-            this.usersCount = response;
-        }, (): void => this.snackBar.showSnackBar('Error while fetching users count.'));
+        this.userService.getUsersCount().subscribe({
+            next: (response) => this.usersCount = response,
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     fillSalesmanStatistics() {
-        this.salesmanService.getSalesmenCount().subscribe((response) => {
-            this.salesmenCount = response;
-        }, (): void => this.snackBar.showSnackBar('Error while fetching salesman statistics.'));
+        this.salesmanService.getSalesmenCount().subscribe({
+            next: (response) => this.salesmenCount = response,
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
     fillSalesOrdersStatistics() {
-        this.salesService.getSalesCountForCurrentYear().subscribe((response) => {
-            this.salesForCurrentYearCount = response;
-        }, (): void => this.snackBar.showSnackBar('Error while fetching sales count for current year.'));
+        this.salesService.getSalesCountForCurrentYear().subscribe({
+            next: (response) => this.salesForCurrentYearCount = response,
+            error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 }

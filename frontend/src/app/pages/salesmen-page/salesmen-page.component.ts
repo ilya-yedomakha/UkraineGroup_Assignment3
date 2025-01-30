@@ -16,9 +16,10 @@ export class SalesmenPageComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.salesmanService.getSalesmen().subscribe((response) => {
-            this.salesmen = response;
-        }, (): void => this.snackBarService.showSnackBar('Error loading salesmen'));
+        this.salesmanService.getSalesmen().subscribe({
+            next: (response) => this.salesmen = response,
+            error: (err): void => this.snackBarService.showSnackBar('Error: ' + err.error?.message),
+        });
     }
 
 }
