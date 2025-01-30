@@ -161,7 +161,7 @@ class salesmanApi {
     };
 
 
-    static calculateAllBonuses = async (req, res) => {
+    static calculateAllBonusesForCurrentYear = async (req, res) => {
         try {
             const salesmen = await salesmanService.getAllSalesman();
 

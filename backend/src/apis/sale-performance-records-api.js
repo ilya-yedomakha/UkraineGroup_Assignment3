@@ -121,19 +121,13 @@ class salePerformanceRecordApi {
                 }
             }
 
-            const currentYear = new Date().getUTCFullYear();
-
-            const filteredRecords = salesPerformanceRecords.filter(
-                (record) => record.activeYear === currentYear
-            );
-
             await salePerformanceRecordModel.deleteMany({});
-            await salePerformanceRecordModel.insertMany(filteredRecords);
+            await salePerformanceRecordModel.insertMany(salesPerformanceRecords);
 
-            if (filteredRecords.length > 0) {
-                res.status(200).send({apiStatus: true, message:"Sale performances from OpenCRX", data: filteredRecords});
+            if (salesPerformanceRecords.length > 0) {
+                res.status(200).send({apiStatus: true, message:"Sale performances from OpenCRX", data: salesPerformanceRecords});
             } else {
-                res.status(404).send({apiStatus: true, message:"There are no suitable sale orders to fetch for the year: "+ currentYear});
+                res.status(404).send({apiStatus: true, message:"There are no suitable sale orders to fetch"});
             }
         } catch (e) {
             res.status(500).send({apiStatus: false, message: e.message, data: e});
