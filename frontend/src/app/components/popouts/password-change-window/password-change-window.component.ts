@@ -51,19 +51,19 @@ changePasswordForm!: FormGroup;
 
         this.updatingSendIsLoading = true;
 
-        //перший параметр не потрібний, оскільки ми беремо код юзера з поточної сесії(бо це робиться для самого себе)
-        // this.userService.changePassword(this., this.changePasswordForm.value.currentPassword, this.changePasswordForm.value.newPassword)
-        //   .subscribe({
-        //     next: () => {
-        //       this.updatingSendIsLoading = false;
-        //       this.close.emit(true);
-        //       this.snackBar.showSnackBar('Password changed successfully.');
-        //     },
-        //     error: (err) => {
-        //       this.updatingSendIsLoading = false;
-        //       this.snackBar.showSnackBar('Error changing password: ' + err.message);
-        //     }
-        //   });
+        this.userService.changePassword(this.changePasswordForm.value.currentPassword, this.changePasswordForm.value.newPassword)
+           .subscribe({
+             next: () => {
+               this.updatingSendIsLoading = false;
+               this.close.emit(true);
+               this.snackBar.showSnackBar('Password changed successfully.');
+             },
+             error: (err) => {
+              const errorMessage = err.error?.message;
+               this.updatingSendIsLoading = false;
+               this.snackBar.showSnackBar('Error changing password: ' + errorMessage);
+             }
+           });
       } else {
         this.snackBar.showSnackBar('Form is invalid');
       }

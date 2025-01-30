@@ -11,6 +11,7 @@ import { SalesmenPageComponent } from './pages/salesmen-page/salesmen-page.compo
 import {ForbiddenPageComponent} from './pages/forbiden-page/forbidden-page.component';
 import {WelcomeAdminDashboardComponent} from './pages/welcome-admin-dashboard/welcome-admin-dashboard.component';
 import {UsersPageComponent} from './pages/users-page/users-page.component';
+import { AdminCabinetPageComponent } from './pages/admin-cabinet-page/admin-cabinet-page.component';
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -28,6 +29,7 @@ const routes: Routes = [
     {path: 'bonuses-details', component: ChangeBonusesPageComponent},
     {path: 'cabinet/:code', component: SalesmanCabinetPageComponent, canActivate: [AuthGuardService]},
     {path: 'cabinet', component: SalesmanCabinetPageComponent, canActivate: [AuthGuardService]},
+    {path: 'admin-cabinet', component: AdminCabinetPageComponent, canActivate: [AuthGuardService]},
     {path: '', component: LandingPageComponent},
     {path: 'forbidden', component: ForbiddenPageComponent},
     {path: 'welcome-admin-dashboard', component: WelcomeAdminDashboardComponent},

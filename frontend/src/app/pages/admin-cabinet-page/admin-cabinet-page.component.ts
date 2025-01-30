@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { User } from 'src/app/models/User';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-admin-cabinet-page',
@@ -7,4 +9,19 @@ import { Component } from '@angular/core';
 })
 export class AdminCabinetPageComponent {
 
+  isPasswordChangeWindowIsVisible: boolean = false;
+  user:User;
+  private userService = inject(UserService);
+
+
+  public ngOnInit(): void {
+    this.fetchUser();
+}
+
+
+fetchUser(): void {
+  this.userService.getOwnUser().subscribe((user): void => {
+      this.user = user;
+  });
+}
 }
