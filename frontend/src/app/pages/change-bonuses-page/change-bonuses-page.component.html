@@ -30,7 +30,7 @@
                     </button>
 
                     <button class="bg-[#232023] ml-2 p-2 rounded-lg text-yellow-100 font-semibold self-center w-auto hover:text-yellow-200 hover:scale-110 hover:shadow-sm"
-                            *ngIf="user.role === 1 && bonusesData.isConfirmedByCEO && bonusesData.isConfirmedByHR"
+                            *ngIf="user.role === 1 && bonusesData.isConfirmedByCEO && bonusesData.isConfirmedByHR && bonusesData.isSent"
                             [disabled] = "HRMSendLoading"
                             (click)="updateOldHRMBonusById()"
                     >Send this new data to OrangeHRM
