@@ -48,4 +48,13 @@ export class UserService {
             userUPD,
             {withCredentials: true}).pipe(map(o => o.message));
     }
+
+    changePassword(oldPassword: string, newPassword: string){
+        return this.http.put<any>(environment.apiEndpoint + `/users/password/change/`,
+            {
+                oldPassword: oldPassword,
+                newPassword: newPassword
+            },
+            {withCredentials: true}).pipe(map(o => o.message));
+    }
 }

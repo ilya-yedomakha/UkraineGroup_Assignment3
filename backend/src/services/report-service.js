@@ -89,7 +89,7 @@ class ReportService {
             throw new Error(e.message)
         }
     }
-
+// TODO what?
     static recalculateSingleBonus = async function (report){
         try {
             report
