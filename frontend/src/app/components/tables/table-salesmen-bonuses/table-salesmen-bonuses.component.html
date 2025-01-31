@@ -2,9 +2,18 @@
     <div class="policy-container content-center border">
         <div class="bg-black rounded-t-lg">
             <div
-                [ngClass]="{'grid-cols-8': userRole === 0,
-             'grid-cols-9': userRole === 1}"
-                class="grid gap-2 text-center text-yellow-50 font-bold text-lg mb-6 px-2 mx-2">
+                [ngClass]="{'grid-cols-9': userRole === 0,
+                            'grid-cols-10': userRole === 1}"
+                class="grid gap-2 items-center text-center text-yellow-50 font-bold text-lg mb-4 px-2 mx-2"
+                [style.gridTemplateColumns]="userRole === 1 ? '80px repeat(9, 1fr)' : (userRole === 0 ? '90px repeat(8, 1fr)' : 'repeat(8, 1fr)')">
+                <span *ngIf="userRole !== 2" class="heading">
+                    Select All
+                    <br>
+                    <input type="checkbox"
+                       [checked]="isAllSelected"
+                       (change)="onGeneralCheckboxChange($event.target.checked)"
+                       class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"/>
+                </span>
                 <span class="heading">Firstname</span>
                 <span class="heading">Lastname</span>
                 <span class="heading">Bonuses for sales</span>
@@ -13,15 +22,7 @@
                 <span class="heading">Salesman confirmation</span>
                 <span *ngIf="userRole === 1" class="heading">CEO confirmation</span>
                 <span *ngIf="userRole === 0 || userRole === 1" class="heading">Remark confirmation</span>
-                <span class="heading">
-                    Action
-                    <br>
-                <input type="checkbox"
-                       *ngIf="userRole !== 2"
-                       [checked]="isAllSelected"
-                       (change)="onGeneralCheckboxChange($event.target.checked)"
-                       class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"/>
-                </span>
+                <span class="heading">Action</span>
             </div>
         </div>
 
@@ -30,9 +31,18 @@
              'bg-gray-300 text-black': !bonus.isConfirmedByCEO && userRole === 0 || !bonus.isConfirmedByHR && userRole === 1,
              'rounded-br-none': hasRejectionForBonus(bonus._id),
              'rounded-br-lg': !hasRejectionForBonus(bonus._id),
-             'grid-cols-8': userRole === 0,
-             'grid-cols-9': userRole === 1}"
-                 class="policy grid gap-2 items-center py-4 px-2 rounded-lg rounded-br-none shadow-md mt-4 mx-2 hover:shadow-lg transition-shadow border-2 border-black">
+             'grid-cols-9': userRole === 0,
+             'grid-cols-10': userRole === 1}"
+                 class="policy grid gap-2 items-center py-4 px-2 rounded-lg rounded-br-none shadow-md mt-4 mx-2 hover:shadow-lg transition-shadow border-2 border-black"
+                 [style.gridTemplateColumns]="userRole === 1 ? '80px repeat(9, 1fr)' : (userRole === 0 ? '90px repeat(8, 1fr)' : 'repeat(8, 1fr)')">
+
+                <span class="flex-1 text-center">
+                    <input type="checkbox"
+                           [disabled]="userRole === 1 && bonus.isConfirmedByCEO"
+                           [checked]="getIsConfirmedActual(bonus._id)"
+                           (change)="onCheckboxChange(bonus._id, $event.target.checked)"
+                           class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"/>
+                </span>
 
                 <span class="flex-1 text-center">{{ bonus.firstname }}</span>
 
@@ -45,22 +55,22 @@
                 <span class="flex-1 text-center">{{ bonus.getTotalBonuses() }}</span>
 
                 <span class="flex-1 text-center">
-            <svg *ngIf="bonus.isConfirmedBySalesman" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                 fill="white"
-                 viewBox="0 0 24 24">
-                <path
-                    d="M20.285 6.709c.391.39.391 1.023 0 1.414l-11 11c-.391.391-1.023.391-1.414 0l-5-5c-.391-.391-.391-1.023 0-1.414s1.023-.391 1.414 0l4.293 4.293 10.293-10.293c.391-.391 1.023-.391 1.414 0z"/>
-            </svg>
-                <svg *ngIf="!bonus.isConfirmedBySalesman" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                     fill="red" viewBox="0 0 24 24">
-                    <path
-                        d="M12 10.586l4.95-4.95c.391-.391 1.023-.391 1.414 0s.391 1.023 0 1.414l-4.95 4.95 4.95 4.95c.391.391.391 1.023 0 1.414s-1.023.391-1.414 0l-4.95-4.95-4.95 4.95c-.391.391-1.023.391-1.414 0s-.391-1.023 0-1.414l4.95-4.95-4.95-4.95c-.391-.391-.391-1.023 0-1.414s1.023-.391 1.414 0l4.95 4.95z"/>
-                </svg>
+                    <svg *ngIf="bonus.isConfirmedBySalesman" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         [attr.fill]="bonus.isConfirmedByCEO && userRole === 0 || bonus.isConfirmedByHR && userRole === 1 ? 'white' : 'green'"
+                         viewBox="0 0 24 24">
+                        <path
+                            d="M20.285 6.709c.391.39.391 1.023 0 1.414l-11 11c-.391.391-1.023.391-1.414 0l-5-5c-.391-.391-.391-1.023 0-1.414s1.023-.391 1.414 0l4.293 4.293 10.293-10.293c.391-.391 1.023-.391 1.414 0z"/>
+                    </svg>
+                    <svg *ngIf="!bonus.isConfirmedBySalesman" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         fill="red" viewBox="0 0 24 24">
+                        <path
+                            d="M12 10.586l4.95-4.95c.391-.391 1.023-.391 1.414 0s.391 1.023 0 1.414l-4.95 4.95 4.95 4.95c.391.391.391 1.023 0 1.414s-1.023.391-1.414 0l-4.95-4.95-4.95 4.95c-.391.391-1.023.391-1.414 0s-.391-1.023 0-1.414l4.95-4.95-4.95-4.95c-.391-.391-.391-1.023 0-1.414s1.023-.391 1.414 0l4.95 4.95z"/>
+                    </svg>
                 </span>
 
                 <span *ngIf="userRole === 1" class="flex-1 text-center">
                     <svg *ngIf="bonus.isConfirmedByCEO" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                         fill="white"
+                         [attr.fill]="bonus.isConfirmedByCEO && userRole === 0 || bonus.isConfirmedByHR && userRole === 1 ? 'white' : 'green'"
                          viewBox="0 0 24 24">
                         <path
                             d="M20.285 6.709c.391.39.391 1.023 0 1.414l-11 11c-.391.391-1.023.391-1.414 0l-5-5c-.391-.391-.391-1.023 0-1.414s1.023-.391 1.414 0l4.293 4.293 10.293-10.293c.391-.391 1.023-.391 1.414 0z"/>
@@ -74,7 +84,7 @@
 
                 <span class="flex-1 text-center">
                     <svg *ngIf="bonus.isRemarkConfirmedByHR" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                         fill="white"
+                         [attr.fill]="bonus.isConfirmedByCEO && userRole === 0 || bonus.isConfirmedByHR && userRole === 1 ? 'white' : 'green'"
                          viewBox="0 0 24 24">
                         <path
                             d="M20.285 6.709c.391.39.391 1.023 0 1.414l-11 11c-.391.391-1.023.391-1.414 0l-5-5c-.391-.391-.391-1.023 0-1.414s1.023-.391 1.414 0l4.293 4.293 10.293-10.293c.391-.391 1.023-.391 1.414 0z"/>
@@ -98,11 +108,6 @@
                             class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-300">
                         Edit
                     </button>
-                    <input type="checkbox"
-                           [disabled]="userRole === 1 && bonus.isConfirmedByCEO"
-                           [checked]="getIsConfirmedActual(bonus._id)"
-                           (change)="onCheckboxChange(bonus._id, $event.target.checked)"
-                           class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"/>
                 </span>
             </div>
             <div *ngIf="hasRejectionForBonus(bonus._id)" class="flex justify-end">

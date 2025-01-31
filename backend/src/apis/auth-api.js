@@ -23,9 +23,9 @@ exports.login = function (req, res) {
         authService.authenticate(req.session, user); //mark session as authenticated
         // const token = jwt.sign({user.username}, environment.SECRET_KEY, {expiresIn: '1h'});
         // res.send({message: 'login successful', token: token});
-        res.status(200).send({apiStatus: true, message: 'Login successful'});
+        res.status(200).send('Login successful');
     }).catch(_ => {
-        res.status(401).send({apiStatus: false, message: 'Login failed'});
+        res.status(401).send('Login failed');
     })
 }
 

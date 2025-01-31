@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Credentials} from '../../models/Credentials';
 import {Router} from '@angular/router';
-import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
     selector: 'app-login',
@@ -16,7 +15,8 @@ export class LoginComponent implements OnInit {
 
     loginError: string;
 
-    constructor(private authService: AuthService, private router: Router) { }
+    constructor(private authService: AuthService, private router: Router) {
+    }
 
     ngOnInit(): void {
         this.resetCredentials();
@@ -25,32 +25,31 @@ export class LoginComponent implements OnInit {
     /**
      * handles login operation, by calling the authService
      */
-    performLogin(): void{
-        this.authService.login(this.credentials).subscribe((response): void => {
-            if (response.status === 200){ // if response status is 200, assume login was successful
-                this.resetCredentials();
-                this.enterApplication();
-            }else{
-                this.loginError = response.body as string;
-            }
-        },
-        (error: HttpErrorResponse): void => {
-            this.loginError = error.error as string;
-        }
-        );
+    performLogin(): void {
+        this.authService.login(this.credentials).subscribe({
+            next: (response): void => {
+                if (response.status === 200) { // if response status is 200, assume login was successful
+                    this.resetCredentials();
+                    this.enterApplication();
+                } else {
+                    this.loginError = response.body as string;
+                }
+            },
+            error: (error): string => this.loginError = error.error as string
+        });
     }
 
     /**
      * resets login form
      */
-    resetCredentials(): void{
+    resetCredentials(): void {
         this.credentials = new Credentials('', '');
     }
 
     /**
      * redirects to the landing page
      */
-    enterApplication(): void{
+    enterApplication(): void {
         void this.router.navigate(['']).then((): void => {
             location.reload();
         });
