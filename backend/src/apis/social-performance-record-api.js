@@ -1,5 +1,4 @@
 const socialPerformanceRecordModel = require("../models/SocialPerformanceRecord")
-require("../models/SalesMan");
 const SocialPerformanceRecordService = require("../services/social-performance-record-service")
 
 class socialPerformanceRecordApi {
@@ -9,7 +8,7 @@ class socialPerformanceRecordApi {
             const data = await socialPerformanceRecordModel.find()
             res.status(200).send({apiStatus: true, message: "all social performance records were found", data: data})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -25,7 +24,7 @@ class socialPerformanceRecordApi {
             else
                 res.status(404).send({apiStatus: false, message: "Social performance record not found"})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -44,7 +43,7 @@ class socialPerformanceRecordApi {
                 data: data
             })
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -60,7 +59,7 @@ class socialPerformanceRecordApi {
                 message: "Social performance record deleted",
             })
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e})
+            return res.status(500).send({message: 'Server error, try again later', data: e})
         }
     }
 
@@ -76,7 +75,7 @@ class socialPerformanceRecordApi {
                 message: "Social performance record deleted",
             })
         } catch (e) {
-            return res.status(500).send({apiStatus: false, message: e.message, data: e})
+            return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -93,7 +92,7 @@ class socialPerformanceRecordApi {
             return res.status(200).send({apiStatus: true, message: "Social Performance was found", data: recordUpdated});
 
         } catch (e) {
-            return res.status(500).send({apiStatus: false, message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     }
 

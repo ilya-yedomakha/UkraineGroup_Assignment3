@@ -32,7 +32,7 @@ class salesmanApi {
             }
 
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -41,7 +41,7 @@ class salesmanApi {
             const salesman = await salesmanService.getAllSalesman();
             res.status(200).send({apiStatus: true, message: "All salesmen fetched", data: salesman})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -50,7 +50,7 @@ class salesmanApi {
             const salesman = await salesmanModel.countDocuments();
             res.status(200).send({apiStatus: true, message: "All salesmen count fetched", data: salesman})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -128,10 +128,10 @@ class salesmanApi {
                     data: savedEmployees
                 });
             } catch (e) {
-                return res.status(500).send({apiStatus: false, message: 'Error saving data', error: e.message});
+                return res.status(500).send({apiStatus: false, message: 'Error saving data', error: 'Server error, try again later'});
             }
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e});
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     };
 
@@ -184,14 +184,14 @@ class salesmanApi {
 
                     await salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances, new Date().getUTCFullYear());
                 } catch (e) {
-                    return res.status(500).send({apiStatus: false, message: e.message, data: e});
+                    return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
                 }
             }
 
             return res.status(200).send({apiStatus: true, message: 'Bonuses calculated successfully'});
 
         } catch (e) {
-            return res.status(500).send({apiStatus: false, message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     }
 
@@ -271,7 +271,7 @@ class salesmanApi {
                 data: responses,
             });
         } catch (e) {
-            return res.status(500).send({apiStatus: false, message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     };
 
@@ -296,7 +296,7 @@ class salesmanApi {
 
         } catch (e) {
             const statusCode = e.status || 500;
-            res.status(statusCode).send({apiStatus: false, message: e.message, data: e});
+            res.status(statusCode).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     }
 

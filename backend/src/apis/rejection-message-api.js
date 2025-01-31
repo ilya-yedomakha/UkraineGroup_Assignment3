@@ -22,7 +22,7 @@ class RejectionMessageApi {
             });
         } catch (e) {
             const statusCode = e.status || 500;
-            res.status(statusCode).send({apiStatus: false, message: e.message, data: e});
+            res.status(statusCode).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     }
 
@@ -41,7 +41,7 @@ class RejectionMessageApi {
                 data: data
             })
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -57,7 +57,7 @@ class RejectionMessageApi {
             else
                 res.status(404).send({apiStatus: false, message: "Rejection message not found"})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -73,7 +73,7 @@ class RejectionMessageApi {
             else
                 res.status(404).send({apiStatus: false, message: "Rejection messages for the year " + req.params.year + "was not found"})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -89,7 +89,7 @@ class RejectionMessageApi {
             else
                 res.status(404).send({apiStatus: false, message: "Rejection messages count for the year " + new Date().getFullYear() + "was not calculated"})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -105,7 +105,7 @@ class RejectionMessageApi {
                 message: "Rejection message was deleted",
             })
         } catch (e) {
-            return res.status(500).send({message: e.message, data: e})
+            return res.status(500).send({message: 'Server error, try again later', data: e})
         }
     }
 
@@ -121,7 +121,7 @@ class RejectionMessageApi {
                 message: "Rejection message deleted",
             })
         } catch (e) {
-            return res.status(500).send({apiStatus: false, message: e.message, data: e})
+            return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -137,7 +137,7 @@ class RejectionMessageApi {
                 message: "Rejection message deleted",
             })
         } catch (e) {
-            return res.status(500).send({apiStatus: false, message: e.message, data: e})
+            return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 }

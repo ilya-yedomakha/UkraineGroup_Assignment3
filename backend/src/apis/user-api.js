@@ -8,7 +8,6 @@ const userService = require("../services/user-service")
 const mongoose = require("mongoose");
 const generator = require('generate-password');
 const {default: environment_ilya} = require("../../environments/environment_ilya");
-const salesmanModel = require("../models/SalesMan");
 const nodemailer = require("nodemailer");
 const authService = require("../services/auth-service");
 exports.getSelf = async function (req, res) {
@@ -257,7 +256,7 @@ exports.changePassword = async function (req, res) {
     } catch (error) {
         res.status(400).send({
             apiStatus: false,
-            message: error.message,
+            message: 'Error while updating the user password',
         });
     }
 };

@@ -1,8 +1,6 @@
-const salesmanModel = require("../models/SalesMan")
 const salePerformanceRecordModel = require("../models/SalePerformanceRecord")
 
 const axios = require('axios');
-const salesmanService = require("../services/salesman-service");
 
 let environment;
 if(process.env.NODE_ENV === 'development'){
@@ -130,7 +128,7 @@ class salePerformanceRecordApi {
                 res.status(404).send({apiStatus: true, message:"There are no suitable sale orders to fetch"});
             }
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e});
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     };
 
@@ -139,7 +137,7 @@ class salePerformanceRecordApi {
             const salesman = await salePerformanceRecordModel.find();
             res.status(200).send({apiStatus: true, message: "All sales data fetched", data: salesman})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     };
 
@@ -148,7 +146,7 @@ class salePerformanceRecordApi {
             const salesman = await salePerformanceRecordModel.countDocuments({activeYear: new Date().getFullYear()});
             res.status(200).send({apiStatus: true, message: "All sales data fetched", data: salesman})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     };
 
@@ -157,7 +155,7 @@ class salePerformanceRecordApi {
             const saleOrder = await salePerformanceRecordModel.find({salesmanGovId: req.params.code});
             res.status(200).send({apiStatus: true, message: "All sales data fetched for salesman: "+ req.params.code, data: saleOrder})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     };
 

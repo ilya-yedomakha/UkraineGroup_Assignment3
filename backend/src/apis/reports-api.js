@@ -27,7 +27,7 @@ class reportApi {
             const reports = await ReportModel.find();
             res.status(200).send({apiStatus: true, message: "All reports fetched", data: reports})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -45,7 +45,7 @@ class reportApi {
                 data: reports
             })
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -61,7 +61,7 @@ class reportApi {
                 data: reports
             })
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -77,7 +77,7 @@ class reportApi {
             else
                 res.status(404).send({apiStatus: false, message: "Report record not found"})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -93,7 +93,7 @@ class reportApi {
             else
                 res.status(404).send({apiStatus: false, message: "Report record not found"})
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
 
@@ -112,7 +112,7 @@ class reportApi {
                 data: data
             })
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e})
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e})
         }
     }
     static updateReport = async (req, res) => {
@@ -135,9 +135,9 @@ class reportApi {
 
         } catch (e) {
             if (e.code === 400) {
-                return res.status(400).send({apiStatus: false, message: e.message});
+                return res.status(400).send({apiStatus: false, message: 'Not found'});
             }
-            return res.status(500).send({apiStatus: false, message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     }
 
@@ -146,13 +146,13 @@ class reportApi {
             const idArray = req.body.ids;
 
             if (!Array.isArray(idArray) || idArray.length === 0) {
-                return res.status(400).json({error: 'Invalid or empty IDs array'});
+                return res.status(400).json({apiStatus: false, message: 'Invalid or empty IDs array'});
             }
 
             const reports = await ReportModel.find({_id: {$in: idArray}});
 
             if (!reports || reports.length === 0) {
-                return res.status(404).json({error: 'No reports found for the provided IDs'});
+                return res.status(404).json({apiStatus: false, message: 'No reports found for the provided IDs'});
             }
 
             const foundIds = reports.map(report => report._id.toString());
@@ -161,7 +161,7 @@ class reportApi {
 
             if (missingIds.length > 0) {
                 return res.status(404).json({
-                    error: 'Some IDs were not found',
+                    apiStatus: false, message: 'Some IDs were not found',
                     missingIds,
                 });
             }
@@ -201,13 +201,13 @@ class reportApi {
                     result = await reportService.confirmationReverseWithIdsArrayBbyHR(reports);
                     break;
                 default:
-                    return res.status(403).json({error: 'Unauthorized role'});
+                    return res.status(403).json({apiStatus: false, message: 'Unauthorized role'});
             }
 
             res.status(200).json({message: 'Reports processed successfully', result});
         } catch (error) {
             console.error('Error processing reports:', error);
-            res.status(500).json({error: 'Internal server error'});
+            res.status(500).json({apiStatus: false, message: 'Internal server error'});
         }
     };
 
@@ -254,7 +254,7 @@ class reportApi {
             const reports = await ReportModel.findOne({_id: req.params.id});
 
             if (!reports) {
-                return res.status(404).json({error: 'No reports found for the provided ID'});
+                return res.status(404).json({apiStatus: false, message: 'No reports found for the provided ID'});
             }
 
             let result;
@@ -279,13 +279,13 @@ class reportApi {
                     result = await reportService.reverseConfirmSingleReportByHR(reports);
                     break;
                 default:
-                    return res.status(403).json({error: 'Unauthorized role'});
+                    return res.status(403).json({apiStatus: false, message: 'Unauthorized role'});
             }
 
             res.status(200).json({message: 'Report processed successfully', data: result});
         } catch (error) {
             console.error('Error processing report:', error);
-            res.status(500).json({error: 'Internal server error'});
+            res.status(500).json({apiStatus: false, message: 'Internal server error'});
         }
     };
 
@@ -310,7 +310,7 @@ class reportApi {
                 data: reports,
             });
         } catch (e) {
-            res.status(500).send({apiStatus: false, message: e.message, data: e});
+            res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     };
 
@@ -334,7 +334,7 @@ class reportApi {
                 message: "Report deleted",
             });
         } catch (e) {
-            return res.status(500).send({apiStatus: false, message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     };
 
@@ -355,7 +355,7 @@ class reportApi {
             const salesman = await salesmanModel.findOne({code: report.salesman_code});
             let updReport;
             if (!salesman) {
-                return res.status(404).send({apiStatus: false, message: 'No salesaman found'});
+                return res.status(404).send({apiStatus: false, message: 'No salesman found'});
             }
 
             try {
@@ -370,13 +370,13 @@ class reportApi {
 
                 updReport = await salesmanService.calculateSalesmanBonusForSalesman(salesman, salesPerformances, socialPerformances, report.year);
             } catch (e) {
-                return res.status(500).send({apiStatus: false, message: e.message, data: e});
+                return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
             }
 
             return res.status(200).send({apiStatus: true, message: 'Bonus recalculated successfully', data: updReport});
 
         } catch (e) {
-            return res.status(500).send({apiStatus: false, message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     }
 
@@ -448,9 +448,9 @@ class reportApi {
 
         } catch (e) {
             if (e.code === 400) {
-                return res.status(400).send({apiStatus: false, message: e.message});
+                return res.status(400).send({apiStatus: false, message: 'Not found'});
             }
-            return res.status(500).send({apiStatus: false, message: e.message, data: e});
+            return res.status(500).send({apiStatus: false, message: 'Server error, try again later', data: e});
         }
     };
 
@@ -467,7 +467,7 @@ class reportApi {
         } catch (e) {
             res.status(500).send({
                 apiStatus: false,
-                message: e.message,
+                message: 'Server error, try again later',
                 data: e
             });
         }
@@ -485,7 +485,7 @@ class reportApi {
         } catch (e) {
             res.status(500).send({
                 apiStatus: false,
-                message: e.message,
+                message: 'Server error, try again later',
                 data: e
             });
         }
@@ -503,7 +503,7 @@ class reportApi {
         } catch (e) {
             res.status(500).send({
                 apiStatus: false,
-                message: e.message,
+                message: 'Server error, try again later',
                 data: e
             });
         }
@@ -521,7 +521,7 @@ class reportApi {
         } catch (e) {
             res.status(500).send({
                 apiStatus: false,
-                message: e.message,
+                message: 'Server error, try again later',
                 data: e
             });
         }
@@ -539,7 +539,7 @@ class reportApi {
         } catch (e) {
             res.status(500).send({
                 apiStatus: false,
-                message: e.message,
+                message: 'Server error, try again later',
                 data: e
             });
         }
@@ -557,7 +557,7 @@ class reportApi {
         } catch (e) {
             res.status(500).send({
                 apiStatus: false,
-                message: e.message,
+                message: 'Server error, try again later',
                 data: e
             });
         }
@@ -569,7 +569,7 @@ class reportApi {
 
             const report = await ReportModel.findById(id);
             if (!report) {
-                return res.status(404).json({error: "Report not found."});
+                return res.status(404).json({apiStatus: false, message: "Report not found."});
             }
 
             if (!report.isConfirmedByCEO || !report.isConfirmedByHR) {
@@ -592,7 +592,7 @@ class reportApi {
             if (environment_ilya) {
                 const salesman = await salesmanModel.findOne({code: report.salesman_code});
                 if (!salesman) {
-                    return res.status(404).send({apiStatus: false, message: 'No salesaman found'});
+                    return res.status(404).send({apiStatus: false, message: 'No salesman found'});
                 }
 
                 const transporter = nodemailer.createTransport({
@@ -612,7 +612,7 @@ class reportApi {
 
                 transporter.sendMail(mailOptions, async (error, info) => {
                     if (error) {
-                        return res.status(500).json({error: "Failed to send email."});
+                        return res.status(500).json({apiStatus: false, message: "Failed to send email."});
                     } else {
                         return res.status(200).json({
                             apiStatus: true,
@@ -629,8 +629,7 @@ class reportApi {
                 });
             }
         } catch (err) {
-            console.error("Unexpected error:", err);
-            return res.status(500).json({error: "Internal Server Error."});
+            return res.status(500).json({apiStatus: false, message: "Internal Server Error."});
         }
     };
 

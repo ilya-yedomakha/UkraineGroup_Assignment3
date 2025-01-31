@@ -23,9 +23,9 @@ exports.login = function (req, res) {
         authService.authenticate(req.session, user); //mark session as authenticated
         // const token = jwt.sign({user.username}, environment.SECRET_KEY, {expiresIn: '1h'});
         // res.send({message: 'login successful', token: token});
-        res.send('login successful');
+        res.status(200).send({apiStatus: true, message: 'Login successful'});
     }).catch(_ => {
-        res.status(401).send('login failed');
+        res.status(401).send({apiStatus: false, message: 'Login failed'});
     })
 }
 
@@ -37,7 +37,7 @@ exports.login = function (req, res) {
  */
 exports.logout = function (req, res) {
     authService.deAuthenticate(req.session); //destroy session
-    res.send('logout successful');
+    res.status(200).send({apiStatus: true, message: 'logout successful'});
 }
 
 /**
