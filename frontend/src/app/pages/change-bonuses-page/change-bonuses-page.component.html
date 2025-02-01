@@ -108,7 +108,7 @@
         </button>
         <button class=" ml-2 bg-green-400 rounded-lg p-2 w-24 transition-all duration-300 ease-in-out hover:bg-green-500 hover:scale-105"
                 [disabled] = "updatingConfirmRemarkIsLoading"
-                *ngIf="user.role === 1 && bonusesData.isConfirmedByCEO"
+                *ngIf="user.role === 1 && bonusesData.isConfirmedByCEO && !bonusesData.isRemarkConfirmedByHR"
                 (click)="confirmRemark()"
         >Confirm remark
             <svg *ngIf="updatingConfirmRemarkIsLoading"

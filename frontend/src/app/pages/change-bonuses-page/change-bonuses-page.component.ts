@@ -148,6 +148,7 @@ export class ChangeBonusesPageComponent implements OnInit {
         this.bonusesService.singleRemarkConfirmAndEmailSend(this.bonusesData._id).subscribe({
             next: (): void => {
                 this.updatingConfirmRemarkIsLoading = false;
+                this.bonusesData.isRemarkConfirmedByHR = true;
                 this.dataChange.emit(true);
                 this.snackBar.showSnackBar('Remark has been successfully confirmed and an email was sent to a corresponding salesman!');
                 this.updateData();

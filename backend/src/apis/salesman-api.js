@@ -195,7 +195,7 @@ class salesmanApi {
         }
     }
 
-    static sendAllBonusesToHRM = async (req, res) => {
+    static sendAllConfirmedByCEOCurrentYearBonusesToHRM = async (req, res) => {
         try {
             const tokenBody = {
                 client_id: 'api_oauth_id',
@@ -221,7 +221,7 @@ class salesmanApi {
                 return res.status(500).send({apiStatus: true, message: 'Access token not found in response'});
             }
 
-            const reports = await ReportModel.find({isConfirmedByCEO: true});
+            const reports = await ReportModel.find({isConfirmedByCEO: true, year: new Date().getFullYear()});
 
             if (reports.length === 0) {
                 return res.status(404).send({message: 'No reports found to process'});

@@ -30,7 +30,7 @@ router.post("/send-bonuses-orangeHRM",
     //#swagger.description = 'Send all bonuses to OrangeHRM'
     //#swagger.summary = 'Send all bonuses to OrangeHRM'
     // #swagger.tags = ['Salesmen']
-    checkAuthorization([1]), SalesManController.sendAllBonusesToHRM)
+    checkAuthorization([1]), SalesManController.sendAllConfirmedByCEOCurrentYearBonusesToHRM)
 
 router.post("/:code/social_performance_record",
     //#swagger.description = 'Create social performance record'
