@@ -16,6 +16,7 @@ export class AuthService {
 
     loggedIn = false;
     authPreCheck = false;
+    userRole: number | null = null;
     listeners: ((param: boolean) => void)[] = [];
 
     constructor(private http: HttpClient) {
@@ -28,7 +29,8 @@ export class AuthService {
         if (!this.authPreCheck) {
             return this.checkLogin()
                 .pipe(
-                    map((response: HttpResponse<{ loggedIn: boolean }>): boolean => {
+                    map((response: HttpResponse<{ loggedIn: boolean, role: number }>): boolean => {
+                        this.userRole = response.body.role;
                         this.emitLoginChange(response.body.loggedIn);
                         return response.body.loggedIn;
                     })
@@ -38,6 +40,10 @@ export class AuthService {
             observer.next(this.loggedIn);
             observer.complete();
         });
+    }
+
+    getUserRole(): number | null {
+        return this.userRole;
     }
 
     /**
@@ -101,6 +107,7 @@ export class AuthService {
             tap((response): void => {
                 if (response.status === 200) {
                     this.loggedIn = false;
+                    this.userRole = null;
                     this.emitLoginChange(false);
                 }
             })

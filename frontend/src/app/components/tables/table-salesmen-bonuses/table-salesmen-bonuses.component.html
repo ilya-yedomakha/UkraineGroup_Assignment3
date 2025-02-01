@@ -112,14 +112,12 @@
             </div>
             <div *ngIf="hasRejectionForBonus(bonus._id)" class="flex justify-end">
                 <div [ngClass]="{
-                'font-bold': bonus.isConfirmedByCEO,
-                 'font-normal': !bonus.isConfirmedByCEO,
                   'truncate overflow-hidden whitespace-nowrap': !isClicked,
                   'whitespace-normal overflow-visible': isClicked}"
                      (click)="isClicked = !isClicked"
-                     class="policy bg-white text-black cursor-pointer gap-2 items-center py-2 px-2 shadow-md mx-2 hover:shadow-lg transition-shadow border-l-2 border-r-2 border-b-2 border-black w-11/12 rounded-b-lg"
+                     class="policy bg-white cursor-pointer gap-2 items-center py-2 px-2 shadow-md mx-2 hover:shadow-lg transition-shadow border-l-2 border-r-2 border-b-2 border-black w-11/12 rounded-b-lg"
                      [@fadeToggle]="isClicked ? 'visible' : 'hidden'">
-                    <i>{{ rejectionMessage.message }}</i>
+                    <i><strong>Salesman feedback: </strong>{{ rejectionMessage.message }}</i>
                 </div>
             </div>
         </div>

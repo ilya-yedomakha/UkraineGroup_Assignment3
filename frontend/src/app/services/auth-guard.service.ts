@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import {ActivatedRouteSnapshot, Router} from '@angular/router';
 import {AuthService} from './auth.service';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -15,15 +15,20 @@ export class AuthGuardService {
 
     constructor(private authService: AuthService, private router: Router) { }
 
-    canActivate(): Observable<boolean> {
+    canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     // mapping isLoggedIn():Observable to this function:
         return this.authService.isLoggedIn()
             .pipe(
-                map((state): boolean => {
-                    if (!state) { // go back to login, if user is not allowed to enter
+                map((loggedIn): boolean => {
+                    const userRole = this.authService.getUserRole();
+                    const allowedRoles = route.data['roles'] as number[];
+
+                    if (!loggedIn) { // go back to login, if user is not allowed to enter
                         void this.router.navigate(['login']);
+                    } else if (!allowedRoles.includes(userRole!)){
+                        void this.router.navigate(['forbidden']);
                     }
-                    return state;
+                    return loggedIn;
                 })
             );
     }

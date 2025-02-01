@@ -24,16 +24,16 @@ import { AdminCabinetPageComponent } from './pages/admin-cabinet-page/admin-cabi
  */
 const routes: Routes = [
     {path: 'login', component: LoginPageComponent},
-    {path: 'salesmen', component: SalesmenPageComponent},
-    {path: 'bonuses', component: BonusesPageComponent},
-    {path: 'bonuses-details', component: ChangeBonusesPageComponent},
-    {path: 'cabinet/:code', component: SalesmanCabinetPageComponent, canActivate: [AuthGuardService]},
-    {path: 'cabinet', component: SalesmanCabinetPageComponent, canActivate: [AuthGuardService]},
-    {path: 'admin-cabinet', component: AdminCabinetPageComponent, canActivate: [AuthGuardService]},
+    {path: 'salesmen', component: SalesmenPageComponent, canActivate: [AuthGuardService], data: { roles: [0, 1] } },
+    {path: 'bonuses', component: BonusesPageComponent, canActivate: [AuthGuardService], data: { roles: [0, 1] } },
+    {path: 'bonuses-details', component: ChangeBonusesPageComponent, canActivate: [AuthGuardService], data: { roles: [0, 1, 2] } },
+    {path: 'cabinet/:code', component: SalesmanCabinetPageComponent, canActivate: [AuthGuardService], data: { roles: [0, 1] } },
+    {path: 'cabinet', component: SalesmanCabinetPageComponent, canActivate: [AuthGuardService], data: { roles: [2] } },
+    {path: 'admin-cabinet', component: AdminCabinetPageComponent, canActivate: [AuthGuardService], data: { roles: [0, 1] } },
     {path: '', component: LandingPageComponent},
     {path: 'forbidden', component: ForbiddenPageComponent},
-    {path: 'welcome-admin-dashboard', component: WelcomeAdminDashboardComponent},
-    {path: 'users', component: UsersPageComponent},
+    {path: 'welcome-admin-dashboard', component: WelcomeAdminDashboardComponent, canActivate: [AuthGuardService], data: { roles: [0, 1] } },
+    {path: 'users', component: UsersPageComponent, canActivate: [AuthGuardService], data: { roles: [0, 1] } },
     {path: '**', component: NotFoundPageComponent}
 
 ];
