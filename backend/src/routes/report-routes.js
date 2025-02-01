@@ -49,7 +49,7 @@ router.put("/recalculate/:id",
     //#swagger.description = 'Recalculate report'
     //#swagger.summary = 'Recalculate report'
     // #swagger.tags = ['Reports']
-    checkAuthorization([0,1]), ReportApi.recalculateSingleBonusById)
+    checkAuthorization([0, 1]), ReportApi.recalculateSingleBonusById)
 
 router.put("/submit/confirmationArrayReverse",
     //#swagger.description = 'Reverse array'
@@ -62,55 +62,61 @@ router.put("/submit/confirmationArrayReverse",
    required: true,
    schema: { $ref: '#/definitions/reverseArray' }
  } */
-    checkAuthorization([0,1]), ReportApi.confirmationReverseWithIdsArray)
+    checkAuthorization([0, 1]), ReportApi.confirmationReverseWithIdsArray)
 
 router.put("/reverseConfirm/:id",
     //#swagger.description = 'Confirm single report'
     //#swagger.summary = 'Confirm single report'
     // #swagger.tags = ['Reports']
-    checkAuthorization([0,1]), ReportApi.confirmationReverseSingleReport)
+    checkAuthorization([0, 1]), ReportApi.confirmationReverseSingleReport)
 
 router.put("/salesman-confirm/:id",
+    // #swagger.tags = ['Reports']
+    // #swagger.description = 'Confirm single report by salesman'
+    // #swagger.summary = 'Confirm single report by salesman'
     checkAuthorization([2]), ReportApi.confirmBonusForSalesman)
 
 router.put("/salesman-reject/:id",
+    // #swagger.tags = ['Reports']
+    // #swagger.description = 'Reject single report by salesman'
+    // #swagger.summary = 'Reject single report by salesman'
     checkAuthorization([2]), ReportApi.rejectBonusForSalesman)
 
 router.delete("/",
     //#swagger.description = 'Delete all reports'
     //#swagger.summary = 'Delete all reports'
     // #swagger.tags = ['Reports']
-    checkAuthorization([0,1]), ReportApi.deleteAllReports)
+    checkAuthorization([0, 1]), ReportApi.deleteAllReports)
 
 router.delete("/:id",
     //#swagger.description = 'Delete report by Id'
     //#swagger.summary = 'Delete report by Id'
     // #swagger.tags = ['Reports']
-    checkAuthorization([0,1]), ReportApi.deleteReport)
+    checkAuthorization([0, 1]), ReportApi.deleteReport)
 
 router.get("/count/total",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0,1]), ReportApi.getTotalReportsCount)
+    checkAuthorization([0, 1]), ReportApi.getTotalReportsCount)
 
 router.get("/count/year/current",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0,1]), ReportApi.getTotalReportsForCurrentYear)
+    checkAuthorization([0, 1]), ReportApi.getTotalReportsForCurrentYear)
 
 router.get("/count/signed/CEO",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0,1]), ReportApi.getSignedByCEOReportsCount)
+    checkAuthorization([0, 1]), ReportApi.getSignedByCEOReportsCount)
 
 router.get("/count/signed/HR",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0,1]), ReportApi.getSignedByHRReportsCount)
+    checkAuthorization([0, 1]), ReportApi.getSignedByHRReportsCount)
 
 router.get("/count/signed/CEO/year/current",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0,1]), ReportApi.getSignedByCEOReportsCountForCurrentYear)
+    checkAuthorization([0, 1]), ReportApi.getSignedByCEOReportsCountForCurrentYear)
 
 router.get("/count/signed/HR/year/current",
     // #swagger.tags = ['Reports']
-    checkAuthorization([0,1]), ReportApi.getSignedByHRReportsCountForCurrentYear)
+    checkAuthorization([0, 1]), ReportApi.getSignedByHRReportsCountForCurrentYear)
 
 router.post("/confirm/:id/remark",
     // #swagger.tags = ['Reports']

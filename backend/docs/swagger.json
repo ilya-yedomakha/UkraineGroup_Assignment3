@@ -31,6 +31,10 @@
     {
       "name": "Reports",
       "description": "Operations with reports on salesmen' bonus salary"
+    },
+    {
+      "name": "Rejection",
+      "description": "Operations with rejection message on salesmen' bonus salary"
     }
   ],
   "schemes": [
@@ -853,6 +857,9 @@
           "404": {
             "description": "Not Found"
           },
+          "409": {
+            "description": "Conflict"
+          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -978,7 +985,11 @@
     },
     "/api/report/salesman-confirm/{id}": {
       "put": {
-        "description": "",
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Confirm single report by salesman",
+        "description": "Confirm single report by salesman",
         "parameters": [
           {
             "name": "id",
@@ -1011,7 +1022,11 @@
     },
     "/api/report/salesman-reject/{id}": {
       "put": {
-        "description": "",
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Reject single report by salesman",
+        "description": "Reject single report by salesman",
         "parameters": [
           {
             "name": "id",
@@ -1212,7 +1227,11 @@
     },
     "/api/rejection/report/{reportId}": {
       "post": {
-        "description": "",
+        "tags": [
+          "Rejection"
+        ],
+        "summary": "Create rejection message",
+        "description": "Create rejection message",
         "parameters": [
           {
             "name": "reportId",
@@ -1221,13 +1240,16 @@
             "type": "string"
           },
           {
-            "name": "body",
+            "name": "Rejection message",
             "in": "body",
+            "description": "Create rejection message",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
-                  "example": "any"
+                  "type": "string",
+                  "example": ""
                 }
               }
             }
@@ -1251,7 +1273,11 @@
     },
     "/api/rejection/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Rejection"
+        ],
+        "summary": "Get rejection message by id",
+        "description": "Get rejection message by id",
         "parameters": [
           {
             "name": "id",
@@ -1279,7 +1305,11 @@
         }
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Rejection"
+        ],
+        "summary": "Delete rejection message",
+        "description": "Delete rejection message",
         "parameters": [
           {
             "name": "id",
@@ -1309,7 +1339,11 @@
     },
     "/api/rejection/salesman/{code}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Rejection"
+        ],
+        "summary": "Get rejection messages by salesman code",
+        "description": "Get rejection messages by salesman code",
         "parameters": [
           {
             "name": "code",
@@ -1337,7 +1371,11 @@
         }
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Rejection"
+        ],
+        "summary": "Delete rejection message by salesman code",
+        "description": "Delete rejection message by salesman code",
         "parameters": [
           {
             "name": "code",
@@ -1367,7 +1405,11 @@
     },
     "/api/rejection/year/{year}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Rejection"
+        ],
+        "summary": "Get rejection messages by year",
+        "description": "Get rejection messages by year",
         "parameters": [
           {
             "name": "year",
@@ -1397,7 +1439,11 @@
     },
     "/api/rejection/year/current/count": {
       "get": {
-        "description": "",
+        "tags": [
+          "Rejection"
+        ],
+        "summary": "Get count of rejection messages by year",
+        "description": "Get count of rejection messages by year",
         "responses": {
           "200": {
             "description": "OK"
@@ -1419,7 +1465,11 @@
     },
     "/api/rejection/report/{reportId}/": {
       "delete": {
-        "description": "",
+        "tags": [
+          "Rejection"
+        ],
+        "summary": "Delete rejection message by report id",
+        "description": "Delete rejection message by report id",
         "parameters": [
           {
             "name": "reportId",
@@ -1901,6 +1951,27 @@
         "remarks": {
           "type": "string",
           "example": "remark"
+        }
+      }
+    },
+    "rejectionSchema": {
+      "type": "object",
+      "properties": {
+        "salesman_code": {
+          "type": "number",
+          "example": 90731
+        },
+        "report_id": {
+          "type": "string",
+          "example": "678516a752714ecb1941ce3e"
+        },
+        "year": {
+          "type": "number",
+          "example": 2025
+        },
+        "message": {
+          "type": "string",
+          "example": "You made a mistake in the calculations"
         }
       }
     },

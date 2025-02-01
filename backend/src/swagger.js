@@ -45,6 +45,10 @@ const swaggerDocument = {
         {
             name: "Reports",
             description: "Operations with reports on salesmen' bonus salary"
+        },
+        {
+            name: "Rejection",
+            description: "Operations with rejection message on salesmen' bonus salary"
         }
     ],
     securityDefinitions: {},
@@ -98,6 +102,12 @@ const swaggerDocument = {
             ordersBonuses: [],
             socialBonuses: [],
             remarks: "remark"
+        },
+        rejectionSchema: {
+            salesman_code: 90731,
+            report_id: "678516a752714ecb1941ce3e",
+            year: 2025,
+            message: "You made a mistake in the calculations"
         },
         reverseArray: {
             ids: ["678010157d630c79c9312c7d",
