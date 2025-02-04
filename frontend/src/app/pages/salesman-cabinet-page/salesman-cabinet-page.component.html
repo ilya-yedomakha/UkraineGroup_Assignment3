@@ -45,9 +45,9 @@
         </div>
     </div>
 
-    <div class="flex my-4 items-center">
+    <div class="flex my-4 items-center" *ngIf="user.code === salesman.code">
         <p class="text-lg font-semibold text-gray-700">Options:</p>
-        <button class=" ml-2 rounded-lg px-4 py-2 w-auto transition-all duration-300 ease-in-out 
+        <button class=" ml-2 rounded-lg px-4 py-2 w-auto transition-all duration-300 ease-in-out
                        bg-green-500 hover:bg-green-600 hover:scale-105 text-white font-medium shadow-md"
                 (click)="isPasswordChangeWindowIsVisible = true">
             Change password
