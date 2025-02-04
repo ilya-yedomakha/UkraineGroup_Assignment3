@@ -45,17 +45,6 @@ export class TableSalesmenBonusesComponent  implements OnChanges{
         totalItems: this.totalItems
     };
 
-    // ngOnInit(): void {
-    //     this.totalItems = this.bonuses.length;
-    //     // console.log(this.bonuses.length);
-    //     this.changes = this.bonuses.map(bonus => ({
-    //         _id: bonus._id,
-    //         originalValue: bonus.isConfirmedByCEO,
-    //         currentValue: bonus.isConfirmedByCEO,
-    //     }));
-    //     // console.log(this.changes);
-    // }
-
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.bonuses) {
             this.changes = this.bonuses.map(bonus => ({
