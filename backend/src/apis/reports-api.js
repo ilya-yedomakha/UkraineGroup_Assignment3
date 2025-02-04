@@ -387,7 +387,7 @@ class reportApi {
                 return res.status(404).send({apiStatus: false, message: "Report not found"});
             }
 
-            if (found.isSent !== true) {
+            if (found.isSent !== true && found.year !== new Date().getFullYear()) {
                 return res.status(400).send({apiStatus: false, message: "Only bonus that is already in OrangeHRM can be patched!"});
             }
 

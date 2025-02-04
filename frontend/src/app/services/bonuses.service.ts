@@ -46,7 +46,7 @@ export class BonusesService {
 
     sendAllBonusesToHRM(): Observable<any> {
         return this.http.post<any>(`${environment.apiEndpoint}/api/salesman/send-bonuses-orangeHRM`, {}, {withCredentials: true})
-            .pipe(map(o => o.data));
+            .pipe(map(o => ({ data: o.data, message: o.message })))
     }
 
     reverseConfirmArrayOfIds(changedIds): Observable<string> {
@@ -70,7 +70,7 @@ export class BonusesService {
     }
 
     singleConfirm(id: string): Observable<BonusData> {
-        return this.http.put<{ data: BonusData}>(
+        return this.http.put<{ data: BonusData }>(
             `${environment.apiEndpoint}/api/report/reverseConfirm/${id}`,
             {},
             {withCredentials: true}
