@@ -83,9 +83,10 @@ export class WelcomeAdminDashboardComponent implements OnInit {
         this.updatingSendIsLoading = true;
 
         this.bonusesService.sendAllBonusesToHRM().subscribe({
-            next: () => {
+            next: (response) => {
                 this.updatingSendIsLoading = false;
-                this.snackBar.showSnackBar('Bonuses were sent to OrangeHRM');
+                console.log(response);
+                this.snackBar.showSnackBar(response.message);
             },
             error: (err): void => {
                 this.updatingSendIsLoading = false;
