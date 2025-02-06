@@ -27,14 +27,15 @@ class ReportService {
 
             if (newData.hasOwnProperty("remarks")) {
                 oldData.remarks = newData.remarks;
+                oldData.isRemarkConfirmedByHR = false;
             }
 
             if (newData.hasOwnProperty("isConfirmedByHR")) {
                 oldData.isConfirmedByHR = newData.isConfirmedByHR;
             }
 
+
             oldData.isConfirmedByCEO = false;
-            oldData.isRemarkConfirmedByHR = false;
             oldData.isConfirmedBySalesman = false;
             oldData.isSent = false;
 

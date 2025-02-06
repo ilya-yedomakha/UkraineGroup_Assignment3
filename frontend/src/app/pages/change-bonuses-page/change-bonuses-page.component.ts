@@ -67,12 +67,13 @@ export class ChangeBonusesPageComponent implements OnInit {
             remarks: this.bonusesData.remarks
         };
 
-        //TODO(чому назва метода saveSocialAndOrderBonuses а зберігаєтсья saveNewOrderBonuses)
         this.bonusesService.saveNewOrderBonuses(this.bonusesData._id, updatedBonuses).subscribe({
             next: (): void => {
+                this.bonusesData.isConfirmedBySalesman = false;
+                this.bonusesData.isRemarkConfirmedByHR = false;
                 this.updateData();
                 this.dataChange.emit(true);
-                this.snackBar.showSnackBar('Order and social bonuses have been successfully saved');
+                this.snackBar.showSnackBar('Remarks, order and social bonuses have been successfully saved');
             },
             error: (err): void => this.snackBar.showSnackBar('Error: ' + err.error?.message),
         });
@@ -118,6 +119,8 @@ export class ChangeBonusesPageComponent implements OnInit {
 
         this.bonusesService.saveNewOrderBonuses(this.bonusesData._id, updatedBonuses).subscribe({
             next: (): void => {
+                this.bonusesData.isConfirmedBySalesman = false;
+                this.bonusesData.isRemarkConfirmedByHR = false;
                 this.updateData();
                 this.dataChange.emit(true);
                 this.snackBar.showSnackBar('Remarks saved');
