@@ -99,7 +99,7 @@
 
                 <span class="flex-1 text-center">
                     <svg *ngIf="bonus.isSent" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                         [attr.fill]="bonus.isSent && userRole === 0 || bonus.isConfirmedByHR && userRole === 1 ? 'white' : 'green'"
+                         [attr.fill]="bonus.isConfirmedByCEO && userRole === 0 || bonus.isConfirmedByHR && userRole === 1 ? 'white' : 'green'"
                          viewBox="0 0 24 24">
                         <path
                             d="M20.285 6.709c.391.39.391 1.023 0 1.414l-11 11c-.391.391-1.023.391-1.414 0l-5-5c-.391-.391-.391-1.023 0-1.414s1.023-.391 1.414 0l4.293 4.293 10.293-10.293c.391-.391 1.023-.391 1.414 0z"/>
