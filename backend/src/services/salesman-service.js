@@ -2,6 +2,29 @@ const salesmanModel = require("../models/SalesMan")
 const socialPerformanceModel = require("../models/SocialPerformanceRecord")
 const reportModel = require("../models/Report")
 
+const axios = require('axios')
+
+async function startProcess(processDefinitionKey, variables) {
+    try {
+        const response = await axios.post(
+            'http://localhost:9090/engine-rest/process-definition/key/' + processDefinitionKey + '/start',
+            {
+                variables: variables,
+            },
+            {
+                auth: {
+                    username: 'demo',
+                    password: 'demo',
+                },
+            }
+        );
+
+        console.log('Process started successfully:', response.data);
+    } catch (error) {
+        console.error('Error starting process:', error.response?.data || error.message);
+    }
+}
+
 class SalesmanService{
 
     static calculateSalesmanBonusForSalesman = async function (salesman, salesData, socialData, year) {
@@ -75,6 +98,19 @@ class SalesmanService{
         report.totalBonus = totalBonus
 
         await report.save()
+
+        let reportCamundaVariables = {
+            _id: {value: report._id, type: 'String'},
+            salesman_code: {value: report.salesman_code, type: 'Integer'},
+            salesman_firstName: {value: report.salesman_firstName, type: 'String'},
+            salesman_lastName:{value: report.salesman_lastName, type: 'String'},
+            employeeId: {value: report.employeeId, type: 'Integer'},
+            total_bonus: {value: report.total_bonus, type: 'Integer'},
+            remarks: {value: report.remarks, type: 'String'},
+            year: {value: report.year, type: 'Integer'}
+        }
+
+        startProcess('bonus-salary-assign', reportCamundaVariables);
         return report
     }
     /**
