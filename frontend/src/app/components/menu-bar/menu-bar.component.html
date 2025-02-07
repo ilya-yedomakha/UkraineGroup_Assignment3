@@ -20,7 +20,7 @@
   <div class="flex-grow min-w-0"></div>
 
     <button
-        *ngIf="user.role"
+        *ngIf="user"
         [routerLink]="user.role === 2 ? 'cabinet' : 'admin-cabinet'"
         routerLinkActive="text-yellow-300"
         [routerLinkActiveOptions]="{exact: true}"

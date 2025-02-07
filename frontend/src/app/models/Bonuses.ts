@@ -6,6 +6,7 @@ export class Bonuses{
         public bonusesForSocial: number,
         public totalBonuses: number,
         public isConfirmedBySalesman: boolean,
+        public isRemarkConfirmedByHR: boolean,
         public remarks: string
     ) {  }
 
@@ -19,6 +20,7 @@ export class Bonuses{
             bonusesForSocial,
             data.totalBonus,
             data.isConfirmedBySalesman,
+            data.isRemarkConfirmedByHR,
             data.remarks
         );
     }
