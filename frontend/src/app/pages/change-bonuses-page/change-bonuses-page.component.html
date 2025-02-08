@@ -30,7 +30,7 @@
                     </button>
 
                     <button class="bg-[#232023] ml-2 p-2 rounded-lg text-yellow-100 font-semibold self-center w-auto hover:text-yellow-200 hover:scale-110 hover:shadow-sm"
-                            *ngIf="user.role === 1 && bonusesData.isConfirmedByCEO && bonusesData.isConfirmedByHR && bonusesData.isSent && bonusesData.year != currentYear"
+                            *ngIf="user.role === 1 && bonusesData.isConfirmedByCEO && bonusesData.isConfirmedByHR && bonusesData.isSent && bonusesData.year !== currentYear"
                             [disabled] = "HRMSendLoading"
                             (click)="updateOldHRMBonusById()"
                     >Send this new data to OrangeHRM
@@ -75,12 +75,13 @@
         </div>
     </div>
 
-<div class="mt-3 mb-6 pl-1">
+<div class="mt-3 mb-6 pl-1" *ngIf="user.role !== 2">
     <h3 class="font-semibold">Info:</h3>
     <p class="font-light font-mono my-1">{{bonusesData.isSent ? "✅" : "❌"}} Bonuses {{bonusesData.isSent ? "is" : "is not"}} sent to OrangeHRM</p>
     <p class="font-light font-mono my-1">{{bonusesData.isConfirmedBySalesman ? "✅" : "❌"}} Bonuses {{bonusesData.isConfirmedBySalesman ? "is" : "is not"}} confirmed by salesman</p>
-    <p class="font-light font-mono my-1">{{bonusesData.isConfirmedByHR ? "✅" : "❌"}} Bonuses {{bonusesData.isConfirmedByHR ? "is" : "is not"}} confirmed by HR</p>
-    <p class="font-light font-mono my-1">{{bonusesData.isRemarkConfirmedByHR ? "✅" : "❌"}} Remarks {{bonusesData.isRemarkConfirmedByHR ? "is" : "is not"}} confirmed by HR</p>
+    <p class="font-light font-mono my-1" *ngIf="user.role === 1">{{bonusesData.isConfirmedByCEO ? "✅" : "❌"}} Bonuses {{bonusesData.isConfirmedByCEO ? "is" : "is not"}} confirmed by CEO</p>
+    <p class="font-light font-mono my-1" *ngIf="user.role === 0">{{bonusesData.isConfirmedByHR ? "✅" : "❌"}} Bonuses {{bonusesData.isConfirmedByHR ? "is" : "is not"}} confirmed by HR</p>
+    <p class="font-light font-mono my-1">{{bonusesData.isRemarkConfirmedByHR ? "✅" : "❌"}} Remarks {{bonusesData.isRemarkConfirmedByHR ? "is" : "is not"}} {{user.role === 1 ? "confirmed" : "confirmed by HR"}} </p>
 </div>
 
     <div class="mt-2">
@@ -106,7 +107,7 @@
     <div *ngIf="user.role !== 2 || (bonusesData.isRemarkConfirmedByHR && user.role === 2)" class="flex justify-start items-center">
         <label class="text-xl font-semibold mr-1">Remarks:</label>
         <textarea
-            [disabled]="user.role != 0 || (user.role === 0 && bonusesData.isConfirmedByCEO)"
+            [disabled]="user.role !== 0 || (user.role === 0 && bonusesData.isConfirmedByCEO)"
             [(ngModel)]="bonusesData.remarks"
                   class="border-2 border-black text-lg p-2 h-16 rounded-md w-full md:w-1/2"></textarea>
         <button

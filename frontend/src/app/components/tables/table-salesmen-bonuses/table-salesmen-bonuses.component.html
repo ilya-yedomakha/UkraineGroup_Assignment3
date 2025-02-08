@@ -1,3 +1,9 @@
+<div class="mt-2 mb-1">
+    <p>Filters: </p>
+    <input type="text" placeholder="Salesman firstname..."  [(ngModel)]="filterFirstName">
+    <input type="text" placeholder="Salesman lastname..."  [(ngModel)]="filterLastName">
+</div>
+
 <div class="bg-[#FCE8BA] font-sans text-gray-800 border-double border-2 border-black rounded-lg">
     <div class="policy-container content-center border">
         <div class="bg-black rounded-t-lg">
@@ -27,7 +33,7 @@
             </div>
         </div>
 
-        <div *ngFor="let bonus of bonuses | paginate: pagingConfig">
+        <div *ngFor="let bonus of bonuses | filterElementsByString: ['firstname', 'lastname']: [filterFirstName,filterLastName] | paginate: pagingConfig">
             <div [ngClass]="{'bg-green-600 text-white': bonus.isConfirmedByCEO && userRole === 0 || bonus.isConfirmedByHR && userRole === 1,
              'bg-gray-300 text-black': !bonus.isConfirmedByCEO && userRole === 0 || !bonus.isConfirmedByHR && userRole === 1,
              'rounded-br-none': hasRejectionForBonus(bonus._id),

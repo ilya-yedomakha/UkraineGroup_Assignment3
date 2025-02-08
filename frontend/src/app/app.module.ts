@@ -49,6 +49,7 @@ import {SnackBarService} from "./services/snack-bar.service";
 import {AddUserWindowComponent} from "./components/popouts/add-user-window/add-user-window.component";
 import { PasswordChangeWindowComponent } from './components/popouts/password-change-window/password-change-window.component';
 import {AdminCabinetPageComponent} from "./pages/admin-cabinet-page/admin-cabinet-page.component";
+import { FilterElementsByStringPipe } from './pipes/filter-elements-by-string.pipe';
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import {AdminCabinetPageComponent} from "./pages/admin-cabinet-page/admin-cabine
         AboutBonusCalculationDropDownComponent,
         ToggleSwitchComponent,
         PasswordChangeWindowComponent,
-        AdminCabinetPageComponent
+        AdminCabinetPageComponent,
+        FilterElementsByStringPipe
     ],
     imports: [
         BrowserModule,

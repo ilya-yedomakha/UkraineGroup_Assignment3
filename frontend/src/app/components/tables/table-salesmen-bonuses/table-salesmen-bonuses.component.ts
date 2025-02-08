@@ -36,6 +36,8 @@ export class TableSalesmenBonusesComponent  implements OnChanges{
     isAllSelected = false;
     rejectionMessage: RejectionMessage;
     private bonusesService = inject(BonusesService);
+    filterFirstName: string = "";
+    filterLastName: string = "";
 
     constructor(private router: Router){}
 
