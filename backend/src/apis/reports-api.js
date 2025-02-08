@@ -45,7 +45,6 @@ async function deleteProcessesByReportId(reportId) {
     try {
         console.log(`Searching for process instances with _id: ${reportId}`);
 
-        // Step 1: Get all active process instances
         const response = await axios.get(
             'http://localhost:9090/engine-rest/process-instance',
             {
@@ -63,7 +62,6 @@ async function deleteProcessesByReportId(reportId) {
             return;
         }
 
-        // Step 2: Filter instances that contain the correct reportId in their variables
         let filteredInstances = [];
 
         for (const instance of instances) {
@@ -91,7 +89,6 @@ async function deleteProcessesByReportId(reportId) {
 
         console.log(`Found ${filteredInstances.length} process instance(s) for reportId: ${reportId}`);
 
-        // Step 3: Delete only the filtered instances
         for (const instanceId of filteredInstances) {
             await axios.delete(
                 `http://localhost:9090/engine-rest/process-instance/${instanceId}`,
