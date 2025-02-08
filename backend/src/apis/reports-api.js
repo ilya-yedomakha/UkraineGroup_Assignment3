@@ -20,6 +20,99 @@ if (process.env.NODE_ENV === 'development') {
 
 let environment_ilya = require('../../environments/environment_ilya.js').default;
 
+async function startProcess(processDefinitionKey, variables) {
+    try {
+        const response = await axios.post(
+            'http://localhost:9090/engine-rest/process-definition/key/' + processDefinitionKey + '/start',
+            {
+                variables: variables,
+            },
+            {
+                auth: {
+                    username: 'demo',
+                    password: 'demo',
+                },
+            }
+        );
+
+        console.log('Process started successfully:', response.data);
+    } catch (error) {
+        console.error('Error starting process:', error.response?.data || error.message);
+    }
+}
+
+async function deleteProcessesByReportId(reportId) {
+    try {
+        console.log(`Searching for process instances with _id: ${reportId}`);
+
+        // Step 1: Get all active process instances
+        const response = await axios.get(
+            'http://localhost:9090/engine-rest/process-instance',
+            {
+                auth: {
+                    username: "demo",
+                    password: "demo",
+                }
+            }
+        );
+
+        const instances = response.data;
+
+        if (!instances.length) {
+            console.log(`No active process instances found.`);
+            return;
+        }
+
+        // Step 2: Filter instances that contain the correct reportId in their variables
+        let filteredInstances = [];
+
+        for (const instance of instances) {
+            const variablesResponse = await axios.get(
+                `http://localhost:9090/engine-rest/process-instance/${instance.id}/variables`,
+                {
+                    auth: {
+                        username: "demo",
+                        password: "demo",
+                    }
+                }
+            );
+
+            const variables = variablesResponse.data;
+
+            if (variables._id && variables._id.value === reportId.toString()) {
+                filteredInstances.push(instance.id);
+            }
+        }
+
+        if (!filteredInstances.length) {
+            console.log(`No matching process instances found for reportId: ${reportId}`);
+            return;
+        }
+
+        console.log(`Found ${filteredInstances.length} process instance(s) for reportId: ${reportId}`);
+
+        // Step 3: Delete only the filtered instances
+        for (const instanceId of filteredInstances) {
+            await axios.delete(
+                `http://localhost:9090/engine-rest/process-instance/${instanceId}`,
+                {
+                    auth: {
+                        username: "demo",
+                        password: "demo",
+                    }
+                }
+            );
+            console.log(`Deleted process instance: ${instanceId}`);
+        }
+
+        console.log(`Successfully deleted all process instances with reportId ${reportId}`);
+
+    } catch (error) {
+        console.error("Error deleting process instances:", error.response?.data || error.message);
+    }
+}
+
+// HR confirmation
 (async () => {
     const { Client, logger } = await import('camunda-external-task-client-js');
 
@@ -30,8 +123,8 @@ let environment_ilya = require('../../environments/environment_ilya.js').default
     client.subscribe('save-confirmed', async function ({ task, taskService }) {
         const _id = task.variables.get('_id');
         // const year = task.variables.get('year');
-        const total_bonus = task.variables.get('total_bonus');
-        const remarks = task.variables.get('remarks');
+        // const total_bonus = task.variables.get('total_bonus');
+        // const remarks = task.variables.get('remarks');
         if (!_id) {
             console.log("Empty _id!");
             return;
@@ -41,11 +134,11 @@ let environment_ilya = require('../../environments/environment_ilya.js').default
             console.log("Report is not found");
             return;
         }
-        var newReport = {
-            remarks: remarks,
-            total_bonus: total_bonus
-        }
-        await reportService.updateReport(found, newReport);
+        // var newReport = {
+        //     remarks: remarks,
+        //     total_bonus: total_bonus
+        // }
+        await reportService.reverseConfirmSingleReportByHR(found);
         console.log(`Bonus '${_id}': confirmed`);
         console.log("Successfully confirmed!");
 
@@ -231,6 +324,28 @@ class reportApi {
                             data: confirmedByCEOreports
                         });
                     }
+
+                    for (const report of reports) {
+                        if (!report.isConfirmedByHR) {
+                            await deleteProcessesByReportId(report._id)
+                        } else {
+                            let reportCamundaVariables = {
+                                _id: {value: report._id, type: 'String'},
+                                salesman_code: {value: report.salesman_code, type: 'Integer'},
+                                salesman_firstName: {value: report.firstname, type: 'String'},
+                                salesman_lastName: {value: report.lastname, type: 'String'},
+                                employeeId: {value: report.employeeId, type: 'Integer'},
+                                total_bonus: {value: report.totalBonus, type: 'Integer'},
+                                remarks: {value: report.remarks, type: 'String'},
+                                year: {value: report.year, type: 'Integer'},
+                                expression_ordes: {value: JSON.stringify(report.ordersBonuses), type: 'Json'},
+                                expression_social: {value: JSON.stringify(report.socialBonuses), type: 'Json'}
+                            };
+
+                            await startProcess('bonus-salary-assign', reportCamundaVariables);
+                        }
+                    }
+
                     result = await reportService.confirmationReverseWithIdsArrayBbyHR(reports);
                     break;
                 default:
@@ -308,6 +423,25 @@ class reportApi {
                             apiStatus: false,
                             message: 'Can`t change your confirmation if confirmed by CEO'
                         });
+                    }
+
+                    if (!reports.isConfirmedByHR){
+                        await deleteProcessesByReportId(reports._id)
+                    } else {
+                        let reportCamundaVariables = {
+                            _id: {value: reports._id, type: 'String'},
+                            salesman_code: {value: reports.salesman_code, type: 'Integer'},
+                            salesman_firstName: {value: reports.firstname, type: 'String'},
+                            salesman_lastName:{value: reports.lastname, type: 'String'},
+                            employeeId: {value: reports.employeeId, type: 'Integer'},
+                            total_bonus: {value: reports.totalBonus, type: 'Integer'},
+                            remarks: {value: reports.remarks, type: 'String'},
+                            year: {value: reports.year, type: 'Integer'},
+                            expression_ordes: { value: JSON.stringify(reports.ordersBonuses), type: 'Json' },
+                            expression_social: { value: JSON.stringify(reports.socialBonuses), type: 'Json' }
+                        };
+
+                        await startProcess('bonus-salary-assign', reportCamundaVariables);
                     }
                     result = await reportService.reverseConfirmSingleReportByHR(reports);
                     break;

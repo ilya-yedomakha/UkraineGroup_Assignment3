@@ -102,35 +102,14 @@ class SalesmanService{
         let reportCamundaVariables = {
             _id: {value: report._id, type: 'String'},
             salesman_code: {value: report.salesman_code, type: 'Integer'},
-            salesman_firstName: {value: report.salesman_firstName, type: 'String'},
-            salesman_lastName:{value: report.salesman_lastName, type: 'String'},
+            salesman_firstName: {value: report.firstname, type: 'String'},
+            salesman_lastName:{value: report.lastname, type: 'String'},
             employeeId: {value: report.employeeId, type: 'Integer'},
-            total_bonus: {value: report.total_bonus, type: 'Integer'},
+            total_bonus: {value: report.totalBonus, type: 'Integer'},
             remarks: {value: report.remarks, type: 'String'},
             year: {value: report.year, type: 'Integer'},
-
-            socialBonuses: {
-                value: JSON.stringify(report.socialBonuses.map(({ target_value, actual_value, goal_description, initialBonus, bonus }) => ({
-                    target_value,
-                    actual_value,
-                    goal_description,
-                    initialBonus,
-                    bonus
-                }))),
-                type: 'Json'
-            },
-
-            orderBonuses: {
-                value: JSON.stringify(report.ordersBonuses.map(({ productName, clientFullName, clientRating, items, initialBonus, bonus }) => ({
-                    productName,
-                    clientFullName,
-                    clientRating,
-                    items,
-                    initialBonus,
-                    bonus
-                }))),
-                type: 'Json'
-            }
+            expression_ordes: { value: JSON.stringify(report.ordersBonuses), type: 'Json' },
+            expression_social: { value: JSON.stringify(report.socialBonuses), type: 'Json' }
         };
 
         await startProcess('bonus-salary-assign', reportCamundaVariables);
