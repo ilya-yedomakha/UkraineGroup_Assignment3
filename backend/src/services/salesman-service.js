@@ -107,10 +107,33 @@ class SalesmanService{
             employeeId: {value: report.employeeId, type: 'Integer'},
             total_bonus: {value: report.total_bonus, type: 'Integer'},
             remarks: {value: report.remarks, type: 'String'},
-            year: {value: report.year, type: 'Integer'}
-        }
+            year: {value: report.year, type: 'Integer'},
 
-        startProcess('bonus-salary-assign', reportCamundaVariables);
+            socialBonuses: {
+                value: JSON.stringify(report.socialBonuses.map(({ target_value, actual_value, goal_description, initialBonus, bonus }) => ({
+                    target_value,
+                    actual_value,
+                    goal_description,
+                    initialBonus,
+                    bonus
+                }))),
+                type: 'Json'
+            },
+
+            orderBonuses: {
+                value: JSON.stringify(report.ordersBonuses.map(({ productName, clientFullName, clientRating, items, initialBonus, bonus }) => ({
+                    productName,
+                    clientFullName,
+                    clientRating,
+                    items,
+                    initialBonus,
+                    bonus
+                }))),
+                type: 'Json'
+            }
+        };
+
+        await startProcess('bonus-salary-assign', reportCamundaVariables);
         return report
     }
     /**
