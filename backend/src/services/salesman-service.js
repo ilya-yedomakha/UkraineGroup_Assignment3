@@ -11,7 +11,7 @@ class SalesmanService{
         if (reportForYear) {
             if(reportForYear.isConfirmedByCEO){
                 // Don't touch if it's confirmed
-                return reportForYear.totalBonus;
+                return reportForYear;
             }
             report = reportForYear
             report.socialBonuses = []
