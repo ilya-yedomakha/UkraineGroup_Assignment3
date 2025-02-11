@@ -10,11 +10,26 @@ import {SnackBarService} from "../../../services/snack-bar.service";
     styleUrls: ['./table-users.component.css']
 })
 export class TableUsersComponent implements OnInit {
+
     @Input() users: User[];
     @Output() userCodeUpdate = new EventEmitter<number>();
     currentPage = 1;
     itemsPerPage = 8;
     totalItems = 0;
+    roles: string[]  = ["admin", "hr", "salesman"];
+    rolesforFilter: { label: string, value: number }[] = [
+        {label: 'CEO', value: 0},
+        {label: 'HR', value: 1},
+        {label: 'Salesman', value: 2}
+    ];
+
+    filterUsername: string  = "";
+    filterFirstName: string = "";
+    filterEmail: string = "";
+    filterRole: number = null;
+    filterLastName: string = "";
+    filterCode: number = null;
+
 
     private userService = inject(UserService)
     private snackBar = inject(SnackBarService);
@@ -63,5 +78,14 @@ export class TableUsersComponent implements OnInit {
 
     editUser(code: number) {
         this.userCodeUpdate.emit(code);
+    }
+
+    clearFiltersInputs() {  
+        this.filterUsername  = "";
+        this.filterFirstName = "";
+        this.filterEmail = "";
+        this.filterRole = null;
+        this.filterLastName = "";
+        this.filterCode = null;
     }
 }

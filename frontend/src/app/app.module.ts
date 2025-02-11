@@ -50,6 +50,7 @@ import {AddUserWindowComponent} from "./components/popouts/add-user-window/add-u
 import { PasswordChangeWindowComponent } from './components/popouts/password-change-window/password-change-window.component';
 import {AdminCabinetPageComponent} from "./pages/admin-cabinet-page/admin-cabinet-page.component";
 import { FilterElementsByStringPipe } from './pipes/filter-elements-by-string.pipe';
+import { FilterElementsByNumbersPipe } from './pipes/filter-elements-by-numbers.pipe';
 
 
 @NgModule({
@@ -89,7 +90,8 @@ import { FilterElementsByStringPipe } from './pipes/filter-elements-by-string.pi
         ToggleSwitchComponent,
         PasswordChangeWindowComponent,
         AdminCabinetPageComponent,
-        FilterElementsByStringPipe
+        FilterElementsByStringPipe,
+        FilterElementsByNumbersPipe
     ],
     imports: [
         BrowserModule,

@@ -9,7 +9,7 @@ const environment = {
         username: '',
         password: '',
         authSource: 'admin',
-        name: 'IntArch'
+        name: 'intArch'
     },
     corsOrigins: [
         'http://localhost:4200'

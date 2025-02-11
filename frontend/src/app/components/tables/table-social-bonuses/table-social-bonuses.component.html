@@ -1,3 +1,28 @@
+<div class="mt-3 mb-1 flex items-center md:w-3/5">
+    <p class="font-semibold mr-2">Filters:</p>
+    
+    <input class="flex-1 min-w-0 p-2 text-base border-2 border-black rounded-md"
+     type="text" placeholder="Name..." [(ngModel)]="filterName">
+     <select
+     [(ngModel)]="filterTargetValue"
+     class="ml-2 flex-1 min-w-0 h-10 text-base border-2 border-black rounded-md">
+     <option value="" disabled selected>Pick target value</option>
+     <option *ngFor="let num of [1, 2, 3, 4, 5]" [value]="num">{{ num }}</option>
+   </select>
+   <select
+   [(ngModel)]="filterActualValue"
+   class="ml-2 flex-1 min-w-0 h-10 text-base border-2 border-black rounded-md">
+   <option value='' disabled selected>Pick actual value</option>
+   <option *ngFor="let num of [1, 2, 3, 4, 5]" [value]="num">{{ num }}</option>
+ </select>
+    <svg 
+        (click)="clearFiltersInputs()"
+        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
+        class="w-10 h-10 ml-2 cursor-pointer flex-shrink-0">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </svg>   
+</div>
+
 <div class="bg-[#FCE8BA] font-sans text-gray-800 border-2 border-black rounded-lg">
     <div class="policy-container content-center border">
         <div class="bg-black rounded-t-lg">
@@ -13,7 +38,9 @@
 
 
         <div
-            *ngFor="let bonuse of bonuses.socialBonuses | paginate: pagingConfig; let i = index"
+            *ngFor="let bonuse of bonuses.socialBonuses | filterElementsByString : ['goal_description'] : [filterName] |
+             filterElementsByNumbers: ['target_value', 'actual_value']  : [filterTargetValue, filterActualValue] | 
+             paginate: pagingConfig; let i = index"
             class="grid grid-cols-5 gap-4 items-center py-2 px-2 rounded-lg shadow-md mb-4 mx-2 mx-2hover:shadow-lg transition-shadow border-2 border-black text-base bg-[#D9D9D9]"
         >
 

@@ -14,7 +14,11 @@ export class TableSalesmenComponent implements OnInit {
     currentPage = 1;
     itemsPerPage = 8;
     totalItems = 0;
-
+    filters: string[] = ["", "", "", ""];
+    filterFirstname: string = "";
+    filterMiddlename: string = "";
+    filterLastname: string = "";
+    filterCode: null;
 
 
     public pagingConfig: PaginationInstance = {
@@ -40,4 +44,12 @@ export class TableSalesmenComponent implements OnInit {
     toShowSalesmanInfo(){
 
     }
+
+    clearFiltersInputs(){
+        this.filterFirstname = "";
+        this.filterMiddlename = "";
+        this.filterLastname = "";
+        this.filterCode = null;
+    }
+
 }

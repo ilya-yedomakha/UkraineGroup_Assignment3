@@ -11,6 +11,7 @@ import {SnackBarService} from "../../../services/snack-bar.service";
 })
 export class TableOrdersBonusesComponent implements OnInit {
 
+
     @Input() bonuses: BonusData;
     @Input() userRole!: 0 | 1 | 2;
     @Output() dataChange = new EventEmitter<boolean>();
@@ -19,7 +20,12 @@ export class TableOrdersBonusesComponent implements OnInit {
     totalItems = 0;
     private snackBarService = inject(SnackBarService);
 
+    filterNameOfProduct: string = "";
+    filterClient: string = "";
+    filterRating: number = null;
+
     bonus = {bonus: 0};
+
 
     handleBonusChange(bonus: any): void {
         if (bonus.bonus === '' || bonus.bonus === null || isNaN(Number(bonus.bonus))) {
@@ -91,5 +97,11 @@ export class TableOrdersBonusesComponent implements OnInit {
         this.isEditing[index] = false;
         this.originalOrderBonuses[index] = newBonus;
         this.snackBarService.showSnackBar("New sale order bonus value assigned");
+    }
+
+    clearFiltersInputs() {
+        this.filterNameOfProduct= "";
+        this.filterClient = "";
+        this.filterRating= null;
     }
 }

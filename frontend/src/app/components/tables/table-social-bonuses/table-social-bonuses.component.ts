@@ -11,6 +11,7 @@ import {SnackBarService} from "../../../services/snack-bar.service";
 })
 export class TableSocialBonusesComponent implements OnInit {
 
+
     @Input() bonuses: BonusData;
     @Input() userRole!: 0 | 1 | 2;
     @Output() dataChange = new EventEmitter<boolean>();
@@ -18,8 +19,13 @@ export class TableSocialBonusesComponent implements OnInit {
     itemsPerPage = 8;
     totalItems = 0;
 
+    filterName: string = "";
+    filterTargetValue: number | null = null;
+    filterActualValue: number | null = null;
+
     snackBarService = inject(SnackBarService);
     bonuse = {bonus: 0};
+
 
     handleBonusChange(bonuse: any): void {
         if (bonuse.bonus === '' || bonuse.bonus === null || isNaN(Number(bonuse.bonus))) {
@@ -89,6 +95,12 @@ export class TableSocialBonusesComponent implements OnInit {
         this.isEditing[index] = false;
         this.originalSocialBonuses[index] = newBonus;
         this.snackBarService.showSnackBar("New social bonus value assigned");
+    }
+
+    clearFiltersInputs() {
+        this.filterName = "";
+        this.filterActualValue = null;
+        this.filterTargetValue = null;
     }
 
 }

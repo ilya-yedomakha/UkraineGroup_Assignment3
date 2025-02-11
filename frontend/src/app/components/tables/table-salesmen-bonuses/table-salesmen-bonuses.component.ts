@@ -23,7 +23,6 @@ import {BonusesService} from "../../../services/bonuses.service";
     ]
 })
 export class TableSalesmenBonusesComponent  implements OnChanges{
-
     @Input() bonuses: BonusData[];
     @Input() userRole!: 0 | 1 | 2;
     @Input() rejectionData: RejectionMessage[];
@@ -130,4 +129,9 @@ export class TableSalesmenBonusesComponent  implements OnChanges{
         }
         return rejections && rejections.length > 0;
     }
+
+    clearFiltersInputs() {
+        this.filterFirstName = "";
+        this.filterLastName = "";
+        }
 }
