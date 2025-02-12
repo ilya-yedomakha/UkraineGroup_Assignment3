@@ -18,7 +18,7 @@ export class TableSalesmenComponent implements OnInit {
     filterFirstname: string = "";
     filterMiddlename: string = "";
     filterLastname: string = "";
-    filterCode: null;
+    filterCode: number = null;
 
 
     public pagingConfig: PaginationInstance = {
