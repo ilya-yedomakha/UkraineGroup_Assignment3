@@ -221,9 +221,17 @@ class salesmanApi {
                 return res.status(500).send({apiStatus: true, message: 'Access token not found in response'});
             }
 
-            const reports = await ReportModel.find({isConfirmedByCEO: true, year: new Date().getFullYear()});
+            const reports = await
+                ReportModel.find(
+                    {
+                        isConfirmedByCEO: true, year: new Date().getFullYear()
+                    });
             let reportsConfirmedCount = reports.length;
-            const reportsUnconfirmedCount = await ReportModel.countDocuments({year: new Date().getFullYear()});
+            const allReportsCount = await
+                ReportModel.countDocuments(
+                    {
+                    year: new Date().getFullYear()
+                    });
 
             if (reports.length === 0) {
                 return res.status(404).send({message: `There are no reports for the year ${new Date().getFullYear()} that are confirmed by CEO to send`});
@@ -269,7 +277,7 @@ class salesmanApi {
 
             return res.status(200).send({
                 apiStatus: true,
-                message: `All confirmed bonuses (${reportsConfirmedCount}/${reportsConfirmedCount + reportsUnconfirmedCount}) were sent to OrangeHRM!`,
+                message: `All confirmed bonuses (${reportsConfirmedCount}/${allReportsCount}) were sent to OrangeHRM!`,
                 data: responses,
             });
         } catch (e) {
