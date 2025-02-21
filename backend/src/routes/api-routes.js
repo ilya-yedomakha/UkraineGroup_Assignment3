@@ -56,6 +56,11 @@ router.get('/users/total/count',
     //#swagger.description = 'Get current user data'
     //#swagger.summary = 'Get current user data'
     checkAuthorization([0,1]), userApi.getUsersCount);
+router.get('/users/salesmen/codes',
+    // #swagger.tags = ['Authentication']
+    //#swagger.description = 'Get list of free salesman codes'
+    //#swagger.summary = 'Get list of free salesman codes'
+    checkAuthorization([0,1]), userApi.getFreeSalesmenCodesList);
 
 router.post('/users',
     // #swagger.tags = ['Authentication']

@@ -10,6 +10,7 @@ const generator = require('generate-password');
 const {default: environment_ilya} = require("../../environments/environment_ilya");
 const nodemailer = require("nodemailer");
 const authService = require("../services/auth-service");
+const salesmanModel = require("../models/SalesMan")
 exports.getSelf = async function (req, res) {
     res.send(req.session.user); //retrieve userdata of authenticated user from session and return it
 }
@@ -21,6 +22,23 @@ exports.getUsers = async function (req, res) {
     }
     res.send({apiStatus: true, message: "Users fetched", data: response});
 }
+
+exports.getFreeSalesmenCodesList = async function (req, res) {
+    try {
+        const users = await userService.getAll(mongoose.connection, { role: 2 });
+        const userCodes = new Set(users.map(user => user.code));
+
+        const salesmen = await salesmanModel.find({}, 'code');
+        const salesmenCodes = salesmen.map(salesman => salesman.code);
+
+        const freeCodes = salesmenCodes.filter(code => !userCodes.has(code));
+
+        res.send({ apiStatus: true, message: "Free salesmen codes fetched", data: freeCodes });
+    } catch (error) {
+        res.status(500).send({ apiStatus: false, message: "Error fetching free salesmen codes", error: error.message });
+    }
+};
+
 
 exports.getUsersByCode = async function (req, res) {
     var response = await userService.getByCode(mongoose.connection, req.params.code);
@@ -58,6 +76,14 @@ exports.addUser = async function (req, res) {
                 apiStatus: false,
                 message: `Missing required fields: ${missingFields.join(', ')}`
             });
+        }
+
+        if (Number(user.role) === 2){
+            const salesman = await salesmanModel.findOne({code: user.code});
+
+            if (salesman == null) {
+                return res.status(404).send({apiStatus: true, message: "Corresponding Salesman with " + user.code + " not found"})
+            }
         }
 
         const duplicate = await mongoose.connection.collection('users').findOne({
