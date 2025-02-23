@@ -86,6 +86,7 @@ export class AddUserWindowComponent implements OnChanges {
                     this.snackBar.showSnackBar('User created successfully.');
                 },
                 error: (error) => {
+                    this.updatingSendIsLoading = false;
                     const errorMessage = error.error?.message;
                     this.snackBar.showSnackBar('Error: ' + errorMessage);
                 }
